@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GSTR-1 Report </title>
+  </head>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  /* border: 1px solid black;
+  padding: 10px; */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  width: 99%;
+  margin-left: 3px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+th {
+  text-align: center;
+  font-weight: bold;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+.header {
+  text-align: center;
+}
+.rule{
+  font-weight: 100;
+  margin-top: -21px;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-size: 10px;
+}
+/* .bordered-section {
+  border: 0px solid black;
+  padding: 10px;
+} */
+.to{
+    margin-left: 10px;
+ margin-bottom: 20px;
+    
+}
+.from{
+    /* margin-left: 10px; */
+    margin-bottom: 10px;
+    float: right;
+    
+}
+
+  </style>
+  <body>
+    <!-- <div class="bordered-section"> -->
+    <div class="header">
+        <h1>FORM GSTR-1 </h1>
+      </div>
+      <div class="rule" style="font-weight: 200;">
+     <center> <h4><I>[See rule(59(1))]</I></h4></center></div>
+     <div class="details" >
+      <center> <h3>Details of outward supplies of goods and services</h3></center></div>
+      <div class="to">
+       1.&nbsp;&nbsp; GSTIN:&nbsp{{gstin}}
+      </div>
+      <div class="to">
+        2.a&nbsp;&nbsp;  Legal name of the registered person:&nbsp{{PartyName}}
+       </div>
+       <div class="to">
+        2.b&nbsp;&nbsp;  Trade name, if any:&nbsp
+       </div>
+       <div class="to">
+        3.a&nbsp;&nbsp;  Aggregate turnover of the preceeding Financial Year:&nbsp
+       </div>
+       <div class="to">
+        3.b&nbsp;&nbsp;  Aggregate turnover, April to June 2017:&nbsp
+       </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>GSTIN/UIN</th>
+            <th>Party Name</th>
+            <th>Transaction Type</th>
+            <th>Invoice No.</th>
+            <th>Invoice Date</th>
+            <th>Invoice Value</th>
+            <th>Rate</th>
+            <th>Cess Rate</th>
+            <th>Taxable Value</th>
+            <th>Reverse Charge</th>
+            <th>Integrated Tax Amount</th>
+            <th>Central Tax Amount</th>
+            <th>State/UT Tax Amount</th>
+            <th>Cess Amount</th>
+            <th>Place of Supply(Name of state)</th>
+        
+            
+          </tr>
+        </thead>
+        <tbody>
+          {{#each items}}
+          <tr>
+            <td>{{gstin}}</td>
+            <td>{{PartyName}}</td>
+            <td>{{TransactionType}}</td>
+            <td>{{InvoiceNo}}</td>
+            <td>{{InvoiceDate}}</td>
+            <td>{{InvoiceValue}}</td>
+            <td>{{Rate}}</td>
+            <td>{{CessRate}}</td>
+            <td>{{TaxableValue}}</td>
+            <td>{{ReverseCharge}}</td>
+            <td>{{IntegratedTaxAmount}}</td>
+            <td>{{CentralTaxAmount}}</td>
+            <td>{{StateTaxAmount}}</td>
+            <td>{{CessAmount}}</td>
+            <td>{{PlaceofSupply}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      
+      <!-- <div class="footer">
+        <p>This report was generated on {{date}}.</p>
+      </div> -->
+   
+      
+      </div>
+    <!-- </div class="bordered-section"> -->
+  </body>
+</html>

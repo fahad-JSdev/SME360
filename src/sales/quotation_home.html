@@ -1,0 +1,342 @@
+<link href="../assets/themes/sales_home_pages.css" rel="stylesheet" />
+<div class="container1" id="container1">
+  <div id="tabwrap"></div>
+  <div id="header"></div>
+</div>
+<div class="container" id="qwe">
+  <input
+    type="text"
+    id="filter-text-box"
+    placeholder="Type a keyword.."
+    oninput="onFilterTextBoxChanged()"
+  />
+  <div id="wrapper1" class="ag-theme-alpine">
+    <div id="snackbar" class="snackbar">Deleted</div>
+  </div>
+</div>
+
+<script>
+  var statusCheck;
+  SnackboxAlertStyle();
+  quotHomeactionbar = new Actionbar();
+
+  quotHomeactionbar.addIcon(
+    "add_quotation",
+    "../assets/images/add-expense.png",
+    "Add Quotation"
+  );
+  quotHomeactionbar.addIcon(
+    "edit_button",
+    "../assets/images/editing.png",
+    "Edit"
+  );
+  quotHomeactionbar.addIcon(
+    "convert_button",
+    "../assets/images/convert.png",
+    "Convert"
+  );
+  quotHomeactionbar.addIcon(
+    "delete_button",
+    "../assets/images/delete.png",
+    "Delete"
+  );
+  quotHomeactionbar.addIcon(
+    "print_button",
+    "../assets/images/toolbar-print.png",
+    "Print"
+  );
+  quotHomeactionbar.addIcon(
+    "export_button",
+    "../assets/images/export_excel-img.png",
+    "Export"
+  );
+  quotHomeactionbar.addIcon("import_button", "../assets/images/import.png",
+  "Import"
+  );
+
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_quotation":
+        quotation();
+        break;
+      case "export_button":
+        download();
+        break;
+      case "import_button":
+        break;
+      case "edit_button":
+        btnClickedHandleEdit();
+        break;
+      case "convert_button":
+        btnClickedHandlerConvert();
+        break;
+      case "delete_button":
+        delOrder();
+        break;
+    }
+  }
+  window.electronAPI.setTitle("QUOTATION");
+  quotHomeactionbar.render(document.getElementById("header"));
+  document.getElementById("print_button").style.display = "none";
+  document.getElementById("edit_button").style.display = "none";
+  document.getElementById("delete_button").style.display = "none";
+  document.getElementById("convert_button").style.display = "none";
+  var quotHomeTab;
+  if (quotHomeTab == undefined) {
+    quotHomeTab = new Tabbar();
+    quotHomeTab.addTab("quotation_head", "Quotation");
+  }
+  quotHomeTab.render(document.getElementById("tabwrap"));
+  quotHomeactionbar.setToolbarOnClick(handler);
+  function delOrder() {
+    const selectedRows = Quotationgrid.api.getSelectedRows();
+    console.log("row selected on ag grid", selectedRows[0]);
+    if (selectedRows.length) {
+      for (var i = 0; i < selectedRows.length; i++) {
+        var sqlQuery =
+          "UPDATE quotation SET is_deleted='1' WHERE quotation.id=" +
+          selectedRows[i][1] +
+          ";";
+        var value;
+        console.log("deleted value queries=>", sqlQuery);
+        window.MainDatastream.streamAddData(
+          sqlQuery,
+          value,
+          (status, data) => {}
+        );
+      }
+
+      SnackboxAlert("snackbar");
+    }
+  }
+  function btnClickedHandlerConvert() {
+    const selectedRows = Quotationgrid.api.getSelectedRows();
+    if (selectedRows.length == 1) {
+      window.open(
+        "./gst_invoice.html?data=" +
+          encodeURIComponent(JSON.stringify([selectedRows[0][1], "convert"])),
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" + 
+          getHeight()
+      );
+      console.log("quotation home val=>", selectedRows[0][1]);
+    }
+  }
+  function btnClickedHandleEdit() {
+    const selectedRows = Quotationgrid.api.getSelectedRows();
+    if (selectedRows.length == 1) {
+      window.open(
+        "./gst_invoice.html?data=" +
+          encodeURIComponent(JSON.stringify([selectedRows[0][1], "edit"])),
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+      console.log("quotation home val=>", selectedRows[0][1]);
+    }
+  }
+  var clickdata_id;
+  function onFilterTextBoxChanged() {
+    Quotationgrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+  }
+  // var BtnRenderer;
+  // if (typeof BtnRenderer !== "function") {
+  //   BtnRenderer = class {
+  //     init(params) {
+  //       this.params = params;
+  //       this.eGui = document.createElement("div");
+  //       this.eGui.classList.add("custom-element");
+  //       this.button1 = document.createElement("img");
+  //       this.button2 = document.createElement("img");
+  //       this.button3 = document.createElement("img");
+  //       this.button1.id = "Approve_Button";
+  //       this.button2.id = "Reject_Button";
+  //       this.button3.id = "edit_Button";
+  //       this.button1.src = ".././assets/images/approve-tick.png";
+  //       this.button2.src = ".././assets/images/trash-icon.png";
+  //       this.button3.src = ".././assets/images/edit-eye.png";
+  //       this.btnClickedHandlerConvert =
+  //         this.btnClickedHandlerConvert.bind(this);
+  //       this.button1.addEventListener("click", this.btnClickedHandlerConvert);
+  //       this.btnClickedHandlerDelete = this.btnClickedHandlerDelete.bind(this);
+  //       this.button2.addEventListener("click", this.btnClickedHandlerDelete);
+  //       this.btnClickedHandlerEdit = this.btnClickedHandlerEdit.bind(this);
+  //       this.button3.addEventListener("click", this.btnClickedHandlerEdit);
+  //       this.eGui.appendChild(this.button3);
+  //       this.eGui.appendChild(this.button1);
+  //       this.eGui.appendChild(this.button2);
+        
+  //     }
+  //     getGui() {
+  //       return this.eGui;
+  //     }
+  //     btnClickedHandlerEdit(event) {
+  //       this.params.clicked(this.params.value);
+  //       window.open(
+  //         "./gst_invoice.html?data=" +
+  //           encodeURIComponent(JSON.stringify([this.params.data[0], "edit"])),
+  //         "-blank",
+  //         "resizable=0,frame=0," +
+  //           "width=" +
+  //           getWidth() +
+  //           ",height=" +
+  //           getHeight()
+  //       );
+  //     }
+  //     btnClickedHandlerConvert(event) {
+  //       this.params.clicked(this.params.value);
+  //       window.open(
+  //         "./gst_invoice.html?data=" +
+  //           encodeURIComponent(
+  //             JSON.stringify([this.params.data[0], "convert"])
+  //           ),
+  //         "-blank",
+  //         "resizable=0,frame=0," +
+  //           "width=" +
+  //           getWidth() +
+  //           ",height=" +
+  //           getHeight()
+  //       );
+  //     }
+  //     btnClickedHandlerDelete(event) {
+  //       var clickdata_id1;
+  //       this.params.clicked(this.params.value);
+  //       clickdata_id1 = this.params.data[0];
+  //       var sqlQuery =
+  //         "UPDATE quotation SET is_deleted='1' WHERE quotation.id=" +
+  //         clickdata_id1 +
+  //         ";";
+  //       var value;
+  //       window.MainDatastream.streamAddData(
+  //         sqlQuery,
+  //         value,
+  //         (status, data) => {}
+  //       );
+  //       SnackboxAlert("snackbar");
+  //     }
+  //     destroy() {
+  //       this.eGui.removeEventListener("click", this.btnClickedHandlerConvert);
+  //     }
+  //   };
+  // }
+  var Quotationgrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "Ref.No", field: "0", resizable: true },
+      { headerName: "Customer Name", field: "1", resizable: true },
+      { headerName: "Date", field: "2", resizable: true },
+      { headerName: "Due Date", field: "3", resizable: true },
+      { headerName: "Total Amount", field: "4", resizable: true },
+      { headerName: "Payment Type", field: "5", resizable: true },
+      { headerName: "Status", field: "6", resizable: true },
+      // {
+      //   headerName: "Action",
+      //   field: "7",
+      //   resizable: true,
+      //   cellRenderer: BtnRenderer,
+      //   cellRendererParams: {
+      //     clicked: function (field) {},
+      //   },
+      // },
+    ],
+    onRowSelected: onRowSelected,
+    onRowDoubleClicked: openquotation,
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "multiple", // allow rows to be selected
+    animateRows: true,
+  };
+  function onRowSelected() {
+    const selectedRows = Quotationgrid.api.getSelectedRows();
+    if (selectedRows) {
+      console.log(" row selected");
+      document.getElementById("delete_button").style.display = "flex";
+      document.getElementById("export_button").style.display = "flex";
+      document.getElementById("import_button").style.display = "flex";
+      document.getElementById("print_button").style.display = "flex";
+      document.getElementById("edit_button").style.display = "flex";
+      document.getElementById("convert_button").style.display = "flex";
+      if (selectedRows.length > 1) {
+        console.log("more than one row selected function called");
+        document.getElementById("delete_button").style.display = "flex";
+        document.getElementById("export_button").style.display = "none";
+        document.getElementById("import_button").style.display = "none";
+        document.getElementById("print_button").style.display = "none";
+        document.getElementById("edit_button").style.display = "none";
+        document.getElementById("convert_button").style.display = "none";
+      }
+    }
+  }
+  function openquotation(event) {
+    window.open(
+      "./gst_invoice.html?data=" +
+        encodeURIComponent(JSON.stringify([event.node.data[1], "edit"])),
+      "_blank",
+      "resizable=0,frame=0," + "width=" + getWidth() + ",height=" + getHeight()
+    );
+  }
+  function onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+  function onSelection() {
+    const selectedRows = Quotationgrid.api.getSelectedRows();
+    selectedRows.length === 1 ? selectedRows[0] : "";
+  }
+  var QuotGridDiv = document.getElementById("wrapper1");
+  new agGrid.Grid(QuotGridDiv, Quotationgrid);
+  var quot_query =
+    "SELECT q.id,cust.client_name,q.issue_date,q.due_date,q.total_amount,q.payment_type,q.status FROM quotation AS q LEFT JOIN customer AS cust ON q.customer_f_key=cust.client_id WHERE q.is_deleted = '0' AND q.status = 'pending' order by q.id ;";
+  window.MainDatastream.streamGetData(quot_query, (status, data) => {
+    this.quotationdata = JSON.parse(data).data;
+    Quotationgrid.api.setRowData(JSON.parse(data).data);
+  });
+
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper1").css("width", (w * 96.1) / 100);
+      $("#wrapper1").css("height", (h * 87) / 100);
+    } else console.log("dime not defined");
+  }
+
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+  function download() {
+    console.log("this.labourdata with amount", this.quotationdata);
+
+    var header = [
+      [
+        "Ref.No",
+        "Customer Name",
+        "Date",
+        "Due Date",
+        "Total Amount",
+        "Payment Type",
+        "Status",
+      ],
+    ];
+    window.ExcelDatastream.Exceldata(
+      this.quotationdata,
+      header,
+      (data, header) => {}
+    );
+  }
+
+  import_button = document.getElementById("import_button");
+  import_button.addEventListener("click", async () => {
+    const filepath = await window.ExcelDatastream.ExcelImportClick();
+    console.log("filepath", filepath);
+  });
+</script>

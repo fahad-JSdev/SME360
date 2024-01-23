@@ -1,0 +1,131 @@
+@import "../colors/colors.css";
+.table1-div {
+  position: relative;
+  margin: 10px 10px 10px 0px;
+  width: 100%;
+  background-color: #f7fcfd;
+  padding-bottom: 15px;
+  box-shadow: 0 0 10px 0.5px rgb(185, 187, 188);
+}
+.table1-div span {
+  vertical-align: super;
+}
+.container {
+  font-family: "Poppins", sans-serif;
+  height: 100%;
+  margin-right: 8px;
+}
+.container1 {
+  position: fixed;
+  background: var(--actionbar);
+  width: 96.5%;
+  height: 65px;
+  box-sizing: border-box;
+  z-index: 100;
+  display: block;
+}
+#table1 td {
+  font-weight: 300;
+  font-size: 14px;
+}
+#elements2 {
+  font-size: 19px;
+  font-weight: 300;
+  margin-left: 9px;
+}
+#add-purchase-bill {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  float: right;
+  margin: -9.5px 9px 0 0;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px 0px rgb(185, 187, 188);
+}
+#add-purchase-bill:hover {
+  cursor: pointer;
+  background-color: #f7fcfd;
+  color: rgb(104, 105, 105);
+}
+#wrapper1 {
+  height: 100%;
+  width: 100%;
+  padding: 5px 3px 0 10px;
+  position: absolute;
+  top: 66px;
+  left: -4;
+  z-index: 2;
+  margin-right: 5px;
+}
+#filter-text-box {
+  padding: 8px;
+  margin-bottom: 5px;
+  position: absolute;
+  margin-top: 7px;
+  margin-left: 10px;
+  border: none;
+}
+#purchase_return {
+  height: 23px;
+  width: 23px;
+  margin-left: 13px;
+}
+#Reject_Button {
+  width: 26px;
+  height: 26px;
+  margin-left: 13px;
+}
+#edit_Button {
+  height: 24px;
+  width: 24px;
+}
+#print_Button {
+  width: 26px;
+  height: 26px;
+  margin-left: 13px;
+}
+.custom-element {
+  width: 100%;
+  height: 100%;
+  margin-top: 5px;
+}
+.custom-element img {
+  cursor: pointer;
+  filter: saturate(0.87);
+}
+.custom-element img:hover {
+  filter: saturate(2.7);
+  transform: scale(1.15);
+}
+.ag-header {
+  background-color: var(--grid-header-color);
+  border: none !important;
+}
+.ag-header-row {
+  border: none !important;
+}
+.ag-header-cell-sortable:hover {
+  color: var(--grid-header-hover-text);
+}
+.ag-header-cell,
+.ag-header-group-cell {
+  padding-left: 0.7rem !important;
+  padding-right: 0.3rem !important;
+}
+.ag-paging-button {
+  padding: 3px;
+}
+.ag-paging-button:hover {
+  background-color: var(--grid-pagination-button-hover);
+  border-radius: 0.8rem;
+}
+.ag-disabled:hover {
+  background-color: inherit;
+}
+.ag-cell[aria-colindex="5"]:focus{
+  border: none !important;
+}
+.ag-root-wrapper{
+  border-radius: 6px !important;
+}

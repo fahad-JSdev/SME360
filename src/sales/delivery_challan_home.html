@@ -1,0 +1,155 @@
+<link href="../assets/themes/sales_home_pages.css" rel="stylesheet" />
+<div class="container1" id="container1">
+  <div id="tabwrap"></div>
+
+  <div id="header"></div>
+</div>
+<div class="container" id="qwe">
+  <input
+    type="text"
+    id="filter-text-box"
+    placeholder="Type a keyword.."
+    oninput="onFilterTextBoxChanged()"
+  />
+  <div id="wrapper1" class="ag-theme-alpine"></div>
+</div>
+
+<script>
+  challanHomeactionbar = new Actionbar();
+
+  challanHomeactionbar.addIcon(
+    "add_challan",
+    "../assets/images/add-expense.png",
+    "Add Challan"
+    
+  );
+
+  // challanHomeactionbar.addIcon(
+  //   "print_button",
+  //   "../src/assets/images/toolbar-print.png"
+  // );
+
+function handler(event) {
+  switch (event.target.id) {
+    case "add_challan":
+      deliveryChallan();
+      break;
+  }
+}
+window.electronAPI.setTitle("DELIVERY CHALLAN");
+challanHomeactionbar.render(document.getElementById("header"));
+ 
+
+  var challanHomeTab;
+  if (challanHomeTab == undefined) {
+    challanHomeTab = new Tabbar();
+    challanHomeTab.addTab("challan_head", "Delivery Challan");
+  }
+  challanHomeTab.render(document.getElementById("tabwrap"));
+  challanHomeactionbar.setToolbarOnClick(handler);
+  var clickdata_id;
+  function onFilterTextBoxChanged() {
+    Challangrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+  }
+  var BtnCellRenderer;
+  if (typeof BtnCellRenderer !== "function") {
+    BtnCellRenderer = class {
+      init(params) {
+        this.params = params;
+        this.btnClickedHandler = this.btnClickedHandler.bind(this);
+        this.eGui.addEventListener("click", this.btnClickedHandler);
+      }
+
+      getGui() {
+        return this.eGui;
+      }
+
+      btnClickedHandler(event) {
+        this.params.clicked(this.params.value);
+        clickdata_id = this.params.data[1];
+
+        var query =
+          "SELECT p.po_date,p.total_amount,p.type,p.status,p.quantity,p.unitprice,p.discount,p.discount_percentage,p.payment_method,p.description,p.vendor_f_id,p.stock_f_id,p.order_id FROM purchase_order AS p WHERE p.order_id=" +
+          clickdata_id +
+          ";";
+
+        // window.MainDatastream.streampurchasegetdata(query, (status, data) => {
+        //   // function qwe(){return JSON.parse(data).data}
+        //   window.result_order = JSON.parse(data).data;
+        //   ConvertArray();
+        //   window.MainDatastream.streamconvertbill(
+        //     sqlquerry,
+        //     result,
+        //     (status, data) => {
+        //     }
+        //   );
+        // });
+        var result;
+
+        function ConvertArray() {
+          result = "('";
+
+          for (var i = 0; i < window.result_order[0].length; i++) {
+            if (window.result_order[0][i] != null)
+              result = result + window.result_order[0][i];
+
+            if (i == window.result_order[0].length - 1) {
+              result = result + "')";
+            } else {
+              result = result + "','";
+            }
+          }
+        }
+
+     
+      }
+
+      destroy() {
+        this.eGui.removeEventListener("click", this.btnClickedHandler);
+      }
+    };
+  }
+
+  var Challangrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "Party", field: "0", resizable: true },
+      { headerName: "No", field: "1", resizable: true, Width: 10 },
+      { headerName: "Date", field: "2", resizable: true },
+      { headerName: "Due Date", field: "3", resizable: true },
+      { headerName: "Total Amount", field: "4", resizable: true },
+      { headerName: "Payment Type", field: "5", resizable: true },
+      { headerName: "Status", field: "6", resizable: true },
+    ],
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "single", // allow rows to be selected
+    animateRows: true,
+  };
+  function onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+  var ChallanGridDiv = document.getElementById("wrapper1");
+  new agGrid.Grid(ChallanGridDiv, Challangrid);
+
+  window.MainDatastream.streampurchasehomeview((status, data) => {
+    Challangrid.api.setRowData(JSON.parse(data).data);
+  });
+
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper1").css("width", (w * 96.1) / 100);
+      $("#wrapper1").css("height", (h * 87) / 100);
+    } else console.log("dime not defined");
+  }
+
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+</script>

@@ -1,0 +1,404 @@
+<link href="../assets/themes/sales_home_pages.css" rel="stylesheet" />
+<div class="container1" id="container1">
+  <div id="tabwrap"></div>
+
+  <div id="header"></div>
+</div>
+<div class="container" id="qwe">
+  <input
+    type="text"
+    id="filter-text-box"
+    placeholder="Type a keyword.."
+    oninput="onFilterTextBoxChanged()"
+  />
+  <div id="wrapper1" class="ag-theme-alpine"></div>
+</div>
+
+<script>
+  InvoiceHomeactionbar = new Actionbar();
+
+  InvoiceHomeactionbar.addIcon(
+    "add_invoice",
+    "../assets/images/add-expense.png",
+    "Add Invoice"
+  );
+  InvoiceHomeactionbar.addIcon(
+    "export_button",
+    ".././assets/images/export_excel-img.png",
+    "Export"
+  );
+  InvoiceHomeactionbar.addIcon(
+    "import_button",
+    ".././assets/images/import.png",
+    "Import"
+  );
+  InvoiceHomeactionbar.addIcon(
+    "print_button",
+    "../assets/images/toolbar-print.png",
+    "Print"
+  );
+  InvoiceHomeactionbar.addIcon(
+    "delete_button",
+    ".././assets/images/delete.png",
+    "Delete"
+  );
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_invoice":
+        openGi();
+        break;
+      case "export_button":
+        download();
+        break;
+      case "import_button":
+        break;
+      case "delete_button":
+        btnClickedHandlerDelete();
+        break;
+      case "print_button":
+        btnClickedHandlerPrint();
+        break;
+    }
+  }
+
+  InvoiceHomeactionbar.addIcon(
+    "print_button",
+    ".././assets/images/toolbar-print.png",
+    "Print"
+  );
+
+  InvoiceHomeactionbar.render(document.getElementById("header"));
+  InvoiceHomeactionbar.setToolbarOnClick(handler);
+  var InvoiceHomeTab;
+  if (InvoiceHomeTab == undefined) {
+    InvoiceHomeTab = new Tabbar();
+    InvoiceHomeTab.addTab("invoice_head", "Invoice");
+  }
+  InvoiceHomeTab.render(document.getElementById("tabwrap"));
+  var clickdata_id;
+  function onFilterTextBoxChanged() {
+    Invoicegrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+  }
+  // var BtnCellRenderer;
+  // if (typeof BtnCellRenderer !== "function") {
+  //   BtnCellRenderer = class {
+  //     init(params) {
+  //       this.params = params;
+  //       this.eGui = document.createElement("div");
+  //       this.eGui.classList.add("custom-element");
+  //       this.button1 = document.createElement("img");
+      //   this.button2 = document.createElement("img");
+      //   this.button3 = document.createElement("img");
+      //   this.button4 = document.createElement("img");
+
+      //   this.button1.id = "sales_return";
+      //   this.button2.id = "Reject_Button";
+      //   this.button3.id = "edit_Button";
+      //   this.button4.id = "print_Button";
+
+      //   this.button1.src = ".././assets/images/return.png";
+      //   this.button2.src = ".././assets/images/trash-icon.png";
+      //   this.button3.src = ".././assets/images/edit-eye.png";
+      //   this.button4.src = ".././assets/images/print-new.png";
+      //   this.btnClickedHandlerReturn = this.btnClickedHandlerReturn.bind(this);
+      //   this.btnClickedHandleEdit = this.btnClickedHandleEdit.bind(this);
+      //   this.btnClickedHandlerDelete = this.btnClickedHandlerDelete.bind(this);
+      //   this.btnClickedHandlerPrint = this.btnClickedHandlerPrint.bind(this);
+      //   this.button1.addEventListener("click", this.btnClickedHandlerReturn);
+      //   this.button2.addEventListener("click", this.btnClickedHandlerDelete);
+      //   this.button4.addEventListener("click", this.btnClickedHandlerPrint);
+      //   this.button3.addEventListener("click", this.btnClickedHandleEdit);
+
+      //   this.eGui.appendChild(this.button3);
+      //   this.eGui.appendChild(this.button2);
+      //   this.eGui.appendChild(this.button4);
+      //   this.eGui.appendChild(this.button1);
+      // }
+
+      // getGui() {
+      //   return this.eGui;
+      // }
+ 
+      // btnClickedHandlerPrint(event) {
+      //   this.params.clicked(this.params.value);
+      //   window.MainDatastream.streamGetDataOnce(
+      //     "SELECT invoice.invoice_id,invoice.issue_date_in,invoice.due_date_in,invoice.total_amount_in,invoice.total_disc_in,invoice.payment_type_in,invoice.ship_to_in,invoice.place_of_supply_in,invoice_list.product_in,invoice_list.batch_no_in,invoice_list.quantity_in,invoice_list.unit_in,invoice_list.price_unit_in,invoice_list.cgst_tax_in,invoice_list.sgst_tax_in,invoice_list.igst_tax_in,invoice_list.amount_in,customer.client_name,customer.gst_no,customer.state,customer.client_address,invoice_list.discount_in,stock.item_description,stock.stock_id,invoice_list.invoice_list_id,invoice_list.exp_date_in FROM invoice LEFT JOIN customer ON invoice.customer_f_key = customer.client_id LEFT JOIN invoice_list ON invoice.invoice_id = invoice_list.invoice_f_id LEFT JOIN stock ON invoice_list.stock_f_id = stock.stock_id WHERE invoice.invoice_id=" +
+      //       this.params.data[0] +
+      //       ";",
+      //     (status, data) => {
+      //       console.log("datada from database=>", JSON.parse(data).data);
+      //       var args = {
+      //         gstno: "werty1111111111111111",
+      //         company: "POWERTA",
+      //         phone: "9998886660",
+      //         email: "poweta@gmil.com",
+      //         client:
+      //           JSON.parse(data).data[0][17] +
+      //           "," +
+      //           JSON.parse(data).data[0][20],
+      //         clientgst: JSON.parse(data).data[0][18],
+      //         billno: JSON.parse(data).data[0][0],
+      //         billdate: JSON.parse(data).data[0][1],
+      //         pay_method: JSON.parse(data).data[0][5],
+      //         totaldisc: JSON.parse(data).data[0][4],
+      //         grandtotal: JSON.parse(data).data[0][3],
+      //         plsupply: JSON.parse(data).data[0][7],
+      //         ship: JSON.parse(data).data[0][6],
+
+      //         items: "",
+      //       };
+      //       var items = [];
+      //       for (var i = 0; i < JSON.parse(data).data.length; i++) {
+      //         items.push({
+      //           itemname: JSON.parse(data).data[i][8],
+      //           batch: JSON.parse(data).data[i][9],
+      //           exp: JSON.parse(data).data[i][25],
+      //           quantity: JSON.parse(data).data[i][11],
+      //           unit: JSON.parse(data).data[i][12],
+      //           price: JSON.parse(data).data[i][13],
+      //           discount: JSON.parse(data).data[i][21],
+      //           cgst: JSON.parse(data).data[i][14],
+      //           sgst: JSON.parse(data).data[i][15],
+      //           igst: JSON.parse(data).data[i][16],
+      //           amount: JSON.parse(data).data[i][10],
+      //         });
+      //       }
+      //       args.items = items;
+
+      //       console.log("arg value is defined as=>", args);
+      //       window.electronAPI.generatePdf(args, "./jstemplate/invoice.html");
+      //     }
+      //   );
+      //   var res = {
+      //     gstno: "123333",
+      //     company: "123333",
+      //     landphone: "123333",
+      //     mobnum: "123333",
+      //     email: "123333",
+      //     vendor: "123333",
+      //     vendorgst: "123333",
+      //     vendorpan: "123333",
+      //     billno: "123333",
+      //     billdate: "123333",
+      //     total: "123333",
+      //     tcs: "123333",
+      //     totaldisc: "123333",
+      //     roundamnt: "123333",
+      //     grandtotal: "123333",
+      //     items: [
+      //       {
+      //         itemname: 123333,
+      //         batch: 123333,
+      //         exp: 123333,
+      //         quantity: 123333,
+      //         unit: 123333,
+      //         price: 123333,
+      //         discount: 123333,
+      //         tax: 123333,
+      //         amount: 123333,
+      //       },
+      //       {
+      //         itemname: "123333",
+      //         batch: "123333",
+      //         exp: "123333",
+      //         quantity: "123333",
+      //         unit: "123333",
+      //         price: "123333",
+      //         discount: "123333",
+      //         tax: "123333",
+      //         amount: "123333",
+      //       },
+      //       {
+      //         itemname: "123333",
+      //         batch: "123333",
+      //         exp: "123333",
+      //         quantity: "123333",
+      //         unit: "123333",
+      //         price: "123333",
+      //         discount: "123333",
+      //         tax: "123333",
+      //         amount: "123333",
+      //       },
+      //     ],
+      //   };
+      //   console.log("res value is defined as=>", res);
+
+      //   window.electronAPI.handleCounter((ev, data) => {});
+      // }
+      // btnClickedHandlerReturn(event) {
+      //   this.params.clicked(this.params.value);
+
+      //   var w = window.open(
+      //     "./sales_return.html?data=" +
+      //       encodeURIComponent(JSON.stringify([this.params.data[0], "return"])),
+      //     "-blank",
+      //     "resizable=0,frame=0," +
+      //       "width=" +
+      //       getWidth() +
+      //       ",height=" +
+      //       getHeight()
+      //   );
+      //   console.log("purchase home val=>", this.params.data[1]);
+      // }
+      // btnClickedHandleEdit(event) {
+      //   this.params.clicked(this.params.value);
+      //   console.log("function called", this.params.data[0]);
+      //   window.open(
+      //     "./invoice_edit.html?data=" +
+      //       encodeURIComponent(
+      //         JSON.stringify([this.params.data[0], "billedit"])
+      //       ),
+      //     "-blank",
+      //     "resizable=0,frame=0," +
+      //       "width=" +
+      //       getWidth() +
+      //       ",height=" +
+      //       getHeight()
+      //   );
+      //   console.log("purchase home val=>", this.params.data[1]);
+      // }
+      // btnClickedHandlerDelete(event) {
+      //   var clickdata_id1;
+      //   this.params.clicked(this.params.value);
+      //   clickdata_id1 = this.params.data[0];
+      //   var sqlQuery =
+      //     "UPDATE purchase_bill SET is_deleted='1' WHERE purchase_bill.bill_id=" +
+      //     clickdata_id1 +
+      //     ";";
+      //   console.log("delete query", sqlQuery);
+      //   var value;
+      //   window.MainDatastream.streamAddData(
+      //     sqlQuery,
+      //     value,
+      //     (status, data) => {}
+      //   );
+      //   SnackboxAlert("snackbar");
+      // }
+ //     destroy() {
+  //       this.eGui.removeEventListener("click", this.btnClickedHandler);
+  //     }
+  //   };
+  // }
+ 
+  window.electronAPI.setTitle("INVOICE");
+  var Invoicegrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "No", field: "0", resizable: true },
+      { headerName: "Customer Name", field: "1", resizable: true },
+      { headerName: "Date", field: "2", resizable: true },
+      { headerName: "Due Date", field: "3", resizable: true },
+      { headerName: "Total Amount", field: "4", resizable: true },
+      { headerName: "Payment Type", field: "5", resizable: true },
+      // {
+      //   headerName: "Action",
+      //   field: "6",
+      //   resizable: true,
+      //   cellRenderer: BtnCellRenderer,
+      //   cellRendererParams: {
+      //     clicked: function (field) {},
+      //   },
+      // },
+    ],
+    rowSelection: "multiple",
+    onRowSelected: onRowSelected,
+    onRowDoubleClicked: openinvoice,
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "single", // allow rows to be selected
+    animateRows: true,
+  };
+  function onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+  function openinvoice(event){
+    console.log("double click function called",event,",,,,,,,",event.node.data[4]);
+    window.open(
+      "../sales/gst_invoice.html?data=" +
+      encodeURIComponent(JSON.stringify([event.node.data[4], "edit"])),
+      "_blank",
+      "resizable=no,frame=0"
+      );
+  }
+  function onRowSelected(){
+    const selectedRows = Invoicegrid.api.getSelectedRows();
+  if(selectedRows) {
+    console.log(" row selected");
+    document.getElementById("delete_button").style.display = "flex";
+    document.getElementById("export_button").style.display = "flex";
+    document.getElementById("import_button").style.display = "flex";
+    document.getElementById("print_button").style.display = "flex";
+    document.getElementById("edit_button").style.display = "flex";
+    // document.getElementById("convert_button").style.display="flex";
+    if (selectedRows.length>1) {
+      console.log("more than one row selected function called");
+      document.getElementById("export_button").style.display = "none";
+      document.getElementById("import_button").style.display = "none";
+      document.getElementById("print_button").style.display = "none";
+      document.getElementById("edit_button").style.display = "none";
+      // document.getElementById("convert_button").style.display = "none";
+    }
+  }
+}
+  var InvoiceGridDiv = document.getElementById("wrapper1");
+  new agGrid.Grid(InvoiceGridDiv, Invoicegrid);
+
+  var invoiceHome =
+    "SELECT i.invoice_id,cust.client_name,i.issue_date_in,i.due_date_in,i.total_amount_in,i.payment_type_in FROM invoice AS i LEFT JOIN customer AS cust ON i.customer_f_key=cust.client_id WHERE i.is_deleted = '0' order by i.invoice_id ;";
+  window.MainDatastream.streampurchasegetdata(invoiceHome, (status, data) => {
+    this.invoiceHomedata = JSON.parse(data).data;
+    Invoicegrid.api.setRowData(JSON.parse(data).data);
+  });
+  // var inp = document.createElement("input");
+  // var root = document.getElementsByClassName("ag-header-row-column-filter");
+  // inp.id = "filter-text-box";
+  // inp.type = "text";
+  // inp.placeholder = "Type a keyword..";
+  // inp.oninput = function () {
+  //   onFilterTextBoxChanged();
+  // };
+  // root[0].appendChild(inp);
+
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper1").css("width", (w * 96) / 100);
+      $("#wrapper1").css("height", (h * 87) / 100);
+    } else console.log("dime not defined");
+  }
+
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+
+  function download() {
+    console.log("this.labourdata with amount", this.invoiceHomedata);
+
+    var header = [
+      [
+        "No",
+        "Customer Name",
+        "Date",
+        "Due Date",
+        "Total Amount",
+        "Payment Type",
+      ],
+    ];
+    window.ExcelDatastream.Exceldata(
+      this.invoiceHomedata,
+      header,
+      (data, header) => {}
+    );
+  }
+
+  import_button = document.getElementById("import_button");
+  import_button.addEventListener("click", async () => {
+    const filepath = await window.ExcelDatastream.ExcelImportClick();
+    console.log("filepath", filepath);
+  });
+</script>

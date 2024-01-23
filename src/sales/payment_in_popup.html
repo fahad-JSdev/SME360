@@ -1,0 +1,113 @@
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="../assets/themes/payment_in_popup.css">
+<title>PAYMENT IN</title>
+
+    <div class="container">
+        <header>Payment In <label class="fa fa-search" style="font-size:24px; float: right"></label></header>
+       
+            
+        <form action="#">
+            <div class="form first">
+                <div class="details personal">
+                
+ 
+                <div class="details ID">
+                
+ 
+                    <div class="fields">
+
+                        <div class="input-field">
+                            <label>Party</label>
+                            <input type="text" required="" list="party">
+                            <datalist id="party">
+                                <option value="example 1"></option>
+                                <option value="example 2"></option>
+                                <option value="example 3"></option>
+                                <option value="test 1"></option>
+                                <option value="test 2"></option>
+                                <option value="test 3"></option>
+                            </datalist>
+                        </div>
+                
+                        <!-- <div class="input-field">
+
+                        </div> -->
+
+                        <div class="input-field">
+                            <label>Receipt No</label>
+                            <input type="number">
+                        </div>
+
+                        <div class="input-field">
+                            <label>Payment Type</label>
+                            <select id="pay-type-select" required="">
+                                <option>Cash</option>
+                                <option>UPI</option>
+                                <option>Debit Card</option>
+                            </select>
+                        </div>
+
+                        <!-- <div class="input-field">
+                        </div> -->
+
+                
+                        <div class="input-field">
+                            <label>Date</label>
+                            <input type="Date">
+                        </div>
+
+
+                        <div class="input-field">
+                            <label>Add Description</label>
+                            <textarea name="address" class="description"></textarea>
+                        </div>
+
+                        <!-- <div class="input-field">
+                        </div> -->
+
+                        <div class="input-field">
+                            <label>Paid</label>
+                            <input type="tel">
+                        </div>
+
+                        <div class="image-upload">
+                            <label for="file-input">
+                            <img src="../assets/images/photo-camera.png">
+                            </label>
+                            <input id="file-input" type="file">
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="buttons-new">
+                    
+                    <button class="backBtn">
+                        <span class="btnText">Print</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                    
+                    <button class="submit">
+                        <span class="btnText">Save</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div> 
+            </div> 
+                       
+        </form>
+    </div>
+ 
+
+
+<script>
+const form = document.querySelector("form"),
+    nextBtn = form.querySelector(".nextBtn"),
+    backBtn = form.querySelector(".backBtn"),
+    allInput = form.querySelectorAll(".first input");
+
+
+nextBtn.addEventListener("click", ()=> {
+alert("Your data have been added");
+})
+
+backBtn.addEventListener("click", () => form.classList.remove('secActive'));
+</script>

@@ -1,0 +1,311 @@
+<link rel="stylesheet" href="../assets/themes/account_labour.css" />
+
+<div class="container1" id="container1">
+  <div id="tabwrap"></div>
+
+  <div id="header"></div>
+</div>
+
+<div class="labourcontent tabcontent" id="labour">
+  <div id="t5" class="container2">
+    <div class="list_view" id="list_view" href="#">
+      <div id="site-grid-side">
+        <input
+          id="filter-text-box2"
+          class="search"
+          placeholder="Search"
+          style="position: fixed"
+        />
+
+        <ul class="list" style="margin-top: 2rem"></ul>
+      </div>
+      <script>
+        function setDime(w, h) {
+          if (w != undefined) {
+            $("#wrapper2").css("width", (w * 80.5) / 100);
+            $("#wrapper2").css("height", (h * 87.2) / 100);
+            $(".container2").css("height", (h * 86.5) / 100);
+            $("#site-grid-side").css("height", (h * 85) / 100);
+            // $("#wrapper3").css("width", (w * 96.5) / 100);
+            // $("#wrapper3").css("height", (h * 86) / 100);
+          } else console.log("dime not defined");
+        }
+
+        try {
+          setDime(window.screen.availWidth, window.screen.availHeight);
+        } catch (err) {
+          console.log("-dime not defined");
+        }
+      </script>
+      <script>
+        var options = {
+          valueNames: ["0", "1", "2"],
+          // Since there are no elements in the list, this will be used as template.
+          item: '<li><div class="card" onmouseover="hover(this)" onmouseout="hoverOff(this)"><h5 class="0"></h5><p class="1"></p><p class="2"></p></div></li>',
+        };
+
+        function itemClick(item) {
+          if (item.target.childNodes[0].innerHTML == "All") {
+            console.log(
+              "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+              item.currentTarget.childNodes[0].innerHTML
+            );
+            onFilterTextClickChanged();
+          } else {
+            console.log(item.currentTarget.childNodes[0].innerHTML);
+            onFilterTextClickChanged(
+              item.currentTarget.childNodes[0].innerHTML
+            );
+          }
+        }
+        var values = [
+          {
+            0: "All",
+            1: "",
+            2: "",
+          },
+        ];
+
+        var userList = new List("site-grid-side", options, values);
+
+        window.MainDatastream.streamGetData(
+          "select name,acc_no,bank from accountings ;",
+          (status, data) => {
+            console.log(
+              "streamLabourPending....................",
+              JSON.parse(data).data
+            );
+            var sidelist = JSON.parse(data).data;
+
+            console.log(
+              "test222222222222222222222222222222222222222222222222",
+              sidelist
+            );
+            userList.add(sidelist);
+            $(".card").click(itemClick);
+          }
+        );
+
+        function hover(element) {
+          element.style.backgroundColor = "rgba(33,150,243,0.1)";
+        }
+        function hoverOff(element) {
+          element.style.backgroundColor = "";
+        }
+      </script>
+
+      <script>
+        $(document).ready(function () {
+          $(".list_name").click(function (ev) {
+            $(".site ul li").removeClass("selected");
+            $(ev.currentTarget).parent("li").addClass("selected");
+          });
+        });
+      </script>
+    </div>
+  </div>
+
+  <div id="wrapper2" class="ag-theme-alpine"></div>
+</div>
+<!-- <div class="Pending_Expense tabcontent" id="Pending_Expense">
+  <div id="wrapper3" class="ag-theme-alpine"></div>
+</div> -->
+
+<script>
+  accountbar = new Actionbar();
+
+  accountbar.addIcon("add_expense", "../assets/images/add-expense.png","Add Expense");
+
+  accountbar.addIcon("print_button", "../assets/images/toolbar-print.png","Print");
+  accountbar.render(document.getElementById("header"));
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_expense":
+        openChild();
+        break;
+
+      // case "print_icon":
+      //                  ;
+      //   break;
+    }
+  }
+
+  accountbar.setToolbarOnClick(handler);
+
+  var accountTab;
+  if (accountTab == undefined) {
+    accountTab = new Tabbar();
+    accountTab.addTab("account", "Account");
+  }
+  accountTab.render(document.getElementById("tabwrap"));
+
+  $("#labour").css("display", "block");
+
+  function onFilterTextBoxChanged() {
+    accountExpenseGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+    console.log(
+      "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      typeof document.getElementById("filter-text-box").value
+    );
+  }
+
+  function onFilterTextClickChanged(value) {
+    accountExpenseGrid.api.setQuickFilter(value);
+  }
+
+  var accountExpenseGrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "SLN", valueGetter: "node.rowIndex + 1", resizable: true },
+      { headerName: "Id", field: "0", resizable: true },
+
+      { headerName: "Tabname", field: "1", resizable: true },
+      { headerName: "Name", field: "2", resizable: true },
+
+      {
+        headerName: "Amount",
+        resizable: true,
+        field: "6",
+      },
+      {
+        headerName: "Type",
+        resizable: true,
+        field: "7",
+      },
+      {
+        headerName: "Date",
+        field: "8",
+        resizable: true,
+        //valueFormatter: dateFormatter,
+        comparator: dateComparator,
+        filter: "agDateColumnFilter",
+        floatingFilter: true,
+        floatingFilterComponentParams: {
+          suppressFilterButton: true,
+        },
+
+        filterParams: {
+          debounceMs: 500,
+          suppressAndOrCondition: true,
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            if (cellValue == null) {
+              return 0;
+            }
+            var dateParts = cellValue.split("-");
+            var year = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var day = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+        },
+      },
+    ],
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "single", // allow rows to be selected
+    animateRows: true,
+    // other grid options ...
+  };
+
+  var GridDiv = document.getElementById("wrapper2");
+  new agGrid.Grid(GridDiv, accountExpenseGrid);
+
+  window.MainDatastream.streamAddBill(
+    "select id,tabname,party,amount,type,as_date FROM transaction;",
+    (status, data) => {
+      console.log(
+        "streamLabourExpense...................." + JSON.parse(data).data
+      );
+      accountExpenseGrid.api.setRowData(JSON.parse(data).data);
+    }
+  );
+
+  //  var customVar = class CustomElements {
+  //     init(params) {
+  //       this.params = params;
+  //       this.eGui = document.createElement("div");
+  //       this.eGui.classList.add("custom-element");
+  //       this.button1 = document.createElement("img");
+  //       this.button2 = document.createElement("img");
+  //       this.button1.id = "Approve_Button";
+  //       this.button2.id = "Reject_Button";
+  //       this.button1.src = "../assets/images/checkmark.png";
+  //       this.button2.src = "../assets/images/reject.png";
+  //       this.BtnclickApprove = this.BtnclickApprove.bind(this);
+  //       this.BtnclickReject = this.BtnclickReject.bind(this);
+  //       this.button1.addEventListener("click", this.BtnclickApprove);
+  //       this.button2.addEventListener("click", this.BtnclickReject);
+  //       this.eGui.appendChild(this.button1);
+  //       this.eGui.appendChild(this.button2);
+  //     }
+
+  //     getGui() {
+  //       return this.eGui;
+  //     }
+
+  //     refresh(params) {
+  //       return false;
+  //     }
+  //     BtnclickApprove(event) {
+  //       var clickdata_id;
+  //       this.params.clicked(this.params.value);
+  //       clickdata_id = this.params.data[10];
+  //       var sqlQuery =
+  //         "UPDATE labour_account SET user_perm='1' WHERE labour_account_id=" +
+  //         clickdata_id +
+  //         ";";
+  //       var value;
+  //       window.MainDatastream.streamProjectButtonClick(
+  //         sqlQuery,
+  //         value,
+  //         (status, data) => {
+  //           alert("Approved");
+  //         }
+  //       );
+  //     }
+
+  //};
+
+  // observer.observe(document, {
+  //   attributes: false,
+  //   childList: true,
+  //   characterData: false,
+  //   subtree: true,
+  // });
+
+  window.electronAPI.setTitle("ACCOUNT");
+
+  var inp = document.createElement("input");
+  inp.id = "filter-text-box";
+  inp.type = "text";
+  inp.placeholder = "Type a keyword..";
+  inp.oninput = function () {
+    onFilterTextBoxChanged();
+  };
+  var root = document.getElementsByClassName("ag-header-row-column-filter");
+
+  root[0].appendChild(inp);
+  var inp1 = document.createElement("input");
+
+  inp1.id = "filter-text-box1";
+  inp1.type = "text";
+  inp1.placeholder = "Type a keyword..";
+  inp1.oninput = function () {
+    onFilterTextBoxPending();
+  };
+  console.log(root);
+
+  root[1].appendChild(inp1);
+</script>

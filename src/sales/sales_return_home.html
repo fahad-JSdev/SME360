@@ -1,0 +1,288 @@
+<link href="../assets/themes/sales_home_pages.css" rel="stylesheet" />
+
+<div class="container1" id="container1">
+  <div id="tabwrap"></div>
+
+  <div id="header"></div>
+</div>
+<div class="container" id="qwe">
+  <input
+    type="text"
+    id="filter-text-box"
+    placeholder="Type a keyword.."
+    oninput="onFilterTextBoxChanged()"
+  />
+  <div id="wrapper1" class="ag-theme-alpine"></div>
+</div>
+<script>
+  SalesReturnHomeactionbar = new Actionbar();
+
+  SalesReturnHomeactionbar.addIcon(
+    "add_salesReturn",
+    "../assets/images/add-expense.png",
+    "Add Sales Return"
+  );
+
+  SalesReturnHomeactionbar.addIcon(
+    "print_button",
+    "../assets/images/toolbar-print.png",
+    "Print"
+  );
+  SalesReturnHomeactionbar.addIcon(
+    "export_button",
+    ".././assets/images/export_excel-img.png",
+    "export"
+  );
+  SalesReturnHomeactionbar.addIcon(
+    "edit_button",
+    ".././assets/images/editing.png",
+    "Edit"
+  );
+  SalesReturnHomeactionbar.addIcon(
+    "delete_button",
+    ".././assets/images/delete.png",
+    "Delete"
+  );
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_salesReturn":
+        opensalesReturn();
+        break;
+      case "edit_button":
+        btnClickedHandleEdit();
+        break;
+      case "delete_button":
+        btnClickedHandlerDelete();
+        break;
+    }
+  }
+  SalesReturnHomeactionbar.render(document.getElementById("header"));
+  SalesReturnHomeactionbar.setToolbarOnClick(handler);
+  Purchasereturnactionbar.setToolbarOnClick(handler);
+  document.getElementById("print_button").style.display = "none";
+  document.getElementById("edit_button").style.display = "none";
+  document.getElementById("delete_button").style.display = "none";
+  var SalesReturnHomeTab;
+  if (SalesReturnHomeTab == undefined) {
+    SalesReturnHomeTab = new Tabbar();
+    SalesReturnHomeTab.addTab("salesReturn_head", "Sales Return");
+  }
+  SalesReturnHomeTab.render(document.getElementById("tabwrap"));
+
+  //================================================================
+  function btnClickedHandleEdit() {
+    const selectedRows = gridOptions6.api.getSelectedRows();
+    if (selectedRows.length == 1) {
+      window.open(
+        "./sales_return_edit.html?data=" +
+          encodeURIComponent(
+            JSON.stringify([
+              selectedRows[0][1],
+              selectedRows[0][0],
+              selectedRows[0][2],
+              "edit",
+            ])
+          ),
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+      console.log("purchase home val=>", selectedRows[0]);
+    }
+  }
+  function btnClickedHandlerDelete(event) {
+    //   var clickdata_id1;
+    //   this.params.clicked(this.params.value);
+    //   clickdata_id1 = this.params.data[1];
+    //   var sqlQuery =
+    //     "UPDATE purchase_order SET is_deleted='1' WHERE purchase_order.order_id=" +
+    //     clickdata_id1 +
+    //     ";";
+    //   var value;
+    //   window.MainDatastream.streamAddData(
+    //     sqlQuery,
+    //     value,
+    //     (status, data) => {}
+    //   );
+    //   SnackboxAlert("snackbar");
+    // }
+    // destroy() {
+    //   this.eGui.removeEventListener("click", this.btnClickedHandler);
+  }
+
+  // // DATA GENERATION
+  // var _randNum1 = (size) => Math.random() * size;
+  // var _zeroPad1 = (num) => (num < 10 ? "0" + num : num);
+
+  // var _generateDate = () => {
+  //   var day = Math.round(_randNum(27)) + 1;
+  //   var month = Math.round(_randNum(11)) + 1;
+  //   var year = Math.round(_randNum(70)) + 1950;
+  //   return `${_zeroPad(day)}/${_zeroPad(month)}/${year}`;
+  // };
+
+  // function createRowData(maxRows) {
+  //   let rowData = [];
+  //   for (var i = 0; i < maxRows; i++) {
+  //     var row = {
+  //       date: _generateDate(),
+  //     };
+  //     rowData.push(row);
+  //   }
+  //   return rowData;
+  // }
+
+  // // DATE COMPARATOR FOR SORTING
+  // function dateComparator(date1, date2) {
+  //   var date1Number = _monthToNum(date1);
+  //   var date2Number = _monthToNum(date2);
+
+  //   if (date1Number === null && date2Number === null) {
+  //     return 0;
+  //   }
+  //   if (date1Number === null) {
+  //     return -1;
+  //   }
+  //   if (date2Number === null) {
+  //     return 1;
+  //   }
+
+  //   return date1Number - date2Number;
+  // }
+
+  // // HELPER FOR DATE COMPARISON
+  // function _monthToNum(date) {
+  //   if (date === undefined || date === null || date.length !== 10) {
+  //     return null;
+  //   }
+
+  //   var yearNumber = date.substring(6, 10);
+  //   var monthNumber = date.substring(3, 5);
+  //   var dayNumber = date.substring(0, 2);
+
+  //   var result = yearNumber * 10000 + monthNumber * 100 + dayNumber;
+  //   // 29/08/2004 => 20040829
+  //   return result;
+  // }
+
+  // // DATA FORMATTING
+  // function dateFormatter(params) {
+  //   var dateAsString = params.data.date;
+  //   var dateParts = dateAsString.split("/");
+  //   return `${dateParts[0]} - ${dateParts[1]} - ${dateParts[2]}`;
+  // }
+  window.electronAPI.setTitle("SALES RETURN");
+  var gridOptions6 = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "Party", field: "0" },
+      { headerName: "No. ", field: "1" },
+      { headerName: "Total Amount", field: "2" },
+      { headerName: "Balance", field: "3" },
+      { headerName: "Type", field: "4" },
+      { headerName: "Status", field: "5" },
+      // {
+      //   headerName: "Date ",
+      //   field: "date",
+      //   valueFormatter: dateFormatter,
+      //   comparator: dateComparator,
+      //   filter: "agDateColumnFilter",
+      //   floatingFilter: true,
+      //   floatingFilterComponentParams: {
+      //     suppressFilterButton: true,
+      //   },
+      //   filterParams: {
+      //     debounceMs: 500,
+      //     suppressAndOrCondition: true,
+      //     comparator: function (filterLocalDateAtMidnight, cellValue) {
+      //       if (cellValue == null) {
+      //         return 0;
+      //       }
+      //       var dateParts = cellValue.split("/");
+      //       var year = Number(dateParts[2]);
+      //       var month = Number(dateParts[1]) - 1;
+      //       var day = Number(dateParts[0]);
+      //       var cellDate = new Date(year, month, day);
+
+      //       if (cellDate < filterLocalDateAtMidnight) {
+      //         return -1;
+      //       } else if (cellDate > filterLocalDateAtMidnight) {
+      //         return 1;
+      //       } else {
+      //         return 0;
+      //       }
+      //     },
+      //   },
+      // },
+      //   {
+      //     headerName: "Due Date",
+      //     field: "date",
+      //     valueFormatter: dateFormatter,
+      //     comparator: dateComparator,
+      //     filter: "agDateColumnFilter",
+      //     floatingFilter: true,
+      //     floatingFilterComponentParams: {
+      //       suppressFilterButton: true,
+      //     },
+      //     filterParams: {
+      //       debounceMs: 500,
+      //       suppressAndOrCondition: true,
+      //       comparator: function (filterLocalDateAtMidnight, cellValue) {
+      //         if (cellValue == null) {
+      //           return 0;
+      //         }
+      //         var dateParts = cellValue.split("/");
+      //         var year = Number(dateParts[2]);
+      //         var month = Number(dateParts[1]) - 1;
+      //         var day = Number(dateParts[0]);
+      //         var cellDate = new Date(year, month, day);
+
+      //         if (cellDate < filterLocalDateAtMidnight) {
+      //           return -1;
+      //         } else if (cellDate > filterLocalDateAtMidnight) {
+      //           return 1;
+      //         } else {
+      //           return 0;
+      //         }
+      //       },
+      //     },
+      //   },
+    ],
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: {
+      sortable: true,
+      flex: 1,
+      floatingFilter: true,
+    },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "single", // allow rows to be selected
+    animateRows: true,
+  };
+  function onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+
+  var GridDiv6 = document.getElementById("wrapper1");
+  new agGrid.Grid(GridDiv6, gridOptions6);
+
+  window.MainDatastream.streamGetData(
+    "SELECT purchase_return.return_id,purchase_return.pur_bill_fid,purchase_return.return_dat,vendor.vendor_name,purchase_bill.total_amnt FROM purchase_return LEFT JOIN vendor ON (select vendor_f_id FROM purchase_bill WHERE purchase_return.pur_bill_fid = purchase_bill.bill_id) = vendor.personid LEFT JOIN purchase_bill ON purchase_return.pur_bill_fid = purchase_bill.bill_id ;",(status, data) => {
+    gridOptions6.api.setRowData(JSON.parse(data).data);
+  });
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper1").css("width", (w * 96.1) / 100);
+      $("#wrapper1").css("height", (h * 87) / 100);
+    } else console.log("dime not defined");
+  }
+
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+</script>

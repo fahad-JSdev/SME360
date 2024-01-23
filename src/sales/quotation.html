@@ -1,0 +1,877 @@
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../accounts/Product.js"></script>
+<script src="../accounts/Receipt.js"></script>
+<link rel="stylesheet" href="../assets/themes/autoSearchText.css" />
+<link rel="stylesheet" href="../assets/themes/gst_invoice.css" />
+<script src="../widgets/autoSearchText.js"></script>
+<title>QUOTATION</title>
+<body>
+  <div class="form" id="form">
+    <form>
+      <div class="client">
+        <table class="top-table">
+          <tr>
+            <td>
+              <label for="client">Client &emsp;</label>
+              <input type="text" id="client" name="client"/>
+            </td>
+            <td>
+              <label for="docunum">Document Number &emsp;</label>
+              <input type="text" id="docunum" name="docunum"/>
+            </td>
+            <td>
+              <label for="enqno">Enquiry Number &emsp;</label>
+              <input type="text" id="enqno" name="enqno"/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="ship">Ship To &emsp;</label>
+              <input type="text" id="ship" name="ship"/>
+            </td>
+            <td>
+              <label for="issue-dt">Issue Date &emsp;</label>
+              <input type="date" id="issue-dt" name="issue-dt" oninput="setPaymentTermsEmpty()" contenteditable/>
+            </td>
+            <td>
+              <label for="enq-dt">Enquiry Date &emsp;</label>
+              <input type="date" id="enq-dt" name="enq-dt"/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="terms">Payment Terms</label>
+              <select name="Payment Terms" id="terms" onchange="DateChangeOnTerms(event)">
+                <option disabled="" selected=""></option>
+                <option id="op" value="NET 7">NET 7</option>
+                <option id="op" value="NET 15">NET 15</option>
+                <option id="op" value="NET 30">NET 30</option>
+                <option id="op" value="Specific Date">Specific Date</option>
+                <option id="op" value="Hide">Hide Payment Terms</option>
+              </select>
+            </td>
+            <td id="dueDateCell">
+              <label for="due-dt">Due Date &emsp;</label>
+              <input type="date" id="due-dt" name="due-dt"/>
+            </td>
+            <td>
+              <label for="supply-select">Place of Supply &emsp;</label>
+              <input type="text" id="supply-select">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <article class="invoicebody">
+        <div class="button-div">
+          <button type="button" id="add-client">Add Client</button>
+          <button type="button" id="add-item">Add Item</button>
+          <button type="button" class="add" onclick="addRowIfnotLastcolumnnotempty('sale-table')">
+            <img src="../assets/images/addrow.png" />
+          </button>
+          <button type="button" id="delete-row" onclick="deleteRow()">
+            <img src="../assets/images/reject2.png" />
+          </button>
+        </div>
+        <div class="min_height">
+          <table class="inventory" id="sale-table">
+            <thead>
+              <tr>
+                <th class="bold" rowspan="2">
+                  <span class="no" id="no">No.</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="item" id="item">Product/Service</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="batch" id="batch">BATCH NO.</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="description" id="description">Description</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="hsn" id="hsn">HSN/SAC</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="uom" id="uom">Unit</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="quantity" id="quantity">Quantity</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="unitprice" id="unitprice">Unit Price</span>
+                </th>
+                <th class="bold" colspan="2">
+                  <span class="discount" id="discount">Discount</span>
+                </th>
+                <th class="bold" colspan="2">
+                  <span class="cgst" id="cgst">CGST</span>
+                </th>
+                <th class="bold" colspan="2">
+                  <span class="sgst" id="sgst">SGST</span>
+                </th>
+                <th class="bold" colspan="2">
+                  <span class="igst" id="igst">IGST</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="value" id="value">Amount</span>
+                </th>
+                <th class="bold" rowspan="2">
+                  <span class="exp-dt" id="exp-dt">EXPIRY DATE</span>
+                </th>
+              </tr>
+              <tr>
+                <th class="bold header">
+                  <span class="disc-perc" id="disc-perc">%</span>
+                </th>
+                <th class="bold header">
+                  <span class="disc-amount" id="disc-amount">AMOUNT</span>
+                </th>
+                <th class="bold header">
+                  <span class="cgst-perc" id="cgst-perc">%</span>
+                </th>
+                <th class="bold header">
+                  <span class="cgst-amount" id="cgst-amount">AMOUNT</span>
+                </th>
+                <th class="bold header">
+                  <span class="sgst-perc" id="sgst-perc">%</span>
+                </th>
+                <th class="bold header">
+                  <span class="cgst-amount" id="cgst-amount">AMOUNT</span>
+                </th>
+                <th class="bold header">
+                  <span class="igst-perc" id="igst-perc">%</span>
+                </th>
+                <th class="bold header">
+                  <span class="igst-amount" id="igst-amount">AMOUNT</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="sale-tbody"></tbody>
+          </table>
+        </div>
+        <div class="right_tax">
+          <table class="balance" id="balance">
+            <tbody>
+              <tr>
+                <th class="bold">
+                  <span class="total" id="total">Total</span>
+                </th>
+                <td><span>&#8377; </span><span id="grandtotal"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+      <div class="right_btn">
+        <button type="button" class="print_btn" onclick="myprint()">
+          <img src="../assets/images/toolbar-print.png" />
+        </button>
+        <button type="button" class="print_btn" onclick="window.location.reload()" >
+          <img src="../assets/images/restarticon.png" />
+        </button>
+        <button id="save-button" type="button" onclick="quotationSubmit()">
+          <img src="../assets/images/save-icon.png" />
+        </button>
+      </div>
+      <div class="bottom-box">
+        <input
+          type="checkbox"
+          id="disc-all"
+          name="disc-all"
+          value="disc-all"
+          onclick="discountAllBox()"
+        />
+        <label for="disc-all">Discount on All</label>
+        <input type="number" id="disc-all-ip" oninput="getDiscount()"/>
+        <br/><br/><br/>
+        <input
+          type="checkbox"
+          id="ship-cost"
+          name="ship-cost"
+          value="ship-cost"
+          onclick="packageCostBox()"
+        />
+        <label for="rs-ship-box">Add Shipping & Packaging Costs</label>&emsp;
+        <input type="number" id="rs-ship-box" oninput="getPackageCost()" />
+        <br /><br /><br />
+        <input
+          type="checkbox"
+          id="round-off"
+          name="round-off"
+          value="round-off"
+          onclick="RoundOff(event)"
+        />
+        <label for="round-off">Round off Total</label><br /><br /><br />
+        <input
+          type="checkbox"
+          id="Apply-TDS"
+          name="Apply-TDS"
+          value="Apply-TDS"
+        />
+        <select name="Apply-TDS" id="tds">
+          <option>Apply TDS</option>
+          <option id="op" value="value1">Apply TCS</option>
+          <option id="op" value="value2">Apply TCS 206C(1H)</option></select
+        ><br /><br />
+        <div id="left-box">
+          <input
+            type="checkbox"
+            id="add-pay"
+            name="add-pay"
+            value="add-pay"
+            onclick="addPaymentBox()"
+          />
+          <label for="add-pay" id="addpay-label">Add Payment</label
+          ><br /><br /><br />
+        </div>
+        <div id="right-box">
+          <label for="paytype" id="paytype-label">Payment Type</label>
+          <select name="Payment Type" id="paytype">
+            <option disabled="" selected=""></option>
+            <option id="op" value="Cash">Cash</option>
+            <option id="op" value="Cash Memo">Cash Memo</option>
+            <option id="op" value="Credit Card">Credit Card</option>
+            <option id="op" value="Cheque">Cheque</option>
+            <option id="op" value="bank">Bank Transfer</option>
+            <option id="op" value="pay slip">Pay Slip</option>
+            <option id="op" value="other">Other</option>
+          </select>
+          <input type="number" id="amt-paid-input" placeholder="Amount Paid"/>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+  document.getElementById("add-client").addEventListener("click", () => {
+    window.opener.addClientWin();
+  });
+  document.getElementById("add-item").addEventListener("click", () => {
+    window.opener.addItemWin();
+  });
+$("#tbdy").keypress(function (e) {
+  if (e.which == 13) {
+    addRowIfnotLastcolumnnotempty('sale-table')
+    e.preventDefault();
+  }
+});    
+
+window.MainDatastream.streamAddBill(
+  "select id from quotation order by id desc limit 1",
+  (status, data) => {
+    var dt = JSON.parse(data).data;
+    if(dt.length == 0){
+      document.getElementById("docunum").value = 1;
+    }
+    else{
+    document.getElementById("docunum").value =
+    dt[dt.length - 1][0] + 1;
+    }
+  }
+);
+function addClientWin(){
+  window.open(
+        "./add_client.html",
+        "-self",
+        "resizable=0,frame=1," 
+      );
+}
+function addItemWin(){
+  window.open(
+        "../Stock/stock_Additem.html",
+        "-self",
+        "resizable=0,frame=1," 
+      );
+}
+function myprint(){
+    window.print();
+}
+var count = 0;
+var numberofselectedrows = 0;
+var deleteIndex = [];
+var issueDate = document.getElementById("issue-dt");
+var dueDate = document.getElementById("due-dt");
+var paymentTerms = document.getElementById("terms");
+var dueDateCell = document.getElementById("dueDateCell");
+var packagecost = document.getElementById("rs-ship-box")
+var discountALL = document.getElementById("disc-all-ip")
+var saleTable = document.getElementById("sale-table");
+var sale_tbody = document.getElementById("sale-tbody");
+
+  
+////Data insertion variables
+function quotationSubmit() {
+    var party_id = document.getElementById("client").selectedItemId;
+    var reciept_n = document.getElementById("docunum").value;
+    var pay_type = document.getElementById("paytype").value;
+    var shipTo = document.getElementById("ship").value;
+    var payTerms = paymentTerms.value;
+    var issue_dt = issueDate.value;
+    var due_dt = dueDate.value;
+    var place_supply = document.getElementById("supply-select").value;
+    var enqNum = document.getElementById("enqno").value;
+    var enqDate = document.getElementById("enq-dt").value;
+    var disc_all = discountALL.value;
+    var ship_charge = document.getElementById("rs-ship-box").value;
+    var amount_paid = document.getElementById("amt-paid-input").value;
+    mReceipt.setReceipt(reciept_n);
+    mReceipt.setDate(issue_dt);
+    var quot_query = 
+      "INSERT INTO quotation (customer_f_key,pay_terms,ship_to,place_of_supply,enq_no,enq_date,issue_date,due_date,total_disc,shiping_charge,payment_type,amount_paid,total_amount)";
+    var quot_data =
+      "('" +
+      party_id +
+      "','" +
+      payTerms +
+      "','" +
+      shipTo +
+      "','" +
+      place_supply +
+      "','" +
+      enqNum +
+      "','" +
+      enqDate +
+      "','" +
+      issue_dt +
+      "','" +
+      due_dt +
+      "','" +
+      disc_all +
+      "','" +
+      ship_charge +
+      "','" +
+      pay_type +
+      "','" +
+      amount_paid +
+      "','" +
+      mReceipt.getGrandTotal() +
+      "')";
+    console.log("quot_data=>", quot_data);
+    window.MainDatastream.streamAddPurchaseOrder(
+      quot_query,
+      quot_data,
+      (status, data) => { 
+        quotationlistSubmit(JSON.parse(data)[0][9]);   
+      }
+    );
+  }
+  function quotationlistSubmit(quotId) {
+    var data_value = mReceipt.getProducts();
+    var quotationDetails = "";
+    for (var i = 0; i < data_value.length; i++) {
+      quotationDetails +=
+        "('" +
+        quotId +
+        "','" +
+        data_value[i].getId() +
+        "','" +
+        data_value[i].getPrice() +
+        "','" +
+        data_value[i].getQuantity() +
+        "','" +
+        data_value[i].getDiscount() +
+        "','" +
+        data_value[i].getTax()/2 +
+        "','" +
+        data_value[i].getTax()/2 +
+        "','" +
+        data_value[i].getTotal() +
+        "','" +
+        data_value[i].getexpiry() +
+        "','" +
+        data_value[i].getbatch_no() +
+        "','" +
+        data_value[i].getName() +
+        "','" +
+        data_value[i].getCgstAmount() +
+        "','" +
+        data_value[i].getSgstAmount() +
+        "','" +
+        data_value[i].getDiscountamount() +
+        "','" +
+        data_value[i].getUnit() +
+        "')";
+      if (i < data_value.length - 1) {
+        quotationDetails += ",";
+      }
+    }
+    var quotationlistSqlQuery =
+      "INSERT INTO quotation_list(quot_f_id ,stock_f_id,price_unit,quant,discount,cgst_tax,sgst_tax,amount,exp_dat,batch_no,stk_name,cgst_tax_amt,sgst_tax_amt,disc_amt,unit)";
+    window.MainDatastream.streamAddStock(
+      quotationlistSqlQuery,
+      quotationDetails,
+      (status, data) => {});  
+  }
+  var customerQuery = "SELECT client_id,client_name FROM customer";
+  window.MainDatastream.streamGetData(customerQuery,(status, data) => {
+    var customer_name = JSON.parse(data).data;
+    var list = document.getElementById("client");
+    inflateAutoCompleateView(list, customer_name);
+  });
+  window.MainDatastream.streamAddBill(
+    "SELECT st.stock_id,stc.product,st.bach_no,st.item_description,st.hsn_code,st.unit,st.sales_price,st.discount,stc.tax_per,st.expiry FROM stock AS st LEFT JOIN stock_collection AS stc ON stc.product_id=st.stock_f_id",
+    (status, data) => {
+      this.searchVal = JSON.parse(data).data;
+      addRowIfnotLastcolumnnotempty("sale-table");
+    }
+  );
+  var mReceipt = new Receipt();
+  function addRowIfnotLastcolumnnotempty(table_id) {
+    var table = document.getElementById(table_id);
+    if (table.rows.length - 2 == mReceipt.getProducts().length) {
+      CreateRow(table_id);
+    }
+  }
+  function CreateRow(table_id) {
+    count = 0;
+    var sale_table = document.getElementById(table_id);
+    var sale_tbody = document.getElementById("sale-tbody");
+    var row = sale_tbody.insertRow(sale_table.rows.length - 2);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    var cell7 = row.insertCell(6);
+    var cell8 = row.insertCell(7);
+    var cell9 = row.insertCell(8);
+    var cell10 = row.insertCell(9);
+    var cell11 = row.insertCell(10);
+    var cell12 = row.insertCell(11);
+    var cell13 = row.insertCell(12);
+    var cell14 = row.insertCell(13);
+    var cell15 = row.insertCell(14);
+    var cell16 = row.insertCell(15);
+    var cell17 = row.insertCell(16);
+    var cell18 = row.insertCell(17);
+    cell1.append(this.createInputCheckbox("cell1"));
+    cell2.append(this.createInputtext("cell2"));
+    cell3.append(this.createInputBatchSelect("cell3"));
+    cell4.append(this.createInputtextDisabled("cell4"));
+    cell5.append(this.createInputtextDisabled("cell5"));
+    cell6.append(this.createInputtextDisabled("cell6"));
+    cell7.append(this.createInputNumber("cell7"));
+    cell8.append(this.createInputNumber("cell8"));
+    cell9.append(this.createInputSelect("cell9"));
+    cell10.append(this.createInputNumber("cell10"));
+    cell11.append(this.createInputSelect("cell11"));
+    cell12.append(this.createInputNumber("cell12"));
+    cell13.append(this.createInputSelect("cell13"));
+    cell14.append(this.createInputNumber("cell14"));
+    cell15.append(this.createInputSelect("cell15"));
+    cell16.append(this.createInputNumber("cell16"));
+    cell17.append(this.createInputNumber("cell17"));
+    cell18.append(this.createInputtextDisabled("cell18"));
+    
+    sale_table.oninput = (event) => {
+      this.AddProduct(event);
+    };
+    inflateAutoCompleateView(
+      sale_table.rows[sale_table.rows.length - 1].cells[1].firstChild,
+      this.searchVal,
+      sale_table.rows.length,
+      (product, rowIndex) => {
+        rowIndex = rowIndex - 1;
+        var gTotal = document.getElementById("grandtotal");
+        for (var i = 3; i < 18; i++) {
+          // if(i==10){
+          //   i+=6;
+          // }
+          saleTable.rows[rowIndex].cells[i].firstChild.disabled = false;
+        }
+       
+        var p = new Product(
+          product[0],
+          product[1],
+          product[5],
+          product[6],
+          product[7],
+          product[8],
+          product[3],
+          product[2],
+          product[9]
+        );
+       console.log("product.......",product)
+      selectColumnFill(product, saleTable, rowIndex);
+     
+        saleTable.rows[rowIndex].cells[6].firstChild.value = 1; //displaying quantity=1 in table quantity cell
+        mReceipt.addproduct(p);
+        saleTable.rows[rowIndex].cells[16].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getTotal();
+        gTotal.innerHTML = mReceipt.getGrandTotal();
+        saleTable.rows[rowIndex].cells[9].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getDiscountamount();
+        saleTable.rows[rowIndex].cells[11].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getCgstAmount();
+          saleTable.rows[rowIndex].cells[13].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getSgstAmount();
+      }
+    );
+  }
+  
+  /////CreateRow Helper functions
+  function createInputBatchSelect(id) {
+        var SelectType = document.createElement("select");
+        SelectType.id = id;
+        SelectType.className = "batchselect";
+        // SelectType.disabled = true;
+        // SelectType.addEventListener("change", batchProductFill);
+        return SelectType;
+      }
+  function createInputCheckbox(id) {
+    var checkType = document.createElement("input");
+    checkType.type = "checkbox";
+    checkType.id = id;
+    checkType.addEventListener("click", (event) => {
+      if (event.target.checked) {
+        numberofselectedrows++;
+      } else {
+        numberofselectedrows--;
+      }
+      if (numberofselectedrows > 0) {
+        document.getElementById("delete-row").style.display = "block";
+      } else {
+        document.getElementById("delete-row").style.display = "none";
+      }
+    });
+    return checkType;
+  }
+  function createInputtext(id) {
+    var textType = document.createElement("input");
+    textType.type = "text";
+    textType.id = id;
+    return textType;
+  }
+  function createInputtextDisabled() {
+    var textType = document.createElement("input");
+    textType.type = "text";
+    textType.disabled = true;
+    return textType;
+  }
+  function createInputNumber(id) {
+    var numType = document.createElement("input");
+    numType.type = "number";
+    numType.id = id;
+    numType.min = "0";
+    numType.disabled = true;
+    return numType;
+  }
+  function createInputSelect(id) {
+    var SelectType = document.createElement("select");
+    SelectType.id = id;
+    // SelectType.disabled = true;
+    var selectarray = [0, 2.5, 5, 12, 15, 18, 28];
+    for (var i = 0; i < 6; i++) {
+      var optionApp = document.createElement("option");
+      optionApp.value = selectarray[i];
+      optionApp.innerHTML = selectarray[i];
+      SelectType.appendChild(optionApp);
+    }
+    return SelectType;
+  }
+ 
+  var gTotal = document.getElementById("grandtotal");
+  function AddProduct(event) {
+    let cell = event.target;
+    let rowIndex = cell.parentNode.parentNode.rowIndex;
+    let cellIndex = cell.parentNode.cellIndex;
+    switch (cellIndex) {
+      case 6:
+        mReceipt
+          .getProducts()
+          [rowIndex - 2].setQuantity(
+            saleTable.rows[rowIndex].cells[6].firstChild.value
+          );
+        saleTable.rows[rowIndex].cells[11].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getCgstAmount();
+        saleTable.rows[rowIndex].cells[13].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getSgstAmount();
+        saleTable.rows[rowIndex].cells[9].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getDiscountamount();
+        saleTable.rows[rowIndex].cells[16].firstChild.value = mReceipt
+        .getProducts()
+        [rowIndex - 2].getTotal();
+        gTotal.innerHTML = mReceipt.getGrandTotal();
+        break;
+      case 5:
+        mReceipt
+          .getProducts()
+          [rowIndex - 2].setUnit(a.rows[rowIndex].cells[4].firstChild.value);
+        saleTable.rows[rowIndex].cells[11].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getCgstAmount();
+          saleTable.rows[rowIndex].cells[13].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getSgstAmount();
+        saleTable.rows[rowIndex].cells[9].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getDiscountamount();
+          saleTable.rows[rowIndex].cells[16].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getTotal();
+        gTotal.innerHTML = mReceipt.getGrandTotal();
+        break;
+      case 8:
+        mReceipt
+          .getProducts()
+          [rowIndex - 2].setDiscount(
+            saleTable.rows[rowIndex].cells[8].firstChild.value
+          );
+        saleTable.rows[rowIndex].cells[16].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getTotal();
+        gTotal.innerHTML = mReceipt.getGrandTotal();
+        saleTable.rows[rowIndex].cells[11].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getCgstAmount();
+          saleTable.rows[rowIndex].cells[13].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getSgstAmount();
+        saleTable.rows[rowIndex].cells[9].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getDiscountamount();
+        break;
+      case 10:
+          mReceipt
+            .getProducts()
+            [rowIndex - 2].setCgst(
+              saleTable.rows[rowIndex].cells[10].firstChild.value
+            );
+          mReceipt
+            .getProducts()
+            [rowIndex - 2].setSgst(
+              saleTable.rows[rowIndex].cells[10].firstChild.value
+            );
+          saleTable.rows[rowIndex].cells[12].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getSgst();
+          gTotal.innerHTML = mReceipt.getGrandTotal();
+          saleTable.rows[rowIndex].cells[11].firstChild.value = mReceipt
+            .getProducts()
+            [rowIndex - 2].getCgstAmount();
+          saleTable.rows[rowIndex].cells[13].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getSgstAmount();
+
+          tax = +saleTable.rows[rowIndex].cells[10].firstChild.value + +saleTable.rows[rowIndex].cells[12].firstChild.value;
+          mReceipt.getProducts()[rowIndex - 2].setTax(tax);
+
+        saleTable.rows[rowIndex].cells[9].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getDiscountamount();
+          saleTable.rows[rowIndex].cells[16].firstChild.value = mReceipt
+            .getProducts()
+            [rowIndex - 2].getTotal();
+        
+        break;
+      case 12:
+        mReceipt
+            .getProducts()
+            [rowIndex - 2].setSgst(
+              saleTable.rows[rowIndex].cells[12].firstChild.value
+            );
+            mReceipt
+            .getProducts()
+            [rowIndex - 2].setCgst(
+              saleTable.rows[rowIndex].cells[12].firstChild.value
+            );
+          saleTable.rows[rowIndex].cells[10].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getCgst();
+          
+          gTotal.innerHTML = mReceipt.getGrandTotal();
+
+          saleTable.rows[rowIndex].cells[11].firstChild.value = mReceipt
+            .getProducts()
+            [rowIndex - 2].getCgstAmount();
+
+            saleTable.rows[rowIndex].cells[13].firstChild.value = mReceipt
+            .getProducts()
+            [rowIndex - 2].getSgstAmount();
+
+          tax = +saleTable.rows[rowIndex].cells[12].firstChild.value + +saleTable.rows[rowIndex].cells[10].firstChild.value;
+          mReceipt.getProducts()[rowIndex - 2].setTax(tax);
+          saleTable.rows[rowIndex].cells[16].firstChild.value = mReceipt
+            .getProducts()
+            [rowIndex - 2].getTotal();
+          
+          saleTable.rows[rowIndex].cells[9].firstChild.value = mReceipt
+            .getProducts()
+            [rowIndex - 2].getDiscountamount();
+        break;
+      case 2:
+        mReceipt
+          .getProducts()
+          [rowIndex - 2].setbatch(saleTable.rows[rowIndex].cells[2].firstChild.value);
+          batchProductFill(saleTable.rows[rowIndex].cells[2].firstChild.value);
+        break;
+      case 17:
+        mReceipt
+          .getProducts()
+          [rowIndex - 2].setExpiry(saleTable.rows[rowIndex].cells[17].firstChild.value);
+        break;
+    }
+  }
+ var batchProduct;
+  function selectColumnFill(product, a, rowIndex) {
+    batchProduct = product;
+    a.rows[rowIndex].cells[3].firstChild.value = product[3],
+    a.rows[rowIndex].cells[4].firstChild.value = product[4],
+    a.rows[rowIndex].cells[5].firstChild.value = product[5];
+    a.rows[rowIndex].cells[7].firstChild.value = product[6];
+    // a.rows[rowIndex].cells[9].firstChild.value = product[7];
+    var batchQuery = "SELECT stock.bach_no FROM stock LEFT JOIN stock_collection AS stc ON stock.stock_f_id=stc.product_id WHERE stc.product = " + "'" + product[1] + "'" + ";" ;
+      window.MainDatastream.streamGetData(batchQuery,(status, data) => {
+          this.selectarray = JSON.parse(data).data;
+          if(this.selectarray){
+            BatchAppend(saleTable,this.selectarray);
+          }
+    }
+  );
+    a.rows[rowIndex].cells[10].firstChild.value = product[8]/2;
+    a.rows[rowIndex].cells[12].firstChild.value = product[8]/2;
+    a.rows[rowIndex].cells[17].firstChild.value = product[9];
+    saleTable.rows[rowIndex].cells[16].firstChild.disabled = true;
+  }
+  
+  function batchProductFill(batchValue){
+          var batchQue = "SELECT st.stock_id,stc.product,st.bach_no,st.item_description,st.hsn_code,st.unit,st.sales_price,st.discount,stc.tax_per,st.expiry FROM stock AS st LEFT JOIN stock_collection AS stc ON stc.product_id=st.stock_f_id WHERE st.bach_no=" + "'" + batchValue + "'" + "AND stc.product = " + "'" + batchProduct[1] + "'" + ";" ;
+          window.MainDatastream.streamGetData(batchQue,(status, data) => {
+            console.log("batchvalue.......",JSON.parse(data).data);
+            var pro = JSON.parse(data).data;
+            if(pro){
+            console.log("Row length batchfill...",saleTable.rows.length-2,"this.pro..",pro);
+            batchColumnFill(pro,saleTable,saleTable.rows.length-1);
+          }
+          });
+  }  
+        
+  function batchColumnFill(productNext, a, rowIndex) {
+    console.log("selectcolumnfill row length...",rowIndex);
+    a.rows[rowIndex].cells[3].firstChild.value = productNext[0][3],
+    a.rows[rowIndex].cells[4].firstChild.value = productNext[0][4],
+    a.rows[rowIndex].cells[5].firstChild.value = productNext[0][5];
+    
+    a.rows[rowIndex].cells[10].firstChild.value = productNext[0][8]/2;
+    a.rows[rowIndex].cells[12].firstChild.value = productNext[0][8]/2;
+    a.rows[rowIndex].cells[7].firstChild.value = productNext[0][6];
+    a.rows[rowIndex].cells[17].firstChild.value = productNext[0][9];
+    saleTable.rows[rowIndex].cells[16].firstChild.disabled = true;
+  }
+
+ function BatchAppend(a,selectarr){
+  console.log("SelectArray........",selectarr)
+  console.log("a.rows[rowIndex].cells[7].firstChild",a.rows[a.rows.length-1].cells[2].firstChild)
+  if(count<selectarr.length){
+  for (var i = 0; i < selectarr.length; i++) {
+          var optionApp = document.createElement("option");
+          optionApp.value = selectarr[i];
+          optionApp.innerHTML = selectarr[i];
+          a.rows[a.rows.length-1].cells[2].firstChild.appendChild(optionApp);
+          count++;
+        }
+      }
+  }  
+  function deleteRow() {
+    numberofselectedrows = 0;
+    document.getElementById("delete-row").style.display = "none";
+    for (var i = 2; i < saleTable.rows.length; i++) {
+      if (saleTable.rows[i].cells[0].firstChild.checked) {
+        deleteIndex.push(i);
+      }
+    }
+    for (var i = deleteIndex.length - 1; i > -1; i--) {
+      saleTable.rows[deleteIndex[i]].remove();
+      mReceipt.deleteProduct(deleteIndex[i] - 2);
+    }
+    deleteIndex = [];
+    gTotal.innerHTML = mReceipt.getGrandTotal();
+  }
+  function DateChangeOnTerms(event) {
+    dueDate.readOnly = true;
+    if (event.target.value == "NET 7") {
+      var date = new Date(issueDate.valueAsDate);
+      date.setDate(date.getDate() + 7);
+      dueDate.valueAsDate = date;
+    } else if (event.target.value == "NET 15") {
+      var date = new Date(issueDate.value);
+      date.setDate(date.getDate() + 15);
+      dueDate.valueAsDate = date;
+    } else if (event.target.value == "NET 30") {
+      var date = new Date(issueDate.value);
+      date.setDate(date.getDate() + 30);
+      dueDate.valueAsDate = date;
+    } else if (event.target.value == "Specific Date") {
+      dueDate.value = "";
+      dueDate.readOnly = false;
+    }
+    // Another If Statement
+    if (event.target.value == "Hide") {
+      dueDateCell.style.display = "none";
+    } else {
+      dueDateCell.style.display = "revert";
+    }
+  }
+  function setPaymentTermsEmpty() {
+    paymentTerms.value = "";
+    dueDate.value = "";
+  }
+  function currentDate(datId) {
+    datId.valueAsDate = new Date();
+  }
+  currentDate(document.getElementById("issue-dt"));
+  function getDiscount() {
+    mReceipt.setDiscount(+discountALL.value);
+    gTotal.innerHTML = mReceipt.getGrandTotal();
+  }
+  function getPackageCost() {
+    mReceipt.setPackageCost(+packagecost.value);
+    gTotal.innerHTML = mReceipt.getGrandTotal();
+  }
+  function addPaymentBox() {
+    var checkBox = document.getElementById("add-pay");
+    var text = document.getElementById("right-box");
+    if (checkBox.checked == true) {
+      text.style.display = "block";
+    } else {
+      text.style.display = "none";
+    }
+  }
+  function packageCostBox() {
+    var checkBox2 = document.getElementById("ship-cost");
+    if (checkBox2.checked == true) {
+     packagecost.style.display = "inline-block";
+    } else {
+     packagecost.style.display = "none";
+     packagecost.value = "";
+      mReceipt.setPackageCost(0);
+      gTotal.innerHTML = mReceipt.getGrandTotal();
+    }
+  }
+  function discountAllBox() {
+    var checkBox2 = document.getElementById("disc-all");
+    if (checkBox2.checked == true) {
+      discountALL.style.display = "inline-block";
+    } else {
+      discountALL.style.display = "none";
+      discountALL.value = "";
+      mReceipt.setDiscount(0);
+      gTotal.innerHTML = mReceipt.getGrandTotal();
+    }
+  }
+  function RoundOff(event) {
+    if (event.target.checked) {
+      gTotal.innerHTML = Math.round(mReceipt.getGrandTotal());
+    } else {
+      gTotal.innerHTML = mReceipt.getGrandTotal();
+    }
+  }
+</script>

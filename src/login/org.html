@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<script src="../widgets/login.js"></script>
+
+<head>
+</head>
+<style>
+  body {
+    background-image: url(./images/pexels-codioful-\(formerly-gradienta\)-7134988\ \(1\).jpg);
+  }
+
+  .logo {
+    height: 50px;
+    width: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+  }
+
+  .nameOfOrg {
+    font-size: larger;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  #organisation {
+    width: auto;
+    height: auto;
+    /* background-color: #ffffff; */
+    /* border-radius: 5px; */
+    /* box-shadow: 0 0 5px rgb(0 0 0 / 10%); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-top: 90px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+
+  .card:hover {
+    background-color: aqua;
+  }
+
+  .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 24px;
+    margin-top: 60px;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .btn {
+
+    position: absolute;
+    bottom: 0;
+    border-width: 1px;
+    border-color: black;
+    border-style: dashed;
+    margin-left: 21px;
+    padding-block: 3px;
+    margin-bottom: 9px;
+    border-radius: 3px;
+    width: 102px;
+  }
+
+  .guest-pic {
+    height: 15px;
+    width: 15px;
+    margin-inline: 3px;
+    margin-bottom: -3px;
+  }
+
+  .guest_span {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 5px;
+    margin-inline: 2px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .btn:hover {
+    border-color: aliceblue;
+
+  }
+</style>
+
+<body>
+  <img class="logo" src="../assets/images/powerta_logo_updated.png">
+  <div class="nameOfOrg">
+    <span>Who's using Organisation?</span>
+  </div>
+  <div id="organisation"></div>
+  <!-- <div class="card">
+    <img class="profile-pic" src="../assets/images/profile-user.png" alt="Profile Picture">
+    <div class="name">User</div>
+  </div> -->
+  <div class="btn" onclick="">
+    <img class="guest-pic" src="../assets/images/profile-user.png"><a href class="guest_span">Guest Mode</a>
+  </div>
+
+
+</body>
+<script>
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataString = urlParams.get("data");
+  var dataArray = JSON.parse(decodeURIComponent(dataString));
+  console.log("data of logindata in org", dataArray)
+  login1 = new login();
+  login1.addData(dataArray[0]);
+  login1.render(document.getElementById("organisation"));
+  login1.setCardOnClick(handler);
+  function handler(event) {
+    console.log("value of clicked div", event.target.id, event.target.value)
+    login1.getKey(dataArray[1][0], dataArray[1][1], event.target.value)
+  }
+
+</script>
+
+</html>

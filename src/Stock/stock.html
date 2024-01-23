@@ -1,0 +1,268 @@
+<link rel="stylesheet" href="../assets/themes/stock.css" />
+
+<div class="container1" id="container1">
+  <div id="tabwrap"></div>
+
+  <div id="header"></div>
+</div>
+
+<div class="stockcontent tabcontent" id="stock">
+  <div id="t5" class="container2">
+    <div class="list_view" id="list_view" href="#">
+      <div id="site-grid-side">
+        <input
+          id="filter-text-box2"
+          class="search"
+          placeholder="Search"
+          style="position: fixed"
+        />
+
+        <ul class="list" style="margin-top: 2rem"></ul>
+      </div>
+      <script>
+        function setDime(w, h) {
+          if (w != undefined) {
+            $("#wrapper2").css("width", (w * 80.8) / 100);
+            $("#wrapper2").css("height", (h * 87.2) / 100);
+            $(".container2").css("height", (h * 86.7) / 100);
+            $("#site-grid-side").css("height", (h * 85) / 100);
+            $("#wrapper3").css("width", (w * 96.5) / 100);
+            $("#wrapper3").css("height", (h * 86) / 100);
+            $(".container2").css("width",(w*15.4)/100)
+          } else console.log("dime not defined");
+        }
+
+        try {
+          setDime(window.screen.availWidth, window.screen.availHeight);
+        } catch (err) {
+          console.log("-dime not defined");
+        }
+      </script>
+      <script>
+        var options = {
+          valueNames: ["0"],
+          // Since there are no elements in the list, this will be used as template.
+          item: '<li  ><div class="0 card" onmouseover="hover(this)" onmouseout="hoverOff(this)"></div></li>',
+        };
+
+        function itemClick(item) {
+          if (item.target.childNodes[0].data == "All") {
+            console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+
+            onFilterTextClickChanged();
+          } else {
+            console.log(
+              "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+              item.target.childNodes[0].data
+            );
+            onFilterTextClickChanged(item.target.childNodes[0].data);
+          }
+        }
+        var values = [
+          {
+            0: "All",
+          },
+        ];
+
+        var userList = new List("site-grid-side", options, values);
+
+        window.MainDatastream.streamAddBill(
+          "SELECT category FROM stock_collection",
+          (status, data) => {
+            var sidelist = JSON.parse(data).data;
+
+            userList.add(sidelist);
+            $(".card").click(itemClick);
+          }
+        );
+
+        function hover(element) {
+          element.style.backgroundColor = "rgba(33,150,243,0.1)";
+        }
+        function hoverOff(element) {
+          element.style.backgroundColor = "";
+        }
+      </script>
+
+      <script>
+        $(document).ready(function () {
+          $(".list_name").click(function (ev) {
+            $(".site ul li").removeClass("selected");
+            $(ev.currentTarget).parent("li").addClass("selected");
+          });
+        });
+      </script>
+    </div>
+  </div>
+
+  <div id="wrapper2" class="ag-theme-alpine"></div>
+</div>
+<!-- <div class="Pending_Expense tabcontent" id="Pending_Expense">
+  <div id="wrapper3" class="ag-theme-alpine"></div>
+</div> -->
+
+<script>
+  actionbar = new Actionbar();
+
+  actionbar.addIcon("add_stock", "../assets/images/add-expense.png","Add Stock");
+ actionbar.addIcon("export_button", ".././assets/images/export_excel-img.png","Export");
+  actionbar.addIcon("import_button", ".././assets/images/import.png","Import");
+  
+
+  actionbar.addIcon("print_button", "../assets/images/toolbar-print.png");
+
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_stock":
+        openAddItem();
+        break;
+        case "export_button":
+        download();
+        break;
+      case"import_button":
+        break;
+      // case "print_icon":
+      //                  ;
+      //   break;
+    }
+  }
+  actionbar.render(document.getElementById("header"));
+  actionbar.setToolbarOnClick(handler);
+
+  var stockTab;
+  if (stockTab == undefined) {
+    stockTab = new Tabbar();
+    stockTab.addTab("stock", "Stock");
+
+    stockTab.setTabbarOnClick((event) => {
+      $(".tabcontent").css("display", "none");
+
+      switch (event.target.id) {
+        case "stock":
+          $("#stock").css("display", "block");
+
+          break;
+      }
+    });
+  }
+  stockTab.render(document.getElementById("tabwrap"));
+  $("#stock").css("display", "block");
+
+  function onFilterTextBoxChanged() {
+    stockGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+    
+    console.log(
+      "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      typeof document.getElementById("filter-text-box").value
+    );
+  }
+
+  function onFilterTextClickChanged(value) {
+    stockGrid.api.setQuickFilter(value);
+  }
+
+  var stockGrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "SLN", valueGetter: "node.rowIndex + 1", resizable: true },
+      { headerName: "Product code", field: "0", resizable: true },
+      { headerName: "Product Name", field: "1", resizable: true },
+
+      { headerName: "Category", field: "2", resizable: true },
+      { headerName: "Description", field: "3", resizable: true },
+      { headerName: "Purchase price", field: "4", resizable: true },
+      { headerName: "Price", field: "5", resizable: true },
+      { headerName: "Brand", field: "6", resizable: true },
+      {
+        headerName: "Expiry Date",
+        field: "7",
+        resizable: true,
+        //valueFormatter: dateFormatter,
+        comparator: dateComparator,
+        filter: "agDateColumnFilter",
+        floatingFilter: true,
+        floatingFilterComponentParams: {
+          suppressFilterButton: true,
+        },
+
+        filterParams: {
+          debounceMs: 500,
+          suppressAndOrCondition: true,
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            if (cellValue == null) {
+              return 0;
+            }
+            var dateParts = cellValue.split("-");
+            var year = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var day = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+        },
+      },
+    ],
+    // getSelectedRows: 'getSelectedRows',
+    // cellClicked:'onCellClicked',
+    // onSelectionChanged: 'onSelectionChanged',
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "single", // allow rows to be selected
+    animateRows: true,
+    // other grid options ...
+  };
+
+  var GridDiv4 = document.getElementById("wrapper2");
+  new agGrid.Grid(GridDiv4, stockGrid);
+
+  window.MainDatastream.streamstockview((status, data) => {
+    this.stockdata=JSON.parse(data).data;
+    stockGrid.api.setRowData(JSON.parse(data).data);
+  });
+
+  window.electronAPI.setTitle("STOCK");
+
+  var inp = document.createElement("input");
+  var root = document.getElementsByClassName("ag-header-row-column-filter");
+  inp.id = "filter-text-box";
+  inp.type = "text";
+  inp.placeholder = "Type a keyword..";
+  inp.oninput = function () {
+    onFilterTextBoxChanged();
+  };
+  root[0].appendChild(inp);
+
+    
+  function download() {
+
+
+
+console.log("this.labourdata with amount",  this.stockdata)
+
+var header = [
+[ "Product code", "Product Name","Category","Description","Purchase price", "Price","Brand","Expiry Date"],
+];
+window.ExcelDatastream.Exceldata(
+  this.stockdata,
+header,
+(data,header)=>{}
+)
+}
+
+import_button=document.getElementById("import_button")
+import_button.addEventListener('click',async () => {
+const filepath=await window.ExcelDatastream.ExcelImportClick();
+console.log("filepath",filepath)         
+});
+</script>

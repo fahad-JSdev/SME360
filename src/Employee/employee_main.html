@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="../assets/themes/main.css" />
+<script src=""></script>
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../node_modules/gridjs/dist/gridjs.umd.js"></script>
+<script src="../../node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+<!-- Include the core CSS, this is needed by the grid -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-grid.css"
+/>
+<!-- Include the theme CSS, only need to import the theme you are going to use -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-theme-alpine.css"
+/>
+<link
+  rel="stylesheet"
+  href="../../node_modules/gridjs/dist/theme/mermaid.min.css"
+/>
+
+<html lang="en" dir="ltr">
+  <script src="../widgets/autoSearchText.js"></script>
+  <script src="../widgets/actionbar.js"></script>
+  <script src="../widgets/tab.js"></script>
+  <script src="../widgets/gridHelper.js"></script>
+  <script src="../../node_modules/list.js/dist/list.min.js"></script>
+  <script src="../widgets/snackbox.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EMPLOYEE</title>
+  </head>
+  <body id="mainBody">
+    <div class="MainParent">
+      <div class="sidebar close" id="sidebar">
+        <ul class="nav-links">
+          <li class="main-menu">
+            <a href="#" class="home">
+              <img
+                src="../assets/images/home.png"
+                alt="home"
+                class="home"
+                onclick=""
+              />
+              <span class="link_name home">Apps</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name home" href="#">Apps</a></li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <a href="#" class="empHome">
+              <img
+                src="../assets/images/home1.png"
+                alt="empHome"
+                class="empHome"
+                onclick=""
+              />
+              <span class="link_name empHome">Home</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name empHome" href="#">Home</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <a href="#" class="employee">
+              <img
+                src="../assets/images/employee-icon-4.png"
+                alt="Employee"
+                class="employee"
+                onclick=""
+              />
+              <span class="link_name employee">Employee</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name employee" href="#">Employee</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="home-section" id="home-section"></div>
+    </div>
+  </body>
+  <script>
+    // function loadApp() {
+    //   $(".home-section").load("../app.html");
+    // }
+
+    // Call the function to load the HTML page into the div
+  </script>
+  <script>
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+      arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+      });
+    }
+  </script>
+
+  <script>
+    function openForm() {
+      window.open("./empreg.html", "-blank", "resizable=0,frame=0");
+    }
+    // function openForm() {
+    //   window.open("./customer.html", "-blank", "resizable=0,frame=0");
+    // }
+  </script>
+  <script>
+    var current_page = null;
+    $(document).ready(function view() {
+      $(".employee").click(menuOnClick);
+      $(".home").click(menuOnClick);
+      $(".empHome").click(menuOnClick);
+    });
+    function menuOnClick(e) {
+      {
+        console.log("side navw : clicked ->", e, e.target.className);
+        if (current_page != e.target.className) {
+          var path = null;
+          var i = 0;
+          do {
+            switch (e.target.classList[i]) {
+              case "employee":
+                path = "./emphome.html";
+                break;
+              case "empHome":
+              window.open(
+              "../Employee/employee_main.html",
+              "_self",
+              "resizable=0,frame=0"
+              );
+              window.resizeTo(getWidth(), getHeight());
+                break;
+              case "home":
+                path="../app.html";
+                break;
+            }
+            i++;
+          } while (path == null && i < e.target.classList.length);
+          if (path != null) {
+            $(".home-section").load(path);
+            current_page = e.target.className;
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    //Set all css dimen here
+    console.log("start");
+    function getWidth() {
+      return window.screen.availWidth;
+    }
+    function getHeight() {
+      return window.screen.availHeight;
+    }
+
+    function setDime(w, h) {
+      if (w != undefined) {
+        $(".sidebar").css("width", (w * 3.5) / 100);
+        $(".home-section").css("width", (w * 96.5) / 100);
+        $(".home-section").css("left", (w * 3.5) / 100);
+      } else console.log("dime not defined");
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+
+    window.addEventListener("load", function (event) {
+      var elements = document.getElementsByClassName("cet-window-icon");
+      elements[0].addEventListener("click", function imageClick() {
+        console.log("image clicked");
+      });
+    });
+  </script>
+</html>

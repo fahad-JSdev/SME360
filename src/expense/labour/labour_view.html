@@ -1,0 +1,584 @@
+<link rel="stylesheet" href=".././assets/themes/labour.css" />
+<script src="../../widgets/snackbox.js"></script>
+
+<body>
+  <div class="container1" id="container1">
+    <div id="tabwrap"></div>
+
+    <div id="header"></div>
+  </div>
+
+  <div class="labourcontent tabcontent" id="labour">
+    <div id="t5" class="container2">
+      <div class="list_view" id="list_view" href="#">
+        <div id="site-grid-side">
+          <input
+            id="filter-text-box2"
+            class="search"
+            placeholder="Search"
+            style="position: fixed"
+          />
+
+          <ul class="list" style="margin-top: 2rem"></ul>
+        </div>
+        <script>
+          function setDime(w, h) {
+            if (w != undefined) {
+              $("#wrapper2").css("width", (w * 80.8) / 100);
+              $("#wrapper2").css("height", (h * 87.2) / 100);
+              $(".container2").css("height", (h * 86.6) / 100);
+              $(".container2").css("width", (w * 15.4) / 100);
+              $("#site-grid-side").css("height", (h * 85) / 100);
+              $("#wrapper3").css("width", (w * 96.5) / 100);
+              $("#wrapper3").css("height", (h * 86) / 100);
+            } else console.log("dime not defined");
+          }
+
+          try {
+            setDime(window.screen.availWidth, window.screen.availHeight);
+          } catch (err) {
+            console.log("-dime not defined");
+          }
+        </script>
+        <script>
+          var options = {
+            valueNames: ["0"],
+            // Since there are no elements in the list, this will be used as template.
+            item: '<li  ><div class="0 card" onmouseover="hover(this)" onmouseout="hoverOff(this)"></div></li>',
+          };
+
+          function itemClick(item) {
+            if (item.target.childNodes[0].data == "All") {
+              onFilterTextClickChanged();
+            } else {
+              onFilterTextClickChanged(item.target.childNodes[0].data);
+            }
+          }
+          var values = [
+            {
+              0: "All",
+            },
+          ];
+
+          var userList = new List("site-grid-side", options, values);
+          window.MainDatastream.streamlaboursitelist((status, data) => {
+            var sidelist = JSON.parse(data).data;
+            userList.add(sidelist);
+            $(".card").click(itemClick);
+          });
+
+          function hover(element) {
+            element.style.backgroundColor = "rgba(33,150,243,0.1)";
+          }
+          function hoverOff(element) {
+            element.style.backgroundColor = "";
+          }
+        </script>
+
+        <script>
+          $(document).ready(function () {
+            $(".list_name").click(function (ev) {
+              $(".site ul li").removeClass("selected");
+              $(ev.currentTarget).parent("li").addClass("selected");
+            });
+          });
+        </script>
+      </div>
+    </div>
+
+    <div id="wrapper2" class="ag-theme-alpine">
+      <div id="snackbard" class="snackbar">Deleted</div>
+    </div>
+  </div>
+
+  <div class="Pending_Expense tabcontent" id="Pending_Expense">
+    <div id="wrapper3" class="ag-theme-alpine">
+      <div id="snackbaro" class="snackbar">Deleted</div>
+      <div id="snackbar" class="snackbar">Approved</div>
+    </div>
+  </div>
+</body>
+
+<script>
+  SnackboxAlertStyle();
+  actionbar = new Actionbar();
+
+  actionbar.addIcon(
+    "add_expense",
+    ".././assets/images/add-expense.png",
+    "Add Expense"
+  );
+  actionbar.addIcon(
+    "export_button",
+    ".././assets/images/export_excel-img.png",
+    "Export"
+  );
+  actionbar.addIcon("import_button", ".././assets/images/import.png", "Import");
+  actionbar.addIcon(
+    "print_button",
+    ".././assets/images/toolbar-print.png",
+    "Print"
+  );
+  actionbar.addIcon("edit_button", ".././assets/images/editing.png", "Edit");
+  actionbar.addIcon("convert_button", ".././assets/images/tick.png", "Approve");
+  actionbar.addIcon("delete_button", ".././assets/images/delete.png", "Delete");
+
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_expense":
+        openlabourchild();
+        break;
+      case "export_button":
+        download();
+        break;
+      case "import_button":
+        break;
+      case "print_button":
+        // btnClickedHandlerPrint();
+        break;
+      case "convert_button":
+        BtnclickApprove();
+        break;
+      case "edit_button":
+        btnClickedHandleEdit();
+        break;
+      case "delete_button":
+        BtnclickReject();
+        break;
+    }
+  }
+
+  actionbar.render(document.getElementById("header"));
+  actionbar.setToolbarOnClick(handler);
+  document.getElementById("export_button").style.display = "none";
+  // document.getElementById("import_button").style.display = "none";
+  document.getElementById("print_button").style.display = "none";
+  document.getElementById("edit_button").style.display = "none";
+  document.getElementById("delete_button").style.display = "none";
+  document.getElementById("convert_button").style.display = "none";
+  function BtnclickApprove() {
+    const selectedRows = pendingLabourExpenseGrid.api.getSelectedRows();
+    if (selectedRows.length) {
+      for (var i = 0; i < selectedRows.length; i++) {
+        console.log("selectedRows", selectedRows);
+        var sqlQuery =
+          "UPDATE labour_account SET user_perm='1' WHERE labour_account_id=" +
+          selectedRows[i][11] +
+          ";";
+        var value;
+        window.MainDatastream.streamProjectButtonClick(
+          sqlQuery,
+          value,
+          (status, data) => {}
+        );
+        pendingLabourExpenseGrid.api.applyTransaction({ remove: selectedRows });
+      }
+      SnackboxAlert("snackbar");
+    }
+  }
+  function BtnclickReject() {
+    var selectedRows;
+    console.log("selected tab=>", selectedTab);
+    if (selectedTab == "pending") {
+      selectedRows = pendingLabourExpenseGrid.api.getSelectedRows();
+      console.log("row selected on ag grid pending", selectedRows);
+      pendingLabourExpenseGrid.api.applyTransaction({ remove: selectedRows });
+      SnackboxAlert("snackbaro");
+    }
+    if (selectedTab == "expense") {
+      selectedRows = labourExpenseGrid.api.getSelectedRows();
+      console.log("row selected on ag grid expense", selectedRows);
+      labourExpenseGrid.api.applyTransaction({ remove: selectedRows });
+      SnackboxAlert("snackbard");
+    }
+
+    console.log("row selected on ag grid", selectedRows);
+    // console.log("row selected on ag grid pending", selectedexpenseRows);
+    if (selectedRows) {
+      for (var i = 0; i < selectedRows.length; i++) {
+        var sqlQuery =
+          "UPDATE labour_account SET is_deleted='1' WHERE labour_account_id=" +
+          selectedRows[i][11] +
+          ";";
+        var value;
+        window.MainDatastream.streamProjectButtonClick(
+          sqlQuery,
+          value,
+          (status, data) => {}
+        );
+      }
+    }
+    // if (selectedexpenseRows) {
+    //   for (var i = 0; i < selectedexpenseRows.length; i++) {
+    //     var sqlQuery =
+    //       "UPDATE labour_account SET is_deleted='1' WHERE labour_account_id=" +
+    //       selectedexpenseRows[i][11] +
+    //       ";";
+    //     var value;
+    //     window.MainDatastream.streamProjectButtonClick(
+    //       sqlQuery,
+    //       value,
+    //       (status, data) => {}
+    //     );
+    //     pendingLabourExpenseGrid.api.applyTransaction({
+    //       remove: selectedexpenseRows,
+    //     });
+    //   }
+    //   SnackboxAlert("snackbaro");
+    // }
+  }
+  function btnClickedHandleEdit() {
+    const selectedRows = pendingLabourExpenseGrid.api.getSelectedRows();
+    console.log("edit button clicked", selectedRows);
+    if (selectedRows.length == 1) {
+      window.open(
+        "./labour/add_labour.html?data=" +
+          encodeURIComponent(JSON.stringify([selectedRows[0][11], "edit"])),
+        "_blank",
+        "resizable=no,frame=0"
+      );
+    }
+  }
+  var selectedTab = "expense";
+  var labourTab;
+  if (labourTab == undefined) {
+    labourTab = new Tabbar();
+    labourTab.addTab("expense", "Expense");
+    labourTab.addTab("pending", "Pending");
+
+    labourTab.setTabbarOnClick((event) => {
+      $(".tabcontent").css("display", "none");
+
+      switch (event.target.id) {
+        case "expense":
+          $("#labour").css("display", "block");
+          window.electronAPI.setTitle("LABOUR EXPENSE");
+          selectedTab = "expense";
+          break;
+        case "pending":
+          $("#Pending_Expense").css("display", "block");
+          window.electronAPI.setTitle("LABOUR PENDING");
+          selectedTab = "pending";
+          setTimeout(function () {
+            this.pendingLabourExpenseGrid.api.setRowData(
+              this.pendingLabourData
+            );
+          }, 100);
+
+          break;
+      }
+    });
+  }
+  labourTab.render(document.getElementById("tabwrap"));
+  $("#labour").css("display", "block");
+
+  function onFilterTextBoxChanged() {
+    labourExpenseGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+  }
+  function onFilterTextBoxPending() {
+    pendingLabourExpenseGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box1").value
+    );
+  }
+  function onFilterTextClickChanged(value) {
+    labourExpenseGrid.api.setQuickFilter(value);
+  }
+
+  var labourExpenseGrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "SLN", valueGetter: "node.rowIndex + 1", resizable: true },
+      { headerName: "Site Name", field: "0", resizable: true },
+      { headerName: "Site ID", field: "1", resizable: true },
+      { headerName: "Name", field: "2", resizable: true },
+      { headerName: "Designation", field: "3", resizable: true },
+      { headerName: "Wage", field: "4", resizable: true },
+      { headerName: "OT Wage", field: "5", resizable: true },
+      { headerName: "Days", field: "6", resizable: true },
+      { headerName: "Overtime(H)", field: "7", resizable: true },
+      { headerName: "TA/DA", field: "8", resizable: true },
+      { headerName: "Advance", field: "9", resizable: true },
+      {
+        headerName: "Amount",
+        resizable: true,
+
+        valueGetter: `(Number(data[4]) * Number(data[6])) + (Number(data[5]) * Number(data[7])) + Number(data[8])`,
+        // suppressToolPanel: true,
+      },
+      {
+        headerName: "Date",
+        field: "10",
+        resizable: true,
+        //valueFormatter: dateFormatter,
+        comparator: dateComparator,
+        filter: "agDateColumnFilter",
+        floatingFilter: true,
+        floatingFilterComponentParams: {
+          suppressFilterButton: true,
+        },
+
+        filterParams: {
+          debounceMs: 500,
+          suppressAndOrCondition: true,
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            if (cellValue == null) {
+              return 0;
+            }
+            var dateParts = cellValue.split("-");
+            var year = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var day = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+        },
+      },
+      { headerName: "lab_acc_id", field: "11", hide: true },
+    ],
+    // getSelectedRows: 'getSelectedRows',
+    // cellClicked:'onCellClicked',
+    // onSelectionChanged: 'onSelectionChanged',
+    onRowSelected: onExpRowSelected,
+
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "multiple", // allow rows to be selected
+    animateRows: true,
+    // other grid options ...
+  };
+
+  function onExpRowSelected() {
+    const selectedRows = labourExpenseGrid.api.getSelectedRows();
+    if (selectedRows) {
+      console.log(" row selected");
+      document.getElementById("export_button").style.display = "none";
+      // document.getElementById("import_button").style.display = "none";
+      document.getElementById("print_button").style.display = "none";
+      document.getElementById("edit_button").style.display = "none";
+
+      document.getElementById("convert_button").style.display = "none";
+      document.getElementById("delete_button").style.display = "flex";
+
+      if (selectedRows.length > 1) {
+        console.log("more than one row selected function called");
+      }
+    }
+  }
+
+  var GridDiv = document.getElementById("wrapper2");
+  new agGrid.Grid(GridDiv, labourExpenseGrid);
+
+  window.MainDatastream.streamLabourExpense((status, data) => {
+    this.labourdata = JSON.parse(data).data;
+    labourExpenseGrid.api.setRowData(JSON.parse(data).data);
+  });
+
+  var pendingLabourExpenseGrid = {
+    columnDefs: [
+      {
+        headerName: "SLN",
+        valueGetter: "node.rowIndex + 1",
+        resizable: true,
+        // headerCheckboxSelection: true,
+        // checkboxSelection: true,
+        // showDisabledCheckboxes: true,
+      },
+      { headerName: "Site Name", field: "0", resizable: true, width: 100 },
+      { headerName: "Site ID", field: "1", resizable: true, width: 100 },
+      { headerName: "Name", field: "2", resizable: true, width: 100 },
+      { headerName: "Designation", field: "3", resizable: true, width: 120 },
+      { headerName: "Wage", field: "4", resizable: true, width: 100 },
+      { headerName: "OT Wage", field: "5", resizable: true, width: 100 },
+      { headerName: "Days", field: "6", resizable: true, width: 70 },
+      { headerName: "Overtime(H)", field: "7", resizable: true, width: 100 },
+      { headerName: "TA/DA", field: "8", resizable: true, width: 100 },
+      { headerName: "Advance", field: "9", resizable: true, width: 100 },
+      {
+        headerName: "Amount",
+        resizable: true,
+        width: 100,
+
+        valueGetter: `(Number(data[4]) * Number(data[6])) + (Number(data[5]) * Number(data[7])) + Number(data[8])`,
+        // suppressToolPanel: true,
+      },
+      { headerName: "labour_exp_id", field: "10", hide: true },
+      {
+        headerName: "Date",
+        field: "11",
+        resizable: true,
+        width: 100,
+        // valueFormatter: dateFormatter,
+        comparator: dateComparator,
+        filter: "agDateColumnFilter",
+        floatingFilter: true,
+        floatingFilterComponentParams: {
+          suppressFilterButton: true,
+        },
+        filterParams: {
+          debounceMs: 500,
+          suppressAndOrCondition: true,
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            if (cellValue == null) {
+              return 0;
+            }
+            var dateParts = cellValue.split("-");
+            var year = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var day = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+        },
+      },
+    ],
+    // getSelectedRows: 'getSelectedRows',
+    // cellClicked:'onCellClicked',
+    // onSelectionChanged: 'onSelectionChanged',
+    onRowSelected: onRowSelected,
+    onRowDoubleClicked: openPending,
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "multiple", // allow rows to be selected
+    animateRows: true,
+
+    // other grid options ...
+  };
+  function openPending(event) {
+    console.log("double click function called", event.node.data[10]);
+    window.open(
+      "./labour/add_labour.html?data=" +
+        encodeURIComponent(JSON.stringify([event.node.data[11], "pending"])),
+      "_blank",
+      "resizable=no,frame=0"
+    );
+  }
+  function onRowSelected() {
+    const selectedRows = pendingLabourExpenseGrid.api.getSelectedRows();
+    if (selectedRows) {
+      console.log(" row selected");
+      document.getElementById("delete_button").style.display = "flex";
+      document.getElementById("export_button").style.display = "flex";
+      // document.getElementById("import_button").style.display = "flex";
+      document.getElementById("print_button").style.display = "flex";
+      document.getElementById("edit_button").style.display = "flex";
+      document.getElementById("convert_button").style.display = "flex";
+      if (selectedRows.length > 1) {
+        console.log("more than one row selected function called");
+        document.getElementById("export_button").style.display = "none";
+        // document.getElementById("import_button").style.display = "none";
+        document.getElementById("print_button").style.display = "none";
+        document.getElementById("edit_button").style.display = "none";
+        // document.getElementById("convert_button").style.display = "none";
+      }
+    }
+  }
+  var GridDiv3 = document.getElementById("wrapper3");
+  var n = new agGrid.Grid(GridDiv3, pendingLabourExpenseGrid);
+  var pendingLabourData = null;
+  var observer = new MutationObserver(function (mutations) {
+    if (document.contains(GridDiv3)) {
+      console.log("Its in the DOM!");
+      pendingLabourExpenseGrid.api.setRowData(this.pendingLabourData);
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document, {
+    attributes: false,
+    childList: true,
+    characterData: false,
+    subtree: true,
+  });
+
+  window.MainDatastream.streamLabourPending((status, data) => {
+    this.pendingLabourData = JSON.parse(data).data;
+    if (this.labourTab.getSelectedTab() == 0) {
+      pendingLabourExpenseGrid.api.setRowData(this.pendingLabourData);
+    }
+
+    //  gridOptions3.api.setRowData(JSON.parse(data).data);
+  });
+  window.electronAPI.setTitle("LABOUR EXPENSE");
+
+  var inp = document.createElement("input");
+  var root = document.getElementsByClassName("ag-header-row-column-filter");
+  inp.id = "filter-text-box";
+  inp.type = "text";
+  inp.placeholder = "Type a keyword..";
+  inp.oninput = function () {
+    onFilterTextBoxChanged();
+  };
+  root[0].appendChild(inp);
+  var inp1 = document.createElement("input");
+
+  inp1.id = "filter-text-box1";
+  inp1.type = "text";
+  inp1.placeholder = "Type a keyword..";
+  inp1.oninput = function () {
+    onFilterTextBoxPending();
+  };
+  root[1].appendChild(inp1);
+
+  function download() {
+    console.log("this labour data", this.labourdata.length);
+    for (let i = 0; i < this.labourdata.length; i++) {
+      amount =
+        Number(this.labourdata[i][4]) * Number(this.labourdata[i][6]) +
+        Number(this.labourdata[i][5]) * Number(this.labourdata[i][7]) +
+        Number(this.labourdata[i][8]);
+      this.labourdata[i].push(amount);
+    }
+    console.log("this.labourdata with amount", this.labourdata);
+
+    var header = [
+      [
+        "Site Name",
+        "Site ID",
+        "Name",
+        "Designation",
+        "Wage",
+        "OT Wage",
+        "Days",
+        "Overtime",
+        "TA/DA",
+        "Advance",
+        "Date",
+        "Amount",
+      ],
+    ];
+    window.ExcelDatastream.Exceldata(
+      this.labourdata,
+      header,
+      (data, header) => {}
+    );
+  }
+  //end of export data//
+
+  /*import*/
+
+  import_button = document.getElementById("import_button");
+  import_button.addEventListener("click", async () => {
+    const filepath = await window.ExcelDatastream.ExcelImportClick();
+    console.log("filepath", filepath);
+  });
+</script>

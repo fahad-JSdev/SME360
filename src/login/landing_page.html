@@ -1,0 +1,503 @@
+&nbsp;
+<!DOCTYPE html>
+
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../widgets/login.js"></script>
+
+<link rel="stylesheet" href="../assets/themes/login.css" />
+<link rel="stylesheet" href="../assets/themes/landingPage.css" />
+
+<body class="bodyy">
+  <div id="body1">
+    <section class="banner">
+      <div class="container">
+        <div class="banner-text">
+          <h1>Who's using?</h1>
+          <p>
+            <strong
+              >We make it easy to get the most out of your virtual
+              machine.</strong
+            >
+            Our tools make it simple to track how your Droplets are performing
+            and help you to respond quickly if there is a problem
+          </p>
+          <button class="signup" onclick="signinHide()">Sign In</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="form">
+      <img src="../assets/images/powerta_logo_updated.png" />
+
+      <input type="email" name="email" placeholder="Email" id="email" />
+
+      <input
+        type="password"
+        name="Password"
+        placeholder="Password"
+        id="password"
+      />
+      <div class="h35 w-ato">
+        <span id="span" class="ft"></span>
+        <span id="spandata"></span>
+      </div>
+      <button class="login_button" id="login-button" onclick="signin()">
+        Sign in
+      </button>
+      <button class="login_btn" id="submit_btn" onclick="submit()">
+        Submit
+      </button>
+
+      <a href="#">Create account</a>
+    </div>
+  </div>
+</body>
+
+<div id="body2">
+  <img class="logo" src="../assets/images/powerta_logo_updated.png" />
+  <div class="nameOfOrg">
+    <span>Who's using Organisation?</span>
+  </div>
+  <div id="organisation"></div>
+  <!-- <div class="card">
+    <img class="profile-pic" src="../assets/images/profile-user.png" alt="Profile Picture">
+    <div class="name">User</div>
+  </div> -->
+  <div class="btn" onclick="">
+    <img class="guest-pic" src="../assets/images/profile-user.png" /><a
+      href
+      class="guest_span"
+      >Guest Mode</a
+    >
+  </div>
+</div>
+
+<div id="AppCards">
+  <div class="cards-list">
+    <div id="card" class="expense-card">
+      <div class="expense-card card_image">
+        <img
+          class="expense-card expenseimg"
+          src="../assets/images/expence-og.png"
+        />
+      </div>
+      <div class="expense-card card_title title-white">
+        <p class="expense-card">Expense</p>
+      </div>
+    </div>
+
+    <div id="card" class="employee-card">
+      <div class="employee-card card_image">
+        <img class="employee-card" src="../assets/images/employee-og.png" />
+      </div>
+      <div class="employee-card card_title title-white">
+        <p class="employee-card">Employee</p>
+      </div>
+    </div>
+
+    <div id="card" class="stock-card">
+      <div class="stock-card card_image">
+        <img class="stock-card stockimg" src="../assets/images/stock-og.png" />
+      </div>
+      <div class="stock-card card_title">
+        <p class="stock-card">Stock</p>
+      </div>
+    </div>
+    <div id="card" class="purchase-card">
+      <div class="purchase-card card_image">
+        <img
+          class="purchase-card purchaseimg"
+          src="../assets/images/purchase-og.png"
+        />
+      </div>
+      <div class="purchase-card card_title title-black">
+        <p class="purchase-card">Purchase</p>
+      </div>
+    </div>
+
+    <div id="card" class="sales-card">
+      <div class="sales-card card_image">
+        <img class="sales-card" src="../assets/images/sales-new.png" />
+      </div>
+      <div class="sales-card card_title title-black">
+        <p class="sales-card">Sales</p>
+      </div>
+    </div>
+
+    <div id="card" class="account-card">
+      <div class="account-card card_image">
+        <img
+          class="account-card accountimg"
+          src="../assets/images/account-og.png"
+        />
+      </div>
+      <div class="account-card card_title title-black">
+        <p class="account-card">Account</p>
+      </div>
+    </div>
+
+    <div id="card" class="business-card">
+      <div class="business-card card_image">
+        <img class="business-card" src="../assets/images/business-og.png" />
+      </div>
+      <div class="business-card card_title title-black">
+        <p class="business-card">My Business</p>
+      </div>
+    </div>
+
+    <div id="card" class="settings-card">
+      <div class="settings-card card_image">
+        <img
+          class="settings-card settingsimg"
+          src="../assets/images/settings-og.png"
+        />
+      </div>
+      <div class="settings-card card_title title-black">
+        <p class="settings-card">Settings</p>
+      </div>
+    </div>
+
+    <div id="card" class="cloud-card">
+      <div class="cloud-card card_image">
+        <img class="cloud-card" src="../assets/images/cloud-og.png" />
+      </div>
+      <div class="cloud-card card_title title-black">
+        <p class="cloud-card">Cloud</p>
+      </div>
+    </div>
+
+    <div id="card" class="report-card">
+      <div class="report-card card_image">
+        <img class="report-card" src="../assets/images/Report-og.png" />
+      </div>
+      <div class="report-card card_title title-black">
+        <p class="report-card">Report</p>
+      </div>
+    </div>
+    <div id="card" class="form-card">
+      <div class="form-card card_image">
+        <img class="form-card" src="../assets/images/devices.png" />
+      </div>
+      <div class="form-card card_title title-black">
+        <p class="form-card">Form</p>
+      </div>
+    </div>
+<script>
+function setDime(w, h) {
+      if (w != undefined) {
+        // $(".sidebar").css("width", (w * 3.5) / 100);
+        $(".bodyy").css("width", w );
+        $(".bodyy").css("height", h );
+      } else console.log("dime not defined");
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+  function final()
+  {
+    var pass = document.getElementById("password").value;
+    var mail = document.getElementById("email").value;
+    var error = document.getElementById("span");
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (pass == "" && mail == "") {
+      error.innerHTML = "Please enter email and password";
+    } else if (mail == "") {
+      error.innerHTML = "You forgot to enter email";
+    } else if (mail != "" && pass != "") {
+      if (re.test(mail.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "It's an invalid email";
+      }
+    } else if (pass == "") {
+      error.innerHTML = "You forgot to enter password";
+    }
+  }
+</script>
+
+<script>
+  Login = new login();
+
+  function signin() {
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
+    final();
+    var count = 0;
+    console.log(email);
+    console.log("login value0", email, pass);
+    window.loginAPI.setLogin(email, pass, (data) => {
+      console.log("success value", data);
+      if (data.length == 0) {
+        var error = document.getElementById("span");
+        error.innerHTML = "Your email or password is wrong, may be both";
+      }
+      var data1 = [];
+      var mainData = [];
+      data1.push(email, pass);
+      mainData.push(data, data1);
+      count++;
+      if (count < 2) {
+        if (data.length == 0) {
+          Login.renderSpan(document.getElementById("spandata"));
+        } else {
+          document.getElementById("body1").style = "display:none";
+          document.getElementById("body2").style = "display:block";
+
+          Login.addData(data);
+          Login.render(document.getElementById("organisation"));
+          Login.setCardOnClick(handler);
+          function handler(event) {
+            console.log(
+              "value of clicked div",
+              event.target.id,
+              event.target.value
+            );
+            Login.getKey(event.target.value);
+          }
+          // window.open(
+          //   "./org.html?data=" +
+          //   encodeURIComponent(JSON.stringify(mainData)),
+          //   "_blank",
+          //   "resizable=no,frame=0"
+          // );
+          // Login.unrenderSpan(document.getElementById("spandata"));
+          // Login.addData(data);
+          // Login.render(document.getElementById("organisation"));
+        }
+      }
+    });
+
+    // window.close();
+    //  window.electronAPI.openmainwindow("src/app.html");
+    // login(document.getElementById("email"),document.getElementById("password"),document.getElementById("key"));
+  }
+
+  // const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+  // const checkedCheckboxes = [];
+
+  // checkboxes.forEach((checkbox) => {
+  //   if (checkbox.checked) {
+  //     checkedCheckboxes.push(checkbox);
+  //   }
+  // });
+
+  // console.log(checkedCheckboxes); // do whatever you want with the checked checkboxes
+
+  //   function login (email,pass,key){
+  //   fetch("http://43.207.50.180:2010/api/v1/users/login", {
+  //     method:"POST",
+  //     body: JSON.stringify({
+  //     email: email,
+  //     pass: pass,
+  //     key: key
+  //   })
+  //   })
+  //   .then((response) => console.log(response.data))
+  //   .then((error) => console.log(error));
+  // }
+</script>
+
+<script>
+  const bodyy = document.querySelector(".bodyy"),
+    banner = bodyy.querySelector(".banner"),
+    form = bodyy.querySelector(".form"),
+    signup = banner.querySelector(".signup");
+
+  signup.addEventListener("click", () => {
+    form.classList.add("secActive");
+    banner.classList.add("secActive");
+  });
+</script>
+<script>
+  // function signinHide() {
+  //   window.close();
+  //   window.electronAPI.openmainwindow("src/app.html");
+  //   window.open(
+  //             "src/app.html",
+  //             "_self",
+  //             "resizable=0,frame=0"
+  //           );
+  // }
+  
+</script>
+<script>
+  function getWidth() {
+    return window.screen.availWidth;
+  }
+  function getHeight() {
+    return window.screen.availHeight;
+  }
+  var current_page = null;
+  $(document).ready(function view() {
+    $(".employee-card").click(redirct);
+    $(".stock-card").click(redirct);
+    $(".expense-card").click(redirct);
+    $(".purchase-card").click(redirct);
+    $(".sales-card").click(redirct);
+    $(".account-card").click(redirct);
+    $(".business-card").click(redirct);
+    $(".settings-card").click(redirct);
+    $(".report-card").click(redirct);
+    $(".form-card").click(redirct);
+    $(".cloud-card").click(redirct);
+  });
+  function redirct(e) {
+    console.log("side navw : clicked ->", e.target.className);
+    if (current_page != e.target.className) {
+      var path = null;
+      var i = 0;
+      do {
+        console.log("e.target....", e.target.classList);
+        switch (e.target.classList[i]) {
+          case "employee-card":
+            window.open(
+              "../Employee/employee_main.html",
+              "_self",
+              "resizable=0,frame=0,fullscreen=yes"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/Employee/emphome.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+          case "stock-card":
+            window.open(
+              "../Stock/stock_main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/Stock/stock.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+          case "expense-card":
+            window.open(
+              "../expense/expense_main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/expense/labour/labour_view.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+          case "purchase-card":
+            window.open(
+              "../purchase/purchase_main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/purchase/purchase_home.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+          case "sales-card":
+            window.open(
+              "../sales/sales_main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/sales/sales_home.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+          case "account-card":
+            window.open(
+              "../Bank/account-main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/Bank/account_labour.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+          case "business-card":
+            window.open(
+              "../My Bussiness/reports_main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/My Bussiness/reports_main.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+          case "settings-card":
+            window.open(
+              "../settings/settings_main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/settings/General/general-view.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+
+          case "devices-card":
+            window.open(
+              "../Devices/devices_main.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/Devices/devices_main.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+
+          case "report-card":
+          window.open(
+              "../Report/report_window.html",
+              "_self",
+              "resizable=0,frame=0"
+            );
+            window.resizeTo(getWidth(), getHeight());
+            // window.electronAPI.openmainwindow(
+            //   "src/Report/report_window.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+
+            case "form-card":
+              window.electronAPI.openmainwindow(
+                "src/Form/business_form.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+              
+           case "cloud-card":
+          window.DriveDatastream.DriveClick((data) => {
+      console.log("drive clicked")});
+            // window.electronAPI.openmainwindow(
+            //   "src/Report/report_window.html"
+            // );
+            // window.resizeTo(getWidth(),getHeight());
+            break;
+        }
+        i++;
+      } while (path == null && i < e.target.classList.length);
+      if (path != null) {
+        current_page = e.target.className;
+      }
+    }
+  }
+</script>

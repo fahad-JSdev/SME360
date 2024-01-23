@@ -1,0 +1,87 @@
+@import"../colors/colors.css";
+.input-field-1{
+  display: inline-grid;
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+  font-size: small;
+  margin-right: 35px;
+}
+.input-field{
+  font-size: small;
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+  display: inline-grid;
+  margin-right: 35px;
+}
+.fields{
+  padding: 10px;
+  margin: 10px;
+  height: 70px;
+}
+.sub-div{
+  padding: 10px;
+  margin: 10px;
+  height: 70px;
+}
+.first-div{
+  padding: 10px;
+  margin: 10px;
+  height: 70px;
+}
+header{
+  padding: 10px;
+  margin: 10px;
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+}
+.date{
+  width: 200px;
+  border-radius: 3px;
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+}
+input{
+  width: 200px;
+  height: 35px;
+  border-radius: 3px;
+  border-width: 1px;
+  border-color: #000000a6;
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+}
+.button:hover {
+  background-color: var(--button-hover);
+  transform: scale(1.04);
+}
+.button {
+  background-color: var(--button-color);
+  border: none;
+  color: var(--button-text-color);
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top:2px;
+  width: 104px;
+  height: 35px;
+  border-radius: 3px;
+  margin-left: 610px;
+  transition: 0.2s ease;
+}
+.container{
+  position: relative;
+  border-radius: 6px;
+  padding: 15px;
+  background-color: #fff;
+}
+.container header{
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.container header::before{
+  content: "";
+  position: absolute;
+  left: 11px;
+  bottom: 2px;
+  height: 3px;
+  width: 130px;
+  border-radius: 8px;
+  background-color: #4070f4;
+}

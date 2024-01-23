@@ -1,0 +1,250 @@
+<link rel="stylesheet" href="../assets/themes/employee.css" />
+<script src="../../widgets/snackbox.js"></script>
+<div class="container1">
+  <div id="tabwrap"></div>
+  <div id="header"></div>
+</div>
+
+<div id="wrapper2" class="ag-theme-alpine">
+
+  <div id="snackbard" class="snackbar">Deleted</div>
+</div>
+<script>
+  SnackboxAlertStyle();
+  Employee_actionbar = new Actionbar();
+
+  Employee_actionbar.addIcon("add_expense", "../assets/images/add-expense.png", "Add Employee");
+  Employee_actionbar.addIcon("export_button", ".././assets/images/export_excel-img.png", "Export");
+  Employee_actionbar.addIcon("import_button", ".././assets/images/import.png", "Import");
+  Employee_actionbar.addIcon(
+    "print_button",
+    ".././assets/images/toolbar-print.png",
+    "Print"
+  );
+  Employee_actionbar.addIcon("delete_button", ".././assets/images/delete.png", "Delete");
+
+  Employee_actionbar.render(document.getElementById("header"));
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_expense":
+        openForm();
+        break;
+      case "export_button":
+        download();
+        break;
+      case "import_button":
+        break;
+      case "print_button":
+        // btnClickedHandlerPrint();
+        break;
+      case "delete_button":
+        BtnclickReject();
+        break;
+    }
+  }
+  Employee_actionbar.setToolbarOnClick(handler);
+
+  window.electronAPI.setTitle("EMPLOYEE");
+  document.getElementById("delete_button").style.display = "none";
+  function BtnclickReject() {
+    var selectedRows = EmployeeHomeGrid.api.getSelectedRows()
+    if (selectedRows) {
+      console.log("row selected on ag grid", selectedRows);
+      for (var i = 0; i < selectedRows.length; i++) {
+        var sqlQuery =
+          "UPDATE employee SET is_deleted='1' WHERE empid=" +
+          selectedRows[i][4] +
+          ";";
+        var value;
+        window.MainDatastream.streamAddEmloyee(
+          sqlQuery,
+          value,
+          (status, data) => { }
+        );
+      }
+    }
+    SnackboxAlert("snackbard");
+  }
+</script>
+<script>
+  tabbar = new Tabbar();
+  tabbar.addTab("employee", "Employee data");
+
+  tabbar.render(document.getElementById("tabwrap"));
+</script>
+<script>
+  function onFilterTextBoxChanged() {
+    EmployeeHomeGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+  }
+  var EmployeeHomeGrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "SlNo", resizable: true, valueGetter: "node.rowIndex + 1" },
+      { headerName: "Name", field: "0", resizable: true },
+      { headerName: "Designation", field: "1", resizable: true },
+      { headerName: "Mobile Number", field: "2", resizable: true },
+      {
+        headerName: "Email ID",
+        field: "3",
+        resizable: true,
+        floatingFilter: true,
+      },
+    ],
+    onRowSelected: onRowSelected,
+    onRowDoubleClicked: openEmployee,
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "multiple", // allow rows to be selected
+    animateRows: true,
+    // other grid options ...
+  };
+  function onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+  function openEmployee(event) {
+    console.log("double click function called", event, ",,,,,,,", event.node.data[4]);
+    window.open(
+      "../Employee/empreg.html?data=" +
+      encodeURIComponent(JSON.stringify([event.node.data[4], "edit"])),
+      "_blank",
+      "resizable=no,frame=0"
+    );
+  }
+  function onRowSelected() {
+    const selectedRows = EmployeeHomeGrid.api.getSelectedRows();
+    if (selectedRows) {
+      console.log(" row selected");
+      // document.getElementById("delete_button").style.display = "flex";
+      document.getElementById("export_button").style.display = "flex";
+      document.getElementById("import_button").style.display = "flex";
+      document.getElementById("print_button").style.display = "flex";
+      document.getElementById("delete_button").style.display = "flex";
+      // document.getElementById("edit_button").style.display = "flex";
+      // document.getElementById("convert_button").style.display="flex";
+      if (selectedRows.length > 1) {
+        console.log("more than one row selected function called");
+        document.getElementById("export_button").style.display = "none";
+        document.getElementById("import_button").style.display = "none";
+        document.getElementById("print_button").style.display = "none";
+        // document.getElementById("edit_button").style.display = "none";
+        // document.getElementById("convert_button").style.display = "none";
+      }
+    }
+  }
+  var GridDiv = document.getElementById("wrapper2");
+  new agGrid.Grid(GridDiv, EmployeeHomeGrid);
+
+  window.MainDatastream.streamemployeeview(
+    "SELECT emp_name,designation,phone_no,email_id,empid FROM employee where is_deleted = '0' ;",
+    (status, data) => {
+      console.log(
+        "streamemployeeview...................." + JSON.parse(data).data
+      );
+      this.employeedata = JSON.parse(data).data;
+      EmployeeHomeGrid.api.setRowData(JSON.parse(data).data);
+    }
+  );
+
+  var inp = document.createElement("input");
+  var root = document.getElementsByClassName("ag-header-row-column-filter");
+  inp.id = "filter-text-box";
+  inp.type = "text";
+  inp.placeholder = "Type a keyword..";
+  inp.oninput = function () {
+    onFilterTextBoxChanged();
+  };
+  root[0].appendChild(inp);
+
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper2").css("width", (w * 96.6) / 100);
+      $("#wrapper2").css("height", (h * 87.7) / 100);
+
+    } else console.log("dime not defined");
+  }
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+
+  function download() {
+
+
+
+    console.log("this.labourdata with amount", this.employeedata)
+
+    var header = [
+      ["Name", "Designation", "Mobile_Number", "Email_ID"],
+    ];
+    window.ExcelDatastream.Exceldata(
+      this.employeedata,
+      header,
+      (data, header) => { }
+    )
+  }
+
+  import_button = document.getElementById("import_button")
+  import_button.addEventListener('click', async () => {
+    await window.ExcelDatastream.ExcelImportClick((data) => {
+      console.log("imported data at landing page", data, data[1], data[1][1])
+
+      var employeeDetails = "";
+      for (var i = 0; i < data.length; i++) {
+        employeeDetails +=
+          "('" +
+          data[i][1].Name +
+          "','" +
+          data[i][1].dob +
+          "','" +
+          data[i][1].address +
+          "','" +
+          data[i][1].city +
+          "','" +
+          data[i][1].state +
+          "','" +
+          data[i][1].district +
+          "','" +
+          data[i][1].pin +
+          "','" +
+          data[i][1].Mobile_Number +
+          "','" +
+          data[i][1].Email_ID +
+          "','" +
+          data[i][1].edu_date +
+          "','" +
+          data[i][1].institute +
+          "','" +
+          data[i][1].last_work +
+          "','" +
+          data[i][1].higher_edu +
+          "','" +
+          data[i][1].presently_employed +
+          "')";
+        if (i < data.length - 1) {
+          employeeDetails += ",";
+        }
+      }
+
+
+      var sqlQuery =
+        "INSERT INTO employee (emp_name,dob,address,city,employee_state,district,pin,phone_no,email_id,higher_edu_date,institute_edu,last_work,higher_edu,presently_employed)";
+
+      console.log("employee value=>", employeeDetails, sqlQuery);
+
+
+      window.MainDatastream.streamAddEmloyee(
+        sqlQuery,
+        employeeDetails,
+        (status, data) => {
+          console.log("streamAddEmloyee", status, data);
+        }
+      );
+    });
+
+  });
+</script>

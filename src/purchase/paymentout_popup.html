@@ -1,0 +1,230 @@
+<html>
+  <script src="../widgets/autoSearchText.js"></script>
+  <link rel="stylesheet" href="../assets/themes/autoSearchText.css" />
+  
+  <link rel="stylesheet" href="../assets/themes/paymentout_popup.css" />
+  <script src="../widgets/snackbox.js"></script>
+<title>PAYMENT OUT</title>
+  <div class="container">
+    <header>
+      Payment Out
+      <label class="fa fa-search" style="font-size: 24px; float: right"></label>
+    </header>
+
+    <form action="#">
+      <div class="form first">
+        <div class="details personal">
+          <div class="details ID">
+            <div class="fields">
+              <div class="input-field">
+               <div id="autocomplete"><input
+                  type="text"
+                  required=""
+                  placeholder="party name"
+                  id="party_id"
+                  onchange="basicrequired('party_id','partyspan')"
+                />
+                <span id="partyspan"></span>
+                </div>
+                
+              </div>
+
+              <!-- <div class="input-field">
+
+                        </div> -->
+
+              <div class="input-field">
+                <label>Payment Type</label>
+                <select
+                  required=""
+                  id="payment_typ"
+                  onchange="basicrequired('payment_typ','paytypspan')"
+                >
+                  <option value="" selected disabled hidden></option>
+                  <option>Cash</option>
+                  <option>UPI</option>
+                  <option>Debit Card</option>
+                </select>
+                <span id="paytypspan"></span>
+              </div>
+
+              <!-- <div class="input-field">
+                        </div> -->
+
+              <div class="input-field">
+                <label>Date</label>
+                <input
+                  type="Date"
+                  id="date_field"
+                  
+                />
+                <span id="dtespan"></span>
+              </div>
+
+              <div class="input-field">
+                <label>Add Description</label>
+                <textarea
+                  name="address"
+                  class="description"
+                  id="desp"
+                  oninput="basicrequired('desp','spandesp')"
+                ></textarea>
+              
+              <span id="spandesp"></span>
+              </div>
+
+              <!-- <div class="input-field">
+                        </div> -->
+
+              <div class="input-field">
+                <label>Paid</label>
+                <input type="number" min="0" id="paid"  oninput="basicrequired('paid','spanpaid')"/>
+                <span id="spanpaid"></span>
+              </div>
+
+
+              <div class="image-upload">
+                <label for="file-input">
+                  <img src="../assets/images/photo-camera.png" />
+                </label>
+                <input id="file-input" type="file" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="buttons-new">
+        <div class="backBtn">
+          <i class="uil uil-navigator"></i>
+          <span class="btnText">Print</span>
+        </div> -->
+      <div class="input-field">
+        <button class="submit" type="button" onclick="PaymentOutSubmit()">
+          <span class="btnText">Save</span>
+          <i class="uil uil-navigator"></i>
+        </input>
+      </div>
+        
+      <div id="snackbox" class="snackbar">saved</div>
+    </form>
+  </div>
+  
+</html>
+<script>
+
+   
+   SnackboxAlertStyle();
+  function basicrequired(InputId, SpanId) {
+    var input = document.getElementById(InputId);
+    var error = document.getElementById(SpanId);
+    if (input.value.trim() == "") {
+      error.innerHTML = "required";
+    } else {
+      error.innerHTML = "";
+    }
+  }
+  function checkRequired(inputArr) {
+    inputArr.forEach((input) => {
+      var error1 = document.getElementById(input.id).nextElementSibling;
+      error1.innerHTML = "required";
+      if (input.value.trim() != "") {
+        error1.innerHTML = "";
+      }
+    });
+  }
+  // function checkdob(input) {
+  //   const re = /^\d{4}([./-])\d{2}\1\d{2}$/;
+  //   var error1 = document.getElementById("dobspan");
+  //   if (re.test(input.value.trim())) {
+  //     error1.innerHTML = "";
+  //   } else {
+  //     error1.innerHTML = "invalid Date";
+  //   }
+  // }
+
+  function PaymentOutSubmit() {
+    var party_id = document.getElementById("party_id").selectedItemId;
+    var party_nme = document.getElementById("party_id").value;
+    var pay_typ = document.getElementById("payment_typ").value;
+    var dte = document.getElementById("date_field").value;
+
+    var des = document.getElementById("desp").value;
+    var paid = document.getElementById("paid").value;
+
+    checkRequired([
+      document.getElementById("party_id"),
+      document.getElementById("payment_typ"),
+      document.getElementById("date_field"),
+      document.getElementById("desp"),
+      document.getElementById("paid"),
+    ]);
+    if (
+      document.getElementById("partyspan").innerHTML === "" &&
+      document.getElementById("paytypspan").innerHTML === "" &&
+      document.getElementById("dtespan").innerHTML === "" &&
+      document.getElementById("spandesp").innerHTML ==="" &&
+      document.getElementById("spanpaid").innerHTML ===""
+    ) {
+      SnackboxAlert("snackbox");
+      var sqlQuery =
+        "INSERT INTO payment_out (party_name,pay_typ,amount,ad_desp,pay_dte,vendor_f_key)";
+      var data_value =
+        "('" +
+        party_nme +
+        "','" +
+        pay_typ +
+        "','" +
+        paid +
+        "','" +
+        des +
+        "','" +
+        dte +
+        "','" +
+        party_id +
+        "')";
+
+      window.MainDatastream.streamPayOut(
+        sqlQuery,
+        data_value,
+        (status, data) => {
+          console.log("addsite", status, data_value);
+        }
+      );
+
+      var party_id = (document.getElementById("party_id").selectedItemId = "");
+      var party_nme = (document.getElementById("party_id").value = "");
+      var pay_typ = (document.getElementById("payment_typ").value = "");
+      var dte = (document.getElementById("date_field").value = "");
+      var des = (document.getElementById("desp").value="");
+      var paid = (document.getElementById("paid").value = "");
+    }
+  }
+
+  window.MainDatastream.streamPayAdd(
+    "SELECT personid,vendor_name FROM vendor ",
+    (status, data) => {
+      var vendor_name = JSON.parse(data).data;
+
+      var list = document.getElementById("party_id");
+      this.inflateAutoCompleateView(list, vendor_name);
+    }
+  );
+  window.electronAPI.setTitle("PAYMENT OUT");
+
+function onFilterTextBoxChanged() {
+  gridOptions5.api.setQuickFilter(
+    document.getElementById("filter-text-box").value
+  );
+}
+
+var inp = document.createElement("input");
+var root = document.getElementsByClassName("ag-header-row-column-filter");
+inp.id = "filter-text-box";
+inp.type = "text";
+inp.placeholder = "Type a keyword..";
+inp.oninput = function () {
+  onFilterTextBoxChanged();
+};
+root[0].appendChild(inp);
+
+
+</script>

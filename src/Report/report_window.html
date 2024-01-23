@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="../assets/themes/main.css" />
+<link rel="stylesheet" href="../assets/themes/account_labour.css" />
+
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<html lang="en" dir="ltr">
+  <script src="../widgets/autoSearchText.js"></script>
+  <script src="../widgets/actionbar.js"></script>
+  <script src="../widgets/tab.js"></script>
+  <script src="../widgets/gridHelper.js"></script>
+  <script src="../../node_modules/list.js/dist/list.min.js"></script>
+  <script src="../widgets/snackbox.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REPORT</title>
+  </head>
+  <body>
+
+    <div class="container3" id="container3">
+      <div id="tabwrap"></div>
+    
+      <div id="header"></div>
+    </div>
+
+    <div class="MainParent">
+      <div class="sidebar close" id="sidebar">
+
+        <ul class="nav-links">
+          <li class="main-menu">
+            <a href="#">
+              <img
+                src="../assets/images/home.png"
+                alt="home"
+                class="home"
+                onclick=""
+              />
+              <span class="link_name home">Apps</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name home" href="#">Apps</a></li>
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="reporthome">
+              <img
+                src="../assets/images/invoice1.png"
+                alt="reporthome"
+                class="reporthome"
+                onclick=""
+              />
+              <span class="link_name reporthome">Home</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name reporthome" href="#">Home</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="labourcontent tabcontent1" id="labour">
+        <div id="t5" class="container2">
+          <div class="list_view" id="list_view" href="#">
+            <div id="site-grid-side">
+              <input
+                id="filter-text-box2"
+                class="search"
+                placeholder="Search"
+                style="position: fixed"
+              />
+      
+              <ul class="list" style="margin-top: 2rem"></ul>
+            </div>
+      <section class="home-section" id="home-section">
+        <div class="drpdwn">
+          <label>Select Report : </label>
+    
+          <select id="dropdown-select" >
+            <option value="" disabled selected="" hidden></option>
+            <option value="option1" disabled>GST Reports</option>
+            <option value="option1">GSTR-1</option>
+            <option value="option2">GSTR-2</option>
+          </select>
+        </div>
+      </section>
+    </div>   
+
+   
+      
+      
+    </div>
+      </div></div></body>
+  </body>
+  </div>
+</div>
+</html>
+  <script>
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+      arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+      });
+    }
+
+    // function openaddexpensechild() {
+    //   window.open("./project/addexpense.html", "-blank", "resizable=0,frame=0");
+    // }
+
+   
+ 
+    var current_page = null;
+    $(document).ready(function view() {
+      $(".view").click(menuOnClick);
+      $(".add_site").click(menuOnClick);
+      $(".home").click(menuOnClick);
+      $(".reporthome").click(menuOnClick);
+    });
+    function menuOnClick(e) {
+      {
+        console.log("side navw : clicked ->", e, e.target.className);
+        if (current_page != e.target.className) {
+          var path = null;
+          var i = 0;
+          do {
+            switch (e.target.classList[i]) {
+              case "add_site":
+                path = "./Project/project-view.html";
+                break;
+              case "view":
+                path = "./Labour/labour_view.html";
+                break;
+              case "home":
+                path = "../app.html"
+                break;
+              case "reporthome":
+                window.open(
+                "../Report/report_window.html",
+                "_self",
+                "resizable=0,frame=0"
+                );
+                window.resizeTo(getWidth(), getHeight());
+                break;
+            }
+            i++;
+          } while (path == null && i < e.target.classList.length);
+          if (path != null) {
+            $(".home-section").load(path);
+            current_page = e.target.className;
+          }
+        }
+      }
+    }
+  
+    //Set all css dimen here
+    console.log("start");
+    function getWidth() {
+      return window.screen.availWidth;
+    }
+    function getHeight() {
+      return window.screen.availHeight;
+    }
+
+    function setDime(w, h) {
+      if (w != undefined) {
+        $(".sidebar").css("width", (w * 3.5) / 100);
+        $(".home-section").css("width", (w * 96.5) / 100);
+        $(".home-section").css("left", (w * 3.5) / 100);
+      } else console.log("dime not defined");
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+  </script>
+  <script>
+    reportbar = new Actionbar();
+  
+    // reportbar.addIcon("select_report", "../assets/images/report-icon.png","Select Report" );
+    reportbar.addIcon("generate_report", "../assets/images/report-generate.png","Generate Report");
+
+    
+    reportbar.render(document.getElementById("header"));
+    function handler(event) {
+      switch (event.target.id) {
+        // case "select_report":
+          
+        //   reportGstGenerate()
+        //   break;
+  
+        case "generate_report":
+        dropdownChanged()
+          break;
+      }
+    }
+  
+    reportbar.setToolbarOnClick(handler);
+  
+    var reportTab;
+    if (reportTab == undefined) {
+      reportTab = new Tabbar();
+      reportTab.addTab("Report", "REPORT");
+    }
+    reportTab.render(document.getElementById("tabwrap"));
+    </script>
+
+<script>
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper2").css("width", (w * 80.5) / 100);
+      $("#wrapper2").css("height", (h * 87.2) / 100);
+      $(".container2").css("height", (h * 86.5) / 100);
+      $("#site-grid-side").css("height", (h * 85) / 100);
+      // $("#wrapper3").css("width", (w * 96.5) / 100);
+      // $("#wrapper3").css("height", (h * 86) / 100);
+    } else console.log("dime not defined");
+  }
+
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+</script>
+<script>
+        var options = {
+          valueNames: ["0"],
+          // Since there are no elements in the list, this will be used as template.
+          item: '<li  ><div class="0 card" onmouseover="hover(this)" onmouseout="hoverOff(this)"></div></li>',
+        };2
+
+  function itemClick(item) {
+    if (item.target.childNodes[0].innerHTML == "All") {
+      console.log(
+        "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+        item.currentTarget.childNodes[0].innerHTML
+      );
+      onFilterTextClickChanged();
+    } else {
+      console.log(item.currentTarget.childNodes[0].innerHTML);
+      onFilterTextClickChanged(
+        item.currentTarget.childNodes[0].innerHTML
+      );
+    }
+  }
+  var values = [
+    {
+      0: "All",
+      1: "",
+      2: "",
+    },
+  ];
+
+  var userList = new List("site-grid-side", options, values);
+
+  window.MainDatastream.streamGetData(
+    "select name,acc_no,bank from accountings ;",
+    (status, data) => {
+      console.log(
+        "streamLabourPending....................",
+        JSON.parse(data).data
+      );
+      var sidelist = JSON.parse(data).data;
+
+      console.log(
+        "test222222222222222222222222222222222222222222222222",
+        sidelist
+      );
+      userList.add(sidelist);
+      $(".card").click(itemClick);
+    }
+  );
+
+  function hover(element) {
+    element.style.backgroundColor = "rgba(33,150,243,0.1)";
+  }
+  function hoverOff(element) {
+    element.style.backgroundColor = "";
+  }
+</script>
+
+<script>
+  $(document).ready(function () {
+    $(".list_name").click(function (ev) {
+      $(".site ul li").removeClass("selected");
+      $(ev.currentTarget).parent("li").addClass("selected");
+    });
+  });
+</script>
+
+<script>
+   document.getElementById("") 
+  function reportGenerate(){
+    console.log("function called")
+    window.MainDatastream.streamGetDataOnce(
+             "select customer.gst_no,customer.client_name,invoice.payment_type_in,invoice.invoice_id,invoice.issue_date_in,invoice.total_amount_in,invoice.place_of_supply_in,invoice_list.cgst_tax_amt_in,invoice_list.sgst_tax_amt_in,invoice_list.igst_tax_amt_in from invoice left join customer on invoice.customer_f_key=customer.client_id left join invoice_list on invoice.invoice_id=invoice_list.invoice_f_id;",(status,data)=>{
+              console.log("result",JSON.parse(data).data)
+              var streamData=JSON.parse(data).data
+              var lastArray=[]
+              var invoiceId=streamData[0][3];
+              var cgstSum=0
+              var sgstSum=0
+              var igstSum=0
+
+              for (var i=0;i<streamData.length;i++){
+                if(invoiceId==streamData[i][3]){
+                 if(streamData[i][7])
+                 cgstSum+=parseFloat(streamData[i][7])
+                 if(streamData[i][8])
+                 sgstSum+=parseFloat(streamData[i][8])
+                 if(streamData[i][9])
+                 igstSum+=parseFloat(streamData[i][9])
+                 if(i==streamData.length-1){
+                  streamData[i][7]=cgstSum
+                  streamData[i][8]=sgstSum
+                  streamData[i][9]=igstSum
+                  lastArray.push(streamData[i])
+                 }
+               }
+               else{
+  
+                streamData[i-1][7]=cgstSum
+                streamData[i-1][8]=sgstSum
+                streamData[i-1][9]=igstSum
+                lastArray.push(streamData[i-1])
+                invoiceId=streamData[i][3]
+                cgstSum=0
+                sgstSum=0
+                igstSum=0
+               if(streamData[i][7])
+                cgstSum+=parseFloat(streamData[i][7])
+               if(streamData[i][8])
+                sgstSum+=parseFloat(streamData[i][8])
+               if(streamData[i][9])
+               igstSum+=parseFloat(streamData[i][9])
+
+              }
+            }
+console.log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",lastArray)
+var args = {
+  items:""
+}
+var items = [];
+          for (var i = 0; i < lastArray.length; i++) {
+            items.push({
+              gstin: lastArray[i][0],
+                PartyName:lastArray[i][1],
+                TransactionType:lastArray[i][2],
+                InvoiceNo: lastArray[i][3],
+                InvoiceDate: lastArray[i][4],
+                InvoiceValue: lastArray[i][5],
+                Rate:1234,
+                CessRate: 1234,
+                TaxableValue: 1234,
+                ReverseCharge: 1234,
+                IntegratedTaxAmount: lastArray[i][9],
+                CentralTaxAmount: lastArray[i][7],
+                StateTaxAmount: lastArray[i][8],
+                CessAmount: 1234,
+                PlaceofSupply: lastArray[i][6],
+            });
+          }
+          args.items = items;
+          console.log("res value is defined as=>", args);
+          
+          window.electronAPI.generatePdf(args, "./jstemplate/GST1R.html");
+
+          
+          window.electronAPI.handleCounter((ev, data) => {});
+        }
+
+      )
+
+     
+          };
+    
+  </script>
+
+   <script>
+      function reportGstGenerate(){
+    console.log("function called")
+    window.MainDatastream.streamGetDataOnce(
+             "select customer.gst_no,customer.client_name,invoice.payment_type_in,invoice.invoice_id,invoice.issue_date_in,invoice.total_amount_in,invoice.place_of_supply_in,invoice_list.cgst_tax_amt_in,invoice_list.sgst_tax_amt_in,invoice_list.igst_tax_amt_in from invoice left join customer on invoice.customer_f_key=customer.client_id left join invoice_list on invoice.invoice_id=invoice_list.invoice_f_id;",(status,data)=>{
+              console.log("result",JSON.parse(data).data)
+              var streamData=JSON.parse(data).data
+              var lastArray=[]
+              var invoiceId=streamData[0][3];
+              var cgstSum=0
+              var sgstSum=0
+              var igstSum=0
+
+              for (var i=0;i<streamData.length;i++){
+                if(invoiceId==streamData[i][3]){
+                 if(streamData[i][7])
+                 cgstSum+=parseFloat(streamData[i][7])
+                 if(streamData[i][8])
+                 sgstSum+=parseFloat(streamData[i][8])
+                 if(streamData[i][9])
+                 igstSum+=parseFloat(streamData[i][9])
+                 if(i==streamData.length-1){
+                  streamData[i][7]=cgstSum
+                  streamData[i][8]=sgstSum
+                  streamData[i][9]=igstSum
+                  lastArray.push(streamData[i])
+                 }
+               }
+               else{
+  
+                streamData[i-1][7]=cgstSum
+                streamData[i-1][8]=sgstSum
+                streamData[i-1][9]=igstSum
+                lastArray.push(streamData[i-1])
+                invoiceId=streamData[i][3]
+                cgstSum=0
+                sgstSum=0
+                igstSum=0
+               if(streamData[i][7])
+                cgstSum+=parseFloat(streamData[i][7])
+               if(streamData[i][8])
+                sgstSum+=parseFloat(streamData[i][8])
+               if(streamData[i][9])
+               igstSum+=parseFloat(streamData[i][9])
+
+              }
+            }
+console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",lastArray)
+var args = {
+  items:""
+}
+var items = [];
+          for (var i = 0; i < lastArray.length; i++) {
+            items.push({
+              gstin: lastArray[i][0],
+                PartyName:lastArray[i][1],
+                TransactionType:lastArray[i][2],
+                InvoiceNo: lastArray[i][3],
+                InvoiceDate: lastArray[i][4],
+                InvoiceValue: lastArray[i][5],
+                Rate:1234,
+                CessRate: 1234,
+                TaxableValue: 1234,
+                ReverseCharge: 1234,
+                IntegratedTaxAmount: lastArray[i][9],
+                CentralTaxAmount: lastArray[i][7],
+                StateTaxAmount: lastArray[i][8],
+                CessAmount: 1234,
+                AdditionalCessAmount:1234,
+                PlaceofSupply: lastArray[i][6],
+            });
+          }
+          args.items = items;
+          console.log("res value is defined as=>", args);
+          
+          window.electronAPI.generatePdf(args, "./jstemplate/GSTR2.html");
+
+          
+          window.electronAPI.handleCounter((ev, data) => {});
+        }
+
+      )
+     
+          };
+   </script>
+   <script> 
+function dropdownChanged() {
+  var dropdown = document.getElementById("dropdown-select");
+  var selectedOption = dropdown.value;
+
+  switch (selectedOption) {
+    case "option1":
+      reportGenerate()
+      console.log("Option 1 selected",reportGenerate);
+      break;
+
+    case "option2":
+      reportGstGenerate()
+      console.log("Option 2 selected");
+      break;
+
+    default:
+      // Code to execute when no option is selected
+      console.log("No option selected");
+      break;
+  }
+}
+
+
+
+   </script> 

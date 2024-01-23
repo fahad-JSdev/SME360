@@ -1,0 +1,781 @@
+<link rel="stylesheet" href="../../assets/themes/autoSearchText.css" />
+<link rel="stylesheet" href="../../assets/themes/addLabour.css" />
+<script src="../../widgets/autoSearchText.js"></script>
+<script src="../../widgets/snackbox.js"></script>
+<title>LABOUR ACCOUNT</title>
+<body>
+  <div class="main-container">
+    <header>
+      Labour Account
+      <label class="fa fa-search" style="font-size: 24px; float: right"></label>
+      <img
+        src="../../assets/images/print3.png"
+        alt="print button"
+        id="print_button"
+        class="print_button"
+        title="print"
+        onclick=""
+      />
+      <img
+        src="../../assets/images/trash.png"
+        alt="delete button"
+        id="delete_button"
+        class="edit_button"
+        title="delete"
+        onclick="deleteFunction()"
+      />
+      <img
+        src="../../assets/images/approved.png"
+        alt="approve button"
+        id="approve_button"
+        class="approve_button"
+        title="approve"
+        onclick="approveFunction()"
+      />
+      <img
+        src="../../assets/images/color_edit.png"
+        alt="edit button"
+        id="edit_button"
+        class="edit_button"
+        title="Edit"
+        onclick="editFunction()"
+      />
+    </header>
+
+    <br />
+    <form action="">
+      <div id="labour_account">
+        <div class="input-field">
+          <div class="autocomplete">
+            <input
+              id="labour"
+              type="text"
+              name="labour"
+              placeholder="labour name"
+              oninput="checkOwnerName('labour','locspan')"
+            />
+            <span id="locspan"></span>
+          </div>
+        </div>
+        <div class="input-field" style="height: 75px">
+          <label>Date</label>
+          <input
+            id="date"
+            type="date"
+            placeholder="Enter your Designation"
+            required=""
+            oninput="checkDate('date','datespan')"
+          /><br /><span id="datespan"></span>
+        </div>
+        <div class="input-field-large" id="input-field-sitename">
+          <div class="autocomplete">
+            <input
+              id="site"
+              type="text"
+              name="site"
+              placeholder="site name"
+              oninput="checkOwnerName('site','namespan')"
+            /><br />
+            <span id="namespan"></span>
+          </div>
+        </div>
+
+        <div class="fields">
+          <div class="input-field">
+            <label>Wage</label>
+            <input
+              id="wage"
+              type="number"
+              min="0"
+              placeholder="0000.00"
+              oninput="this.value=this.value=(this.value   < 0) ? (1/1) : this.value;"
+            />
+          </div>
+
+          <div class="input-field">
+            <!--  -->
+            <label>OT Wage</label>
+            <input
+              id="ot-wage"
+              type="number"
+              min="0"
+              placeholder="0000.00"
+              oninput="this.value=this.value=(this.value   < 0) ? (1/1) : this.value;"
+            />
+          </div>
+
+          <div class="input-field">
+            <label>No. of Days</label>
+            <input
+              id="n-days"
+              type="number"
+              min="0"
+              placeholder="000"
+              oninput="this.value=this.value=(this.value   < 0) ? (1/1) : this.value;"
+            />
+          </div>
+
+          <div class="input-field">
+            <label>OT Hour</label>
+            <input
+              id="ot-hour"
+              type="number"
+              min="0"
+              placeholder="00"
+              oninput="this.value=this.value=(this.value   < 0) ? (1/1) : this.value;"
+            />
+          </div>
+
+          <div class="input-field">
+            <label>TA/DA</label>
+            <input
+              id="ta-da"
+              type="number"
+              min="0"
+              placeholder="0000.00"
+              oninput="this.value=this.value=(this.value   < 0) ? (1/1) : this.value;"
+            />
+          </div>
+
+          <div class="input-field">
+            <label>Advance</label>
+            <input
+              id="advance"
+              type="number"
+              min="0"
+              placeholder="00000.00"
+              oninput="this.value=this.value=(this.value   < 0) ? (1/1) : this.value;"
+            />
+          </div>
+        </div>
+
+        <!-- <div class="input-field">
+          <label
+            >Total Amount : <span class="largeText">000000.00</span>
+          </label>
+        </div> -->
+        <button
+          type="button"
+          class="nextBtn"
+          id="new-labour"
+          onclick="toggle()"
+        >
+          <span class="btnText">ADD NEW LABOUR</span>
+          <i class="uil uil-navigator"></i>
+        </button>
+        <button
+          type="button"
+          id="submit"
+          class="nextBtn"
+          onclick="LabourExpSubmit()"
+        >
+          <span class="btnText">ADD</span>
+          <i class="uil uil-navigator"></i>
+        </button>
+        <div id="snackbar" class="snackbar">Submitted</div>
+      </div>
+    </form>
+    <form action="#">
+      <div class="form first">
+        <div class="details personal">
+          <div id="add_labour">
+            <div class="input-field">
+              <label>Name</label>
+              <input
+                id="name-input"
+                type="text"
+                pattern="[A-Za-z]{1,255}"
+                placeholder="Enter Name"
+                required=""
+                list="name"
+                oninput="checkOwnerName('name-input','labname')"
+              />
+              <span id="labname"></span>
+            </div>
+            <div class="input-field">
+              <label>Mobile Number</label>
+              <input
+                id="tel-no"
+                type="tel"
+                placeholder="Enter your Mobile number"
+                required
+                maxlength="10"
+                oninput="checkPhone('tel-no','mobilespan')"
+              />
+              <span id="mobilespan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>Designation</label>
+
+              <select
+                required
+                id="desg"
+                onchange="basicrequired('desg','desspan')"
+              >
+                <option value="" disabled selected="" hidden></option>
+                <option value="helper">helper</option>
+                <option value="manager">manager</option>
+                <option value="daily wager">daily wager</option>
+              </select>
+              <span id="desspan"></span>
+            </div>
+
+            <div class="input-field-large">
+              <label>Address</label>
+              <input
+                id="address"
+                type="text"
+                placeholder="Enter your Address"
+                required=""
+                oninput="addr('address','adresspan')"
+              />
+              <span id="adresspan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>State</label>
+              <select
+                required=""
+                id="state"
+                onchange="basicrequired('state','statespan')"
+              >
+                <option disabled="" selected="" value="" hidden>
+                  Select State
+                </option>
+                <option value="kerala">Kerala</option>
+                <option value="tamilnadu">Tamilnadu</option>
+                <option value="karnataka">Karnataka</option>
+              </select>
+              <span id="statespan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>District</label>
+              <input
+                id="district"
+                type="text"
+                placeholder="Enter your District"
+                required=""
+                oninput="checkLocationInput('district','districtspan')"
+              /><span id="districtspan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>Pin</label>
+              <input
+                id="pin"
+                type="tel"
+                placeholder="Enter your Pin Code"
+                required=""
+                oninput="checkPin('pin','pinspan')"
+              />
+              <span id="pinspan"></span>
+            </div>
+            <button
+              type="button"
+              class="nextBtn"
+              id="backBtnn"
+              onclick="toggle1()"
+            >
+              <span class="btnText">BACK</span>
+              <i class="uil uil-navigator"></i>
+            </button>
+            <button type="button" class="nextBtn" onclick="LabourSubmit()">
+              <span class="btnText">ADD</span>
+              <i class="uil uil-navigator"></i>
+            </button>
+            <div id="snackbar" class="snackbar">Submitted</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    SnackboxAlertStyle();
+    var date = document.getElementById("date");
+    var site_name = document.getElementById("site");
+    var wage = document.getElementById("wage");
+    var ot_wage = document.getElementById("ot-wage");
+    var no_of_days = document.getElementById("n-days");
+    var ot_hour = document.getElementById("ot-hour");
+    var ta_da = document.getElementById("ta-da");
+    var advance = document.getElementById("advance");
+    var lab_name = document.getElementById("labour");
+    var submit_button = document.getElementById("submit");
+    var edit_button = document.getElementById("edit_button");
+    var delete_button = document.getElementById("delete_button");
+    var aprove_button = document.getElementById("approve_button");
+    var print_button = document.getElementById("print_button");
+    print_button.style.display = "none";
+    edit_button.style.display = "none";
+    delete_button.style.display = "none";
+    aprove_button.style.display = "none";
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataString = urlParams.get("data");
+    var clickdata_id = JSON.parse(decodeURIComponent(dataString));
+    console.log("data from edit=>", clickdata_id);
+
+    if (clickdata_id) {
+      if (clickdata_id[1] == "pending" || "edit") {
+        document.getElementById("new-labour").style.display = "none";
+        submit_button.style.display = "none";
+
+        edit_button.style.display = "block";
+        if (clickdata_id[1] == "pending") {
+          delete_button.style.display = "block";
+          aprove_button.style.display = "block";
+          print_button.style.display = "block";
+        }
+
+        window.MainDatastream.streamGetData(
+          "SELECT  labour_account.advance, to_char(labour_account.lab_dat,'YYYY-MM-DD') as lab_dat ,site.site_name,labour.labour_name,labour_account.wage,labour_account.ot_wage,labour_account.no_of_days,labour_account.ot_hour,labour_account.ta_da,labour_account.site_f_key,labour_account.labour_f_key  FROM labour_account LEFT JOIN site ON labour_account.site_f_key=site.site_id LEFT JOIN labour ON labour_account.labour_f_key=labour.labour_id WHERE labour_account.labour_account_id =  " +
+            clickdata_id[0] +
+            ";",
+          (status, data) => {
+            var labData = JSON.parse(data).data;
+            console.log("data from labour=>", labData);
+            date.value = labData[0][1];
+            lab_name.value = labData[0][3];
+            lab_name.selectedItemId = labData[0][10];
+            advance.value = labData[0][0];
+            ta_da.value = labData[0][8];
+            ot_hour.value = labData[0][7];
+            no_of_days.value = labData[0][6];
+            ot_wage.value = labData[0][5];
+            wage.value = labData[0][4];
+            site_name.value = labData[0][2];
+            site_name.selectedItemId = labData[0][9];
+            date.disabled = true;
+            lab_name.disabled = true;
+            advance.disabled = true;
+            ta_da.disabled = true;
+            ot_hour.disabled = true;
+            no_of_days.disabled = true;
+            ot_wage.disabled = true;
+            wage.disabled = true;
+            site_name.disabled = true;
+            if (clickdata_id[1] == "edit") {
+              console.log("data from table is edit");
+              editFunction();
+            }
+          }
+        );
+      }
+    }
+
+    function editFunction() {
+      console.log("edit function called");
+      submit_button.style.display = "block";
+
+      edit_button.style.display = "none";
+      submit_button.innerText = "Update";
+      delete_button.style.display = "none";
+      approve_button.style.display = "none";
+      print_button.style.display = "none";
+
+      date.disabled = false;
+      lab_name.disabled = false;
+      advance.disabled = false;
+      ta_da.disabled = false;
+      ot_hour.disabled = false;
+      no_of_days.disabled = false;
+      ot_wage.disabled = false;
+      wage.disabled = false;
+      site_name.disabled = false;
+    }
+    function deleteFunction() {
+      var sqlQuery =
+        "UPDATE labour_account SET is_deleted='1' WHERE labour_account_id=" +
+        clickdata_id[0] +
+        ";";
+      var value;
+      console.log("data deleted=>", sqlQuery);
+      window.MainDatastream.streamProjectButtonClick(
+        sqlQuery,
+        value,
+        (status, data) => {}
+      );
+      window.close();
+    }
+    function approveFunction() {
+      var sqlQuery =
+        "UPDATE labour_account SET user_perm='1' WHERE labour_account_id=" +
+        clickdata_id[0] +
+        ";";
+      var value;
+      window.MainDatastream.streamProjectButtonClick(
+        sqlQuery,
+        value,
+        (status, data) => {}
+      );
+      window.close();
+    }
+    document.getElementById("add_labour").style.display = "none";
+
+    function toggle() {
+      document.getElementById("add_labour").style.display = "flex";
+      document.getElementById("labour_account").style.display = "none";
+    }
+    document.getElementById("labour_account").style.display = "flex";
+
+    function toggle1() {
+      document.getElementById("add_labour").style.display = "none";
+      document.getElementById("labour_account").style.display = "flex";
+    }
+    //============================================================
+    function isFutureDate(idate) {
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      var mm = today.getMonth(); // Months start at 0!
+      var dd = today.getDate();
+      idate = idate.split("-");
+
+      console.log("ooooooooooooooooo", today, " - ", idate);
+      idate = new Date(idate[2], idate[1] - 1, idate[0]).getTime();
+      today = new Date(dd, mm, yyyy).getTime();
+      console.log(
+        "zzzzzzzzzzzzzzzz",
+        today - idate < 0,
+        " - ",
+        idate,
+        " ",
+        today
+      );
+      return today - idate < 0;
+    }
+
+    //==================================================================
+    function checkLocationInput(InputId, SpanId) {
+      var pattern = /^[a-zA-Z ]*$/g;
+      input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      if (pattern.test(input.value.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "Only Letters Allowed";
+      }
+    }
+    //------------------Address------------------
+    function addr(InputId, SpanId) {
+      var input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      if (input.value.trim() == "") {
+        error.innerHTML = "required";
+      } else {
+        error.innerHTML = "";
+      }
+    }
+    //check name is valid
+    function checkOwnerName(InputId, SpanId) {
+      var pattern = /^[a-zA-Z ]{1,50}$/;
+      input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      if (pattern.test(input.value.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "Invalid Name";
+      }
+    }
+
+    //check phone number is valid
+    function checkPhone(InputId, SpanId) {
+      var pattern = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6-9]\d{9}$/;
+      input = document.getElementById(InputId);
+
+      var error = document.getElementById(SpanId);
+      if (pattern.test(input.value.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "Invalid Phone Number";
+      }
+    }
+
+    //check email is valid
+    function checkEmail(InputId, SpanId) {
+      const pattern =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      input = document.getElementById(InputId);
+
+      var error = document.getElementById(SpanId);
+      if (pattern.test(input.value.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "Invalid Email";
+      }
+    }
+
+    //check email is valid
+    function checkPin(InputId, SpanId) {
+      const pattern = /^[1-9]{1}\d{2}\s?\d{3}$/;
+      input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      if (pattern.test(input.value.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "Invalid Pin";
+      }
+    }
+
+    //check date is valid
+    function checkDate(InputId, SpanId) {
+      var pattern =
+        /(0[1-9]|[12][0-9]|3[01])[\/](0[1-9]|1[012])[\/]201[4-9]|20[2-9][0-9]/;
+      input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      if (pattern.test(input.value.trim())) {
+        if (isFutureDate(input.value.trim())) {
+          error.innerHTML = "Date can't be in future";
+        } else {
+          error.innerHTML = "";
+        }
+      } else {
+        error.innerHTML = "Invalid Date";
+      }
+    }
+
+    function basicrequired(InputId, SpanId) {
+      var input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      if (input.value.trim() == "") {
+        error.innerHTML = "required";
+      } else {
+        error.innerHTML = "";
+      }
+    }
+    function checkRequired(inputArr) {
+      inputArr.forEach((input) => {
+        var error1 = document.getElementById(input.id).nextElementSibling;
+        error1.innerHTML = "required";
+        if (input.value.trim() != "") {
+          error1.innerHTML = "";
+        }
+      });
+    }
+
+    function LabourSubmit() {
+      var name = document.getElementById("name-input").value;
+      var mobile = document.getElementById("tel-no").value;
+      var designation = document.getElementById("desg").value;
+      var address = document.getElementById("address").value;
+      var state = document.getElementById("state").value;
+      var district = document.getElementById("district").value;
+      var pin = document.getElementById("pin").value;
+      checkRequired([
+        document.getElementById("name-input"),
+        document.getElementById("tel-no"),
+        document.getElementById("desg"),
+        document.getElementById("address"),
+        document.getElementById("district"),
+        document.getElementById("pin"),
+        document.getElementById("state"),
+      ]);
+      if (
+        document.getElementById("labname").innerHTML === "" &&
+        document.getElementById("mobilespan").innerHTML === "" &&
+        document.getElementById("adresspan").innerHTML === "" &&
+        document.getElementById("statespan").innerHTML === "" &&
+        document.getElementById("districtspan").innerHTML === "" &&
+        document.getElementById("pinspan").innerHTML === "" &&
+        document.getElementById("desspan").innerHTML === ""
+      ) {
+        SnackboxAlert("snackbar");
+
+        var sqlQuery =
+          "INSERT INTO labour (labour_name,mobile_no,designation,adress,labour_state,district,pin)";
+        var data_value =
+          "('" +
+          name +
+          "','" +
+          mobile +
+          "','" +
+          designation +
+          "','" +
+          address +
+          "','" +
+          state +
+          "','" +
+          district +
+          "','" +
+          pin +
+          "')";
+
+        window.MainDatastream.streamLabourAddExpenseValue(
+          sqlQuery,
+          data_value,
+          (status, data) => {
+            console.log(
+              "streamLabourAddExpense333333333333333333333333333333333333333",
+              status,
+              data
+            );
+          }
+        );
+        document.getElementById("name-input").value = "";
+        document.getElementById("tel-no").value = "";
+        document.getElementById("desg").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("state").value = "";
+        document.getElementById("district").value = "";
+        document.getElementById("pin").value = "";
+
+        document.getElementById("add_labour").style.display = "none";
+        document.getElementById("labour_account").style.display = "flex";
+      }
+    }
+
+    function LabourExpSubmit() {
+      var date = document.getElementById("date").value;
+
+      var site_id = document.getElementById("site").selectedItemId;
+      var wage = document.getElementById("wage").value;
+      var ot_wage = document.getElementById("ot-wage").value;
+      var no_of_days = document.getElementById("n-days").value;
+      var ot_hour = document.getElementById("ot-hour").value;
+      var ta_da = document.getElementById("ta-da").value;
+      var advance = document.getElementById("advance").value;
+      var lab_id = document.getElementById("labour").selectedItemId;
+      checkRequired([
+        document.getElementById("date"),
+        document.getElementById("site"),
+        document.getElementById("labour"),
+      ]);
+      if (
+        document.getElementById("namespan").innerHTML === "" &&
+        document.getElementById("datespan").innerHTML === "" &&
+        document.getElementById("locspan").innerHTML === ""
+      ) {
+        SnackboxAlert("snackbar");
+        if (clickdata_id) {
+          if (clickdata_id[1] == "pending" || "expense") {
+            var sql_query =
+              "UPDATE labour_account SET advance=" +
+              "'" +
+              advance +
+              "'" +
+              "," +
+              "lab_dat=" +
+              "'" +
+              date +
+              "'" +
+              "," +
+              "site_f_key=" +
+              "'" +
+              site_id +
+              "'" +
+              "," +
+              "wage=" +
+              "'" +
+              wage +
+              "'" +
+              "," +
+              "ot_wage=" +
+              "'" +
+              ot_wage +
+              "'" +
+              "," +
+              "no_of_days=" +
+              "'" +
+              no_of_days +
+              "'" +
+              "," +
+              "ot_hour=" +
+              "'" +
+              ot_hour +
+              "'" +
+              "," +
+              "ta_da=" +
+              "'" +
+              ta_da +
+              "'" +
+              "," +
+              "labour_f_key=" +
+              "'" +
+              lab_id +
+              "'" +
+              " " +
+              "WHERE labour_account.labour_account_id=" +
+              clickdata_id[0] +
+              ";";
+            console.log("deleted value queries=>", sqlQuery);
+            var value;
+            window.MainDatastream.streamAddData(
+              sql_query,
+              value,
+              (status, data) => {}
+            );
+            document.getElementById("snackbar").innerText = "UPDATED";
+          }
+        } else {
+          var sqlQuery =
+            "INSERT INTO labour_account (advance,lab_dat,site_f_key,labour_f_key,wage,ot_wage,no_of_days,ot_hour,ta_da)";
+          var data_value =
+            "('" +
+            advance +
+            "','" +
+            date +
+            "','" +
+            site_id +
+            "','" +
+            lab_id +
+            "','" +
+            wage +
+            "','" +
+            ot_wage +
+            "','" +
+            no_of_days +
+            "','" +
+            ot_hour +
+            "','" +
+            ta_da +
+            "') ";
+          console.log(
+            "qwertyuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
+            data_value
+          );
+          window.MainDatastream.streamLabourAddExpenseValue(
+            sqlQuery,
+            data_value,
+            (status, data) => {
+              console.log(
+                "addsite2222222222222222222222222222222222222222222222222",
+                status,
+                data
+              );
+            }
+          );
+          document.getElementById("site").value = "";
+          document.getElementById("wage").value = "";
+          document.getElementById("ot-wage").value = "";
+          document.getElementById("n-days").value = "";
+          document.getElementById("ot-hour").value = "";
+          document.getElementById("ta-da").value = "";
+          document.getElementById("advance").value = "";
+          document.getElementById("labour").value = "";
+        }
+        SnackboxAlert("snackbar");
+      }
+    }
+
+    window.MainDatastream.streamAddBill(
+      "SELECT labour_id,labour_name FROM labour",
+      (status, data) => {
+        this.inflateAutoCompleateView(
+          document.getElementById("labour"),
+          JSON.parse(data).data
+        );
+      }
+    );
+
+    window.MainDatastream.streamAddBill(
+      "SELECT site_id,site_name FROM site",
+      (status, data) => {
+        this.inflateAutoCompleateView(
+          document.getElementById("site"),
+          JSON.parse(data).data
+        );
+      }
+    );
+  </script>
+</body>

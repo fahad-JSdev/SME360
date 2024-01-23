@@ -1,0 +1,24 @@
+:root {
+  --background: #d1dae362; /*(homepage)*/
+  --navbar: #84c798;
+  --actionbar: #32a887; /*(print)*/
+
+  --titlebar: #000409c9; /*not working (file,option)*/
+  --tabbar: #401200; /*not working(expense,pending)*/
+  --navbar-icon: #0c53e1; /*not working */
+
+  --list-hover: #e5f3fe; 
+  --icon-hover: #2b4364;
+  --actionbar-hover: #2b4364;
+  --titlebar-hover: #1a263c;
+  --grid-hover: #75BDED;
+  --grid-header-color:#e4e6f1e7;
+  --grid-header-hover-text:#3b61eb95;
+  --grid-pagination-button-hover:#808489;
+  --button-color:#5caae9;
+  --delete-button-color:#D8534E;
+  --delete-button-hover-color:#ED3326;
+  --button-hover:#6cccec;
+  --button-text-color:#ffffff;
+  --table-border-color: rgb(185 175 175 / 64%);
+}

@@ -1,0 +1,7 @@
+{"operation":"reload","timestamp":{"$$date":1681112451398},"version":1,"doc":{}}
+{"operation":"insert","timestamp":{"$$date":1681112451451},"version":2,"doc":{"key":"core-migrated-xlsxTemplates","value":"true","creationDate":{"$$date":1681112451440},"modificationDate":{"$$date":1681112451440},"shortid":"a_2UgvN","_id":"MyqZLfKp7YKJdUR1","$entitySet":"settings","$$etag":1681112451451}}
+{"operation":"reload","timestamp":{"$$date":1681112451510},"version":3,"doc":{}}
+{"operation":"insert","timestamp":{"$$date":1681112451569},"version":4,"doc":{"key":"core-migrated-resources","value":"true","creationDate":{"$$date":1681112451550},"modificationDate":{"$$date":1681112451550},"shortid":"ZwuXXeE","_id":"bsUkdZNQqSjiTg4b","$entitySet":"settings","$$etag":1681112451569}}
+{"operation":"reload","timestamp":{"$$date":1681112452048},"version":5,"doc":{}}
+{"operation":"insert","timestamp":{"$$date":1681112452131},"version":6,"doc":{"key":"core-migrated-versionControl-props","value":"true","creationDate":{"$$date":1681112452111},"modificationDate":{"$$date":1681112452111},"shortid":"Y7BHxut","_id":"oDjeWIaFyiotIjoE","$entitySet":"settings","$$etag":1681112452131}}
+{"operation":"insert","timestamp":{"$$date":1681112452230},"version":7,"doc":{"key":"chrome-network-idle-migrated","value":"true","creationDate":{"$$date":1681112452224},"modificationDate":{"$$date":1681112452224},"shortid":"MBT9WMo","_id":"tZHWSuffWcpPTyvI","$entitySet":"settings","$$etag":1681112452230}}

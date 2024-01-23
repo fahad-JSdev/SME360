@@ -1,0 +1,331 @@
+<script src="../../widgets/snackbox.js"></script>
+<link rel="stylesheet" href="../../assets/themes/addSite.css" />
+<title>ADD SITE</title>
+<div class="main-container" style="background-color: #ffff">
+  <div class="scontainer">
+    <div class="soverlay" id="soverlay"></div>
+
+    <header>
+      Add Site
+      <label class="search_label"></label>
+    </header>
+
+    <form action="#">
+      <div class="form first">
+        <div class="details personal">
+          <div class="details ID">
+            <div class="fields">
+              <div class="input-field-large">
+                <label>Site Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter Site Name"
+                  required=""
+                  list="site"
+                  id="sitename"
+                  onblur="basicrequired('sitename','sitespan')"
+                />
+                <span  class="error_msg" id="sitespan"></span>
+              </div>
+              <div class="input-field">
+                <label>Location</label>
+
+                <input
+                  type="text"
+                  placeholder="Enter your Location"
+                  required
+                  id="sitelocation"
+                  oninput="checkLocation('sitelocation','locspan')"
+                /><span class="error_msg" id="locspan"></span>
+              </div>
+
+              <div class="input-field">
+                <label>Owner Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter your Name"
+                  required=""
+                  id="siteowner"
+                  oninput="checkOwnerName(ownername)"
+                /><span  class="error_msg" id="namespan"></span>
+              </div>
+
+              <div class="input-field">
+                <label>Phone Number</label>
+
+                <input
+                  type="tel"
+                  placeholder="Enter your Phone Number"
+                  required=""
+                  id="sitenumber"
+                  maxlength="10"
+                  oninput="checkPhone(phone)"
+                /><span class="error_msg" id="phonespan"></span>
+              </div>
+
+              <div class="input-field">
+                <label>Email Id</label>
+
+                <input
+                  type="email"
+                  placeholder="Enter your Email Id"
+                  required=""
+                  id="siteemail"
+                  oninput="checkEmail(email)"
+                /><span class="error_msg" id="emailspan"></span>
+              </div>
+
+              <div class="input-field-large">
+                <label>Address</label>
+                <input
+                  type="text"
+                  placeholder="Enter your Address"
+                  required=""
+                  id="siteaddress"
+                  onblur="basicrequired('siteaddress','addresspan')"
+                />
+                <span class="error_msg" id="addresspan"></span>
+              </div>
+
+              <div class="input-field">
+                <label>State</label>
+                <select
+                  required=""
+                  id="sitestate"
+                  onchange="checkstate('sitestate','statespan')"
+                >
+                  <option disabled="" selected="" value="">Select State</option>
+                  <option value="kerala">Kerala</option>
+                  <option value="tamilnadu">Tamilnadu</option>
+                  <option value="karnataka">Karnataka</option>
+                </select>
+                <span class="error_msg" id="statespan"></span>
+              </div>
+
+              <div class="input-field">
+                <label>District</label>
+                <input
+                  type="text"
+                  placeholder="Enter your District"
+                  required=""
+                  id="sitedistrict"
+                  oninput="checkdistrict(district)"
+                />
+                <span class="error_msg"  id="districtspan"></span>
+              </div>
+
+              <div class="input-field">
+                <label>Pin</label>
+                <input
+                  type="tel"
+                  placeholder="Enter your Pin Code"
+                  required=""
+                  id="sitepin"
+                  oninput="checkPin(pin)"
+                />
+                <span class="error_msg" id="pinspan"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="error_msg" id="reqspan"></span>
+
+        <button type="button" class="nextBtn" onclick="DataSubmit()">
+          ADD
+        </button>
+        <div id="snackbar" class="snackbar">Submitted</div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  SnackboxAlertStyle();
+  const location1 = document.getElementById("sitelocation");
+  const ownername = document.getElementById("siteowner");
+  const phone = document.getElementById("sitenumber");
+  const email = document.getElementById("siteemail");
+  const pin = document.getElementById("sitepin");
+  const sitename_validn = document.getElementById("sitename");
+  const address = document.getElementById("siteaddress");
+  const state = document.getElementById("sitestate");
+  const district = document.getElementById("sitedistrict");
+  function checkLocation(input, span) {
+    var re = /^[a-zA-Z ]*$/g;
+    var input = document.getElementById(input);
+    var error = document.getElementById(span);
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Only Letters Allowed";
+    }
+  }
+
+  //check name is valid
+  function checkOwnerName(input) {
+    var re = /^[a-zA-Z ]{2,50}$/;
+    var error = document.getElementById("namespan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Name";
+    }
+  }
+
+  //check phone number is valid
+  function checkPhone(input) {
+    var re = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6-9]\d{9}$/;
+    var error = document.getElementById("phonespan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Phone Number";
+    }
+  }
+
+  //check email is valid
+  function checkEmail(input) {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var error = document.getElementById("emailspan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Email";
+    }
+  }
+
+  //check pinno: is valid
+  function checkPin(input) {
+    const re = /^[1-9]{1}\d{2}\s?\d{3}$/;
+    var error = document.getElementById("pinspan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Pin";
+    }
+  }
+  function basicrequired(InputId, SpanId) {
+    var input = document.getElementById(InputId);
+    var error = document.getElementById(SpanId);
+    if (input.value.trim() == "") {
+      error.innerHTML = "required";
+    } else {
+      error.innerHTML = "";
+    }
+  }
+  //checkRequired fields
+  function checkRequired(inputArr) {
+    inputArr.forEach((input) => {
+      if (input.value.trim() === "") {
+        var error1 = document.getElementById(input.id).nextElementSibling;
+        error1.innerHTML = "required";
+      }
+    });
+  }
+  //check district is vallid
+  function checkdistrict(input) {
+    var re = /^[a-zA-Z ]{2,50}$/;
+    var error = document.getElementById("districtspan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid District";
+    }
+  }
+  //check the state was selected
+  function checkstate(inputId, spanId) {
+    var input = document.getElementById("sitestate");
+    var error = document.getElementById("statespan");
+
+    if (input.value.trim() == "") {
+      error.innerHTML = "required";
+    } else {
+      error.innerHTML = "";
+    }
+  }
+  function DataSubmit() {
+    checkRequired([
+      sitename_validn,
+      address,
+      location1,
+      ownername,
+      phone,
+      email,
+      pin,
+      district,
+      state,
+    ]);
+    console.log(document.getElementById("locspan"));
+    console.log(document.getElementById("namespan"));
+    console.log(document.getElementById("emailspan"));
+    console.log(document.getElementById("phonespan"));
+    console.log(document.getElementById("pinspan"));
+    console.log(document.getElementById("addresspan"));
+    console.log(document.getElementById("sitespan"));
+
+    if (
+      document.getElementById("locspan").innerHTML === "" &&
+      document.getElementById("namespan").innerHTML === "" &&
+      document.getElementById("emailspan").innerHTML === "" &&
+      document.getElementById("phonespan").innerHTML === "" &&
+      document.getElementById("pinspan").innerHTML === "" &&
+      document.getElementById("addresspan").innerHTML === "" &&
+      document.getElementById("sitespan").innerHTML === "" &&
+      document.getElementById("districtspan").innerHTML === "" &&
+      document.getElementById("statespan").innerHTML === ""
+    ) {
+      SnackboxAlert("snackbar");
+      var site_name = document.getElementById("sitename").value;
+      var site_location = document.getElementById("sitelocation").value;
+      var site_owner = document.getElementById("siteowner").value;
+      var site_number = document.getElementById("sitenumber").value;
+      var site_mail = document.getElementById("siteemail").value;
+      var site_address = document.getElementById("siteaddress").value;
+      var site_state = document.getElementById("sitestate").value;
+      var site_district = document.getElementById("sitedistrict").value;
+      var site_pin = document.getElementById("sitepin").value;
+
+      var sqlQuery =
+        "INSERT INTO site (site_name,site_location,owner_name,phone_no,adress,site_state,district,pin,email_id)";
+      var data_value =
+        "('" +
+        site_name +
+        "','" +
+        site_location +
+        "','" +
+        site_owner +
+        "','" +
+        site_number +
+        "','" +
+        site_address +
+        "','" +
+        site_state +
+        "','" +
+        site_district +
+        "','" +
+        site_pin +
+        "','" +
+        site_mail +
+        "')";
+      console.log("test=>", data_value);
+      window.MainDatastream.streamProjectAddsite(
+        sqlQuery,
+        data_value,
+        (status, data) => {
+          console.log("addsite", status, data);
+        }
+      );
+
+      document.getElementById("sitename").value = "";
+      document.getElementById("sitelocation").value = "";
+      document.getElementById("siteowner").value = "";
+      document.getElementById("sitenumber").value = "";
+      document.getElementById("siteemail").value = "";
+      document.getElementById("siteaddress").value = "";
+      document.getElementById("sitestate").value = "";
+      document.getElementById("sitedistrict").value = "";
+      document.getElementById("sitepin").value = "";
+    }
+  }
+</script>

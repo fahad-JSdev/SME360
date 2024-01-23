@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <link rel="stylesheet" href="../../assets/themes/autoSearchText.css" />
+  <script src="../../widgets/autoSearchText.js"></script>
+  <link rel="stylesheet" href="../../assets/themes/expense.css" />
+  <script src="../../widgets/snackbox.js"></script>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EXPENSE FORM</title>
+  </head>
+
+  <body>
+    <div class="main-container">
+      <div class="container">
+        <header>
+          Expense Form<label
+            class="fa fa-search"
+            style="font-size: 24px; float: right"
+          ></label>
+
+          <img
+            src="../../assets/images/print3.png"
+            alt="print button"
+            id="print_button"
+            class="print_button"
+            title="print"
+            onclick=""
+          />
+          <img
+            src="../../assets/images/trash.png"
+            alt="delete button"
+            id="delete_button"
+            class="delete_button"
+            title="delete"
+            onclick="deleteFunction()"
+          />
+          <img
+            src="../../assets/images/approved.png"
+            alt="approve button"
+            id="approve_button"
+            class="approve_button"
+            title="approve"
+            onclick="approveFunction()"
+          />
+          <img
+            src="../../assets/images/color_edit.png"
+            alt="edit button"
+            id="edit_button"
+            class="edit_button"
+            title="Edit"
+            onclick="editFunction()"
+          />
+        </header>
+
+        <form action="#" onsubmit="">
+          <div class="form first">
+            <div class="details personal">
+              <div class="details ID">
+                <div class="fields">
+                  <div class="left">
+                    <div
+                      class="input-field sitename"
+                      style="height: 75px; width: 100px"
+                    >
+                      <div
+                        class="autocomplete"
+                        style="position: relative; height: 30px"
+                      >
+                        <input
+                          id="myInput"
+                          type="text"
+                          name="site_name"
+                          placeholder="Site name"
+                          onchange="basicrequired('myInput','sitespan')"
+                        />
+                        <span id="sitespan"></span>
+                      </div>
+                    </div>
+                    <div
+                      class="input-field expcat"
+                      style="height: 75px; width: 250px"
+                    >
+                      <label>Expense Category &nbsp;</label><br />
+
+                      <select
+                        id="expense_category"
+                        onchange="basicrequired('expense_category','expensespan')"
+                      >
+                        <option value="" disabled selected hidden></option>
+                        <option value="petrol">petrol</option>
+                        <option value="travel">travel</option>
+                        <option value="food">food</option>
+                        <option value="meterials">materials</option>
+                      </select>
+                      <span id="expensespan"></span>
+                    </div>
+
+                    <div
+                      class="input-field fields-new"
+                      style="height: 75px; width: 220px"
+                    >
+                      <label>Payment Type &nbsp;</label><br />
+                      <select
+                        required=""
+                        id="payment_type"
+                        onchange="basicrequired('payment_type','payspan')"
+                      >
+                        <option value="" disabled hidden selected></option>
+                        <option value="cash">Cash</option>
+                        <option value="upi">UPI</option>
+                        <option value="debit">Debit Card</option>
+                      </select>
+                      <span id="payspan"></span>
+                    </div>
+
+                    <div class="input-field">
+                      <label>Add Description</label>
+                      <textarea
+                        name="add_des"
+                        id="description"
+                        style="resize: none; height: 69px; width: 350px"
+                        class="description"
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="right">
+                    <div class="input-field">
+                      <label>Expense No</label>
+                      <input type="number" id="expense" disabled />
+                    </div>
+
+                    <div
+                      class="input-field fields-new"
+                      style="height: 75px; width: 200px"
+                    >
+                      <label>Date</label><br />
+                      <input
+                        required
+                        type="Date"
+                        id="add_date"
+                        oninput="checkDate('add_date','dobspan')"
+                      />
+
+                      <span id="dobspan"></span>
+                    </div>
+
+                    <div
+                      class="input-field"
+                      style="height: 100px; width: 220px"
+                    >
+                      <label>Amount</label>
+                      <input
+                        required
+                        type="number"
+                        id="amount"
+                        min="0"
+                        class="your_class"
+                      />
+                      <span id="amountspan"></span>
+                      <br /><br />
+
+                      <div class="image-upload">
+                        <text> Document Upload</text><br />
+                        <label for="file-input">
+                          <img src="../../assets/images/document-file.png" />
+                        </label>
+                        <input id="file-input" type="file" />
+                      </div>
+                      <div class="buttons-new">
+                        <button
+                          id="new-expense"
+                          type="button"
+                          class="submit"
+                          onclick="SiteExpSubmit()"
+                        >
+                          <text class="btnText">Save</text>
+                          <i class="uil uil-navigator"></i>
+                        </button>
+                        <div id="snackbar" class="snackbar">Submitted</div>
+                        <button
+                          type="button"
+                          class="cancel"
+                          onclick="window.location.reload()"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      //-----------------------Inilization--------------------
+      SnackboxAlertStyle();
+      var tim = document.getElementById("add_date");
+      // var site_id = document.getElementById("myInput").selectedItemId;
+      var site_name = document.getElementById("myInput");
+      var exp_categ = document.getElementById("expense_category");
+      var pay_typ = document.getElementById("payment_type");
+      var ad_des = document.getElementById("description");
+      var exp_n = document.getElementById("expense");
+      var dte = document.getElementById("add_date");
+      var amnt = document.getElementById("amount");
+      // var submit_button = document.getElementById("submit");
+      var submit_button = document.getElementById("new-expense");
+      var edit_button = document.getElementById("edit_button");
+      var delete_button = document.getElementById("delete_button");
+      var aprove_button = document.getElementById("approve_button");
+      var print_button = document.getElementById("print_button");
+      print_button.style.display = "none";
+      edit_button.style.display = "none";
+      delete_button.style.display = "none";
+      aprove_button.style.display = "none";
+      const urlParams = new URLSearchParams(window.location.search);
+      const dataString = urlParams.get("data");
+      var clickdata_id = JSON.parse(decodeURIComponent(dataString));
+
+      console.log("data from edit=>", clickdata_id);
+      console.log("hmiiiiiii", clickdata_id);
+      if (clickdata_id) {
+        if (clickdata_id[1] == "pending" || "edit") {
+          document.getElementById("new-expense").style.display = "none";
+
+          submit_button.style.display = "none";
+
+          edit_button.style.display = "block";
+          if (clickdata_id[1] == "pending") {
+            delete_button.style.display = "block";
+            aprove_button.style.display = "block";
+            print_button.style.display = "block";
+          }
+
+          window.MainDatastream.streamGetData(
+            "SELECT site_expense.exp_cat,site_expense.pay_typ,site_expense.desp,site_expense.exp_no,to_char(site_expense.exp_dat,'YYYY-MM-DD'),site_expense.expense_amount,site_expense.site_f_key,site.site_name FROM  site_expense LEFT JOIN site ON site.site_id=site_expense.site_f_key where site_expense.site_exp_id='" +
+              clickdata_id[0] +
+              "';",
+            (status, data) => {
+              var labData = JSON.parse(data).data;
+              if (labData) {
+                console.log("data from site_expense=>", labData);
+                exp_categ.value = labData[0][0];
+                pay_typ.value = labData[0][1];
+                ad_des.value = labData[0][2];
+                exp_n.value = labData[0][3];
+                dte.value = labData[0][4];
+                amnt.value = labData[0][5];
+                site_name.selectedItemId = labData[0][6];
+                site_name.value = labData[0][7];
+                // no_of_days.value = labData[0][6];
+                // ot_wage.value = labData[0][5];
+                // wage.value = labData[0][4];
+                // site_name.value = labData[0][2];
+                // site_name.selectedItemId = labData[0][9];
+                // date.disabled = true;
+                // lab_name.disabled = true;
+                // advance.disabled = true;
+                // ta_da.disabled = true;
+                // ot_hour.disabled = true;
+                exp_n.disabled = true;
+                exp_categ.disabled = true;
+                pay_typ.disabled = true;
+                amnt.disabled = true;
+                ad_des.disabled = true;
+                dte.disabled = true;
+                // wage.disabled = true;
+                site_name.disabled = true;
+                if (clickdata_id[1] == "edit") {
+                  console.log("data from table is edit");
+                  editFunction();
+                }
+              }
+            }
+          );
+        }
+      }
+      function basicrequired(InputId, SpanId) {
+        var input = document.getElementById(InputId);
+        var error = document.getElementById(SpanId);
+        if (input.value.trim() == "") {
+          error.innerHTML = "required";
+          tablestudyy.css;
+        } else {
+          error.innerHTML = "";
+        }
+      }
+      function checkRequired(inputArr) {
+        inputArr.forEach((input) => {
+          var error1 = document.getElementById(input.id).nextElementSibling;
+          error1.innerHTML = "required";
+          if (input.value.trim() != "") {
+            error1.innerHTML = "";
+          }
+        });
+      }
+
+      function editFunction() {
+        submit_button.style.display = "block";
+        console.log("submit", submit_button.firstElementChild);
+        edit_button.style.display = "none";
+        submit_button.firstElementChild.innerText = "update";
+        delete_button.style.display = "none";
+        approve_button.style.display = "none";
+        print_button.style.display = "none";
+        tim.disabled = false;
+
+        exp_categ.disabled = false;
+        pay_typ.disabled = false;
+        ad_des.disabled = false;
+        exp_n.disabled = false;
+        dte.disabled = false;
+        amnt.disabled = false;
+      }
+      function deleteFunction() {
+        var sqlQuery =
+          "UPDATE site_expense SET is_deleted='1' WHERE site_exp_id =" +
+          clickdata_id[0] +
+          ";";
+        var value;
+        console.log("data deleted=>", sqlQuery);
+        window.MainDatastream.streamProjectButtonClick(
+          sqlQuery,
+          value,
+          (status, data) => {}
+        );
+        window.close();
+      }
+      function approveFunction() {
+        var sqlQuery =
+          "UPDATE site_expense SET user_perm='1' WHERE site_exp_id=" +
+          clickdata_id[0] +
+          ";";
+        var value;
+        window.MainDatastream.streamProjectButtonClick(
+          sqlQuery,
+          value,
+          (status, data) => {}
+        );
+        window.close();
+      }
+      function SiteExpSubmit() {
+        var site_id = document.getElementById("myInput").selectedItemId;
+        var exp_categ = document.getElementById("expense_category").value;
+        var pay_typ = document.getElementById("payment_type").value;
+        var ad_des = document.getElementById("description").value;
+        var exp_n = document.getElementById("expense").value;
+        var dte = document.getElementById("add_date").value;
+        var amnt = document.getElementById("amount").value;
+        checkRequired([
+          document.getElementById("myInput"),
+          document.getElementById("expense_category"),
+          document.getElementById("payment_type"),
+          document.getElementById("amount"),
+          document.getElementById("add_date"),
+        ]);
+        if (
+          document.getElementById("sitespan").innerHTML === "" &&
+          document.getElementById("expensespan").innerHTML === "" &&
+          document.getElementById("payspan").innerHTML === "" &&
+          document.getElementById("dobspan").innerHTML === "" &&
+          document.getElementById("amountspan").innerHTML === ""
+        ) {
+          SnackboxAlert("snackbar");
+          if (clickdata_id) {
+            if (clickdata_id[1] == "pending" || "expense") {
+              var sql_query =
+                "UPDATE site_expense SET exp_cat=" +
+                "'" +
+                exp_categ +
+                "'" +
+                "," +
+                "pay_typ=" +
+                "'" +
+                pay_typ +
+                "'" +
+                "," +
+                "desp=" +
+                "'" +
+                ad_des +
+                "'" +
+                "," +
+                "exp_no=" +
+                "'" +
+                exp_n +
+                "'" +
+                "," +
+                "exp_dat=" +
+                "'" +
+                dte +
+                "'" +
+                "," +
+                "expense_amount=" +
+                "'" +
+                amnt +
+                "'" +
+                "," +
+                "site_f_key=" +
+                "'" +
+                site_id +
+                "'" +
+                " " +
+                "WHERE site_expense.site_exp_id=" +
+                clickdata_id[0] +
+                ";";
+              console.log("deleted value queries=>", sqlQuery);
+              var value;
+              window.MainDatastream.streamAddData(
+                sql_query,
+                value,
+                (status, data) => {}
+              );
+              document.getElementById("snackbar").innerText = "UPDATED";
+            }
+          } else {
+            var sqlQuery =
+              "INSERT INTO site_expense (exp_cat,pay_typ,desp,exp_no,exp_dat,expense_amount,site_f_key)";
+            var data_value =
+              "('" +
+              exp_categ +
+              "','" +
+              pay_typ +
+              "','" +
+              ad_des +
+              "','" +
+              exp_n +
+              "','" +
+              dte +
+              "','" +
+              amnt +
+              "','" +
+              site_id +
+              "')";
+
+            window.MainDatastream.streamProjectAddsite(
+              sqlQuery,
+              data_value,
+              (status, data) => {
+                console.log("addsite", status, data);
+              }
+            );
+
+            document.getElementById("myInput").value = "";
+            document.getElementById("expense_category").value = "";
+            document.getElementById("expense_category").value = "";
+            document.getElementById("payment_type").value = "";
+            document.getElementById("description").value = "";
+
+            document.getElementById("add_date").value = "";
+            document.getElementById("amount").value = "";
+          }
+          SnackboxAlert("snackbar");
+        }
+        window.MainDatastream.streamAddBill(
+          "SELECT site_exp_id FROM site_expense ORDER BY site_exp_id desc limit 1",
+          (status, data) => {
+            var account_id = JSON.parse(data).data;
+            document.getElementById("expense").value =
+              account_id[account_id.length - 1][0] + 1;
+          }
+        );
+      }
+      sqlQuery1 = "SELECT site_id,site_name FROM site ";
+
+      window.MainDatastream.streamAddBill(sqlQuery1, (status, data) => {
+        var vendor_name = JSON.parse(data).data;
+
+        var list = document.getElementById("myInput");
+        this.inflateAutoCompleateView(list, vendor_name);
+      });
+
+      // var selectedSiteId="";
+      if (!clickdata_id) {
+        window.MainDatastream.streamAddBill(
+          "SELECT site_exp_id FROM site_expense ORDER BY site_exp_id desc limit 1",
+          (status, data) => {
+            var account_id = JSON.parse(data).data;
+            document.getElementById("expense").value =
+              account_id[account_id.length - 1][0] + 1;
+          }
+        );
+      }
+      //----------------------------------Date-------------------------------------
+
+      function checkDate(InputId, SpanId) {
+        var pattern =
+          /(0[1-9]|[12][0-9]|3[01])[\/](0[1-9]|1[012])[\/]201[4-9]|20[2-9][0-9]/;
+        input = document.getElementById(InputId);
+        var error = document.getElementById(SpanId);
+        if (pattern.test(input.value.trim())) {
+          if (isFutureDate(input.value.trim())) {
+            error.innerHTML = "Date can't be in future";
+          } else {
+            error.innerHTML = "";
+          }
+        } else {
+          error.innerHTML = "Invalid Date";
+        }
+      }
+
+      //----------------------------------------------------------
+      function isFutureDate(idate) {
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = today.getMonth(); // Months start at 0!
+        var dd = today.getDate();
+        idate = idate.split("-");
+
+        console.log("ooooooooooooooooo", today, " - ", idate);
+        idate = new Date(idate[2], idate[1] - 1, idate[0]).getTime();
+        today = new Date(dd, mm, yyyy).getTime();
+        console.log(
+          "zzzzzzzzzzzzzzzz",
+          today - idate < 0,
+          " - ",
+          idate,
+          " ",
+          today
+        );
+        return today - idate < 0;
+      }
+      //--------------------------amount--------------------------
+
+      document
+        .querySelector(".your_class")
+        .addEventListener("keypress", function (evt) {
+          if (
+            (evt.which != 8 && evt.which != 0 && evt.which < 48) ||
+            evt.which > 57
+          ) {
+            evt.preventDefault();
+          }
+        });
+    </script>
+  </body>
+</html>

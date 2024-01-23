@@ -1,0 +1,166 @@
+<link rel="stylesheet" href=".././assets/themes/project.css" />
+<script src="../../widgets/snackbox.js"></script>
+
+<body>
+  <div class="container1" id="container1">
+    <div id="tabwrap"></div>
+
+    <div id="header"></div>
+  </div>
+  <div class="labourcontent tabcontent" id="labour">
+    
+        <script>
+          var options = {
+            valueNames: ["0"],
+            // Since there are no elements in the list, this will be used as template.
+            item: '<li  ><div class="0 card" onmouseover="hover(this)" onmouseout="hoverOff(this)"></div></li>',
+          };
+
+          function itemClick(item) {
+            if (item.target.childNodes[0].data == "All") {
+              console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+              onFilterTextClickChanged();
+            } else {
+              console.log(
+                "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+                item.target.childNodes[0].data
+              );
+              onFilterTextClickChanged(item.target.childNodes[0].data);
+            }
+          }
+          var values = [
+            {
+              0: "All",
+            },
+          ];
+
+       
+
+          function hover(element) {
+            element.style.backgroundColor = "rgba(33,150,243,0.1)";
+          }
+          function hoverOff(element) {
+            element.style.backgroundColor = "";
+          }
+        </script>
+
+        <script>
+          $(document).ready(function () {
+            $(".list_name").click(function (ev) {
+              $(".site ul li").removeClass("selected");
+              $(ev.currentTarget).parent("li").addClass("selected");
+            });
+          });
+        </script>
+      </div>
+    </div>
+
+    <div id="wrapper2" class="ag-theme-alpine"></div>
+  </div>
+  <div class="Pending_Expense tabcontent" id="Pending_Expense">
+    <div id="wrapper3" class="ag-theme-alpine">
+      <div id="snackbaro" class="snackbar">Deleted</div>
+      <div id="snackbar" class="snackbar">Approved</div>
+    </div>
+  </div>
+</body>
+
+<script>
+  SnackboxAlertStyle();
+  var projectActionbar;
+
+  projectActionbar = new Actionbar();
+
+  projectActionbar.addIcon("add_expense", ".././assets/images/add-expense.png");
+  projectActionbar.addIcon("add_site", ".././assets/images/add-site.png");
+  projectActionbar.addIcon(
+    "print_button",
+    ".././assets/images/toolbar-print.png"
+  );
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_expense":
+        opensitechild();
+        break;
+      case "add_site":
+        openaddexpensechild();
+        break;
+
+    }
+  }
+  projectActionbar.render(document.getElementById("header"));
+  projectActionbar.setToolbarOnClick(handler);
+  // }
+
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper2").css("width", (w * 80) / 100);
+      $("#wrapper2").css("height", (h * 86) / 100);
+      $(".container2").css("height", (h * 85) / 100);
+      $("#site-grid-side").css("height", (h * 85) / 100);
+      $("#wrapper3").css("width", (w * 96.5) / 100);
+      $("#wrapper3").css("height", (h * 86) / 100);
+    } else console.log("dime not defined");
+  }
+
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+
+ 
+
+  window.electronAPI.setTitle("Project Expense");
+
+  var projectTab;
+  if (projectTab == undefined) {
+    projectTab = new Tabbar();
+    projectTab.addTab("expense", "Expense");
+    projectTab.addTab("pending", "Pending");
+    projectTab.setTabbarOnClick((event) => {
+      $(".tabcontent").css("display", "none");
+      console.log("-------------" + event.target.id);
+      switch (event.target.id) {
+        case "expense":
+          $("#labour").css("display", "block");
+
+          break;
+        case "pending":
+          $("#Pending_Expense").css("display", "block");
+          setTimeout(function () {
+            //this.pendingProjectExpenseGrid.api.sizeColumnsToFit();
+            this.pendingProjectExpenseGrid.api.setRowData(
+              this.pendingExpenseData
+            );
+          }, 100);
+
+          break;
+      }
+    });
+  }
+
+  projectTab.render(document.getElementById("tabwrap"));
+  $("#labour").css("display", "block"); //default
+
+  var inp = document.createElement("input");
+  var root = document.getElementsByClassName("ag-header-row-column-filter");
+  inp.id = "filter-text-box";
+  inp.type = "text";
+  inp.placeholder = "Type a keyword..";
+  inp.oninput = function () {
+    onFilterTextBoxChanged();
+  };
+  root[0].appendChild(inp);
+  var inp1 = document.createElement("input");
+
+  inp1.id = "filter-text-box1";
+  inp1.type = "text";
+  inp1.placeholder = "Type a keyword..";
+  inp1.oninput = function () {
+    onFilterTextBoxPending();
+  };
+  console.log(root);
+
+  root[1].appendChild(inp1);
+</script>

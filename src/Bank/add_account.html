@@ -1,0 +1,204 @@
+<link rel="stylesheet" href="../assets/themes/add_accc.css" />
+<script src="../widgets/snackbox.js"></script>
+<title>ADD BANK ACCOUNT</title>
+<body>
+  <div class="container">
+    <header>
+      Add Bank Account
+      <label class="fa fa-search" style="font-size: 24px; float: right" ></label>
+    </header>
+
+    <br />
+    
+        <div class="first-div">
+        <div class="input-field-1">
+          <!-- <div class="autocomplete"> -->
+            <label> Account Display  name</label>
+            <input required="" id="ADname"/>
+            <span id="ADnamespan"></span>
+          </div>
+        <!-- </div> -->
+        <div class="input-field-1">
+          <label>As Of Date</label>
+          <input class="date"
+            id="date"
+            type="date"
+            placeholder="Enter your Designation"
+          
+            
+          /><span id="AFdatespan"></span>
+        </div>
+        <div class="input-field-1" id="input-field-sitename">
+          <!-- <div class="autocomplete"> -->
+            <label>Opening Balance</label>
+            <input
+          
+              id="opbalance"
+              type="text"
+              name="opbalance"
+              placeholder="Enter Opening Balance"
+              
+            />
+            <span id="OPbalancespan"></span>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+        <div class="fields">
+          <div class="input-field">
+            <label>Account Number</label>
+            <input id="ACno" type="number" min="0" placeholder="Enter account number" />
+            <span id="spanACno"></span>
+          </div>
+
+          <div class="input-field">
+            
+            <label>IFSC Code</label>
+            <input id="ifsc" type="text"  placeholder="Enter IFSC Code " />
+            <span id="spanIFSC"></span>
+          </div>
+        </div>
+        <div class="sub-div">
+          <div class="input-field">
+            <label>UPI ID for QR Code</label>
+            <input id="UPI" type="number"  placeholder="Enter UPI for QR Code" />
+            <span id="spanUPI"></span>
+          </div>
+
+          <div class="input-field">
+            <label>Bank name</label>
+            <input id="Bname" type="Text"  placeholder="Enter Bank Name" />
+            <span id="spanBname"></span>
+          </div>
+
+          <div class="input-field">
+            <label>Account Holder Name</label>
+            <input id="AHname" type="text" placeholder="Enter Account Holder Name" ;
+            />
+            <span id ="spanAHname"></span>
+          </div>
+
+           
+        </div>
+  </div>
+  <div class="buttons">
+    <div>
+ <input type="button" class="button" value="Save" onclick="LabourSubmit()">
+ <i class="uil uil-navigator"></i>
+
+</div>     
+<div id="snackbox" class="snackbar"> submit</div>
+    </form>
+  </div>
+ 
+  <script>
+    
+    SnackboxAlertStyle();
+
+    function LabourSubmit() {
+      var ADname = document.getElementById("ADname").value;
+      var AsOfDate = document.getElementById("date").value;
+      var OPBalance = document.getElementById("opbalance").value;
+      var ACnumber = document.getElementById("ACno").value;
+      var IFSC= document.getElementById("ifsc").value;
+      var QRcode = document.getElementById("spanUPI").value;
+      var Bankname = document.getElementById("Bname").value;
+      var AHName =document.getElementById("AHname").value;
+      
+      checkRequired([
+    document.getElementById("ADname"),
+    document.getElementById("date"),
+    document.getElementById("opbalance"),
+    document.getElementById("ACno"),
+    document.getElementById("UPI"),
+    document.getElementById("Bname"),
+    document.getElementById("AHname"),
+    document.getElementById("ifsc"),
+    ]);
+
+      if (
+        document.getElementById("ADnamespan").innerHTML === "" &&
+        document.getElementById("AFdatespan").innerHTML === "" &&
+        document.getElementById("OPbalancespan").innerHTML ==="" &&
+        document.getElementById("spanACno").innerHTML === "" &&
+        document.getElementById("spanIFSC").innerHTML ==="" &&
+        document.getElementById("spanUPI").innerHTML === "" &&
+        document.getElementById("spanBname").innerHTML === "" &&
+        document.getElementById("spanAHname").innerHTML === ""
+      ) {
+        
+       SnackboxAlert("snackbox");
+        var sqlQuery =
+          "INSERT INTO accountings (name,as_of_date,opening_balance,acc_no,ifc_code,upid,bank,acc_holder_name)"
+        var data_value =
+          "('" +
+          ADname +
+          "','" +
+          AsOfDate +
+          "','" +
+          OPBalance +
+          "','" +
+          ACnumber +
+          "','" +
+          IFSC +
+          "','" +
+          QRcode +
+          "','" +
+          Bankname +
+          "','"+
+          AHName +
+          "')";
+
+        window.MainDatastream.streamADDACCOUNT(
+          sqlQuery,
+          data_value,
+          (status, data) => {
+            console.log(
+              "DATA..................",
+              status,
+              data
+            );
+            
+          }
+        );
+
+
+
+        document.getElementById("ADname").value="";
+    document.getElementById("date").value="";
+    document.getElementById("opbalance").value="";
+    document.getElementById("ACno").value="";
+    document.getElementById("UPI").value="";
+    document.getElementById("Bname").value="";
+    document.getElementById("AHname").value="";
+    document.getElementById("ifsc").value="";
+
+
+
+    }
+    }
+
+    function checkRequired(inputArr) {
+    inputArr.forEach((input) => {
+      var error1 = document.getElementById(input.id).nextElementSibling;
+      error1.innerHTML = "required";
+      if (input.value.trim() != "") {
+        error1.innerHTML = "";
+      }
+    });
+  }
+    
+    // function CheckLabourSubmit(){
+    //   var pattern = /^[a-zA-Z ]{2,50}$/;
+    //  var input = document.getElementById("AHname").value;
+    //   var error = document.getElementById("spanAHname").value;
+    //   if (pattern.test(input.trim())) {
+    //     error.innerHTML = "";
+    //   } else {
+    //     error.innerHTML = "Invalid Name";
+    //   }
+    // }
+ 
+  </script>
+</body>
+

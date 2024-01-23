@@ -1,0 +1,98 @@
+<link href="../assets/themes/purchase_home.css" rel="stylesheet" />
+<div class="container">
+  <div class="container1" id="container1">
+    <div id="tabwrap"></div>
+
+    <div id="header"></div>
+  </div>
+  <div id="wrapper1" class="ag-theme-alpine"></div>
+</div>
+<script>
+  // DATA GENERATION
+
+  var gridOptions7 = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "Invoice No", field: "0" },
+      { headerName: "Party Name ", field: "1" },
+      { headerName: "Payment Type", field: "2" },
+      { headerName: "Amount", field: "3" },
+      {
+        headerName: "Date Formatted",
+        field: "date",
+        // valueFormatter: dateFormatter,
+        comparator: dateComparator,
+        filter: "agDateColumnFilter",
+        floatingFilter: true,
+        floatingFilterComponentParams: {
+          suppressFilterButton: true,
+        },
+        filterParams: {
+          debounceMs: 500,
+          suppressAndOrCondition: true,
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            if (cellValue == null) {
+              return 0;
+            }
+            var dateParts = cellValue.split("-");
+            var year = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var day = Number(dateParts[0]);
+            var cellDate = new Date(year, month, day);
+
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+        },
+      },
+    ],
+    // getSelectedRows: 'getSelectedRows',
+    // cellClicked:'onCellClicked',
+    // onSelectionChanged: 'onSelectionChanged',
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: {
+      sortable: true,
+      flex: 1,
+      floatingFilter: true,
+    },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "single", // allow rows to be selected
+    animateRows: true,
+
+    // other grid options ...
+  };
+  // function onFirstDataRendered(params) {
+  //   params.api.sizeColumnsToFit();
+  // }
+
+  var GridDiv7 = document.getElementById("wrapper1");
+  new agGrid.Grid(GridDiv7, gridOptions7);
+  window.electronAPI.setTitle("TRANSACTIONS");
+
+  window.MainDatastream.streamprojectview((status, data) => {
+    gridOptions7.api.setRowData(JSON.parse(data).data);
+  });
+  purchasehomeactionbar = new Actionbar();
+
+  purchasehomeactionbar.addIcon(
+    "add_purchase",
+    "../assets/images/add-expense.png"
+  );
+
+  function handler(event) {}
+  purchasehomeactionbar.render(document.getElementById("header"));
+  purchasehomeactionbar.setToolbarOnClick(handler);
+
+  var purchasehometabbar;
+  if (purchasehometabbar == undefined) {
+    purchasehometabbar = new Tabbar();
+    purchasehometabbar.addTab("purchse_head", "Transactions");
+  }
+  purchasehometabbar.render(document.getElementById("tabwrap"));
+</script>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="../assets/themes/main.css" />
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../node_modules/gridjs/dist/gridjs.umd.js"></script>
+<script src="../../node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+<!-- Include the core CSS, this is needed by the grid -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-grid.css"
+/>
+<!-- Include the theme CSS, only need to import the theme you are going to use -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-theme-alpine.css"
+/>
+<link
+  rel="stylesheet"
+  href="../../node_modules/gridjs/dist/theme/mermaid.min.css"
+/>
+
+
+<html lang="en" dir="ltr">
+  <script src="../widgets/autoSearchText.js"></script>
+  <script src="../widgets/actionbar.js"></script>
+  <script src="../widgets/tab.js"></script>
+  <script src="../widgets/gridHelper.js"></script>
+  <script src="../../node_modules/list.js/dist/list.min.js"></script>
+  <script src="../widgets/snackbox.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SALES</title>
+  </head>
+  <body>
+    <div class="MainParent">
+      <div class="sidebar close" id="sidebar">
+        <ul class="nav-links">
+          <li class="main-menu">
+            <a href="#" class="home">
+              <img
+                src="../assets/images/home.png"
+                alt="home"
+                class="home"
+                onclick=""
+              />
+              <span class="link_name home">Apps</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name home" href="#">Apps</a></li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <a href="#" class="sHome">
+              <img
+                src="../assets/images/home1.png"
+                alt="sHome"
+                class="sHome"
+                onclick=""
+              />
+              <span class="link_name sHome">Home</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name sHome" href="#">Home</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <div class="iocn-link">
+              <a href="#" class="salesHome">
+                <img
+                  src="../assets/images/sales-icon.png"
+                  alt="sales"
+                  class="sales salesHome"
+                />
+                <span class="link_name sales">Sales</span>
+              </a>
+            </div>
+            <ul class="sub-menu">
+              <li><a class="link_name salesHome" href="#">Sales</a></li>
+              <!-- <li><a href="#" class="invoiceHome">Sales Invoice</a></li>
+              <li><a href="#" class="quotHome">Estimate/Quotation</a></li>
+              <li>
+                <a href="#" class="payin">Payment in</a>
+              </li>
+              <li>
+                <a href="#" class="challan">Delivery Challan</a>
+              </li>
+              <li>
+                <a href="#" class="sales_return">Sales return/Cr.Note</a>
+              </li> -->
+            </ul>
+          </li>
+          
+          <li class="main-menu">
+            <a href="#" class="invoiceHome">
+              <img
+                src="../assets/images/invoice1.png"
+                alt="invoiceHome"
+                class="invoiceHome"
+                onclick=""
+              />
+              <span class="link_name invoiceHome">Sales Invoice</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name invoiceHome" href="#">Sales Invoice</a>
+              </li>
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="quotHome">
+              <img
+                src="../assets/images/quotation1.png"
+                alt="quotHome"
+                class="quotHome"
+                onclick=""
+              />
+              <span class="link_name quotHome">Estimate Quotation</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name quotHome" href="#">Estimate Quotation</a></li>
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="payin">
+              <img
+                src="../assets/images/paymentin1.png"
+                alt="payin"
+                class="payin"
+                onclick=""
+              />
+              <span class="link_name payin">Payment In</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name payin" href="#">Payment In</a>
+              </li>
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="challan">
+              <img
+                src="../assets/images/delivery1.png"
+                alt="challan"
+                class="challan"
+                onclick=""
+              />
+              <span class="link_name challan"
+                >Delivery Challan</span
+              >
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name challan" href="#"
+                  >Delivery Challan</a
+                >
+              </li>
+            </ul>
+            </li>
+            <li class="main-menu">
+              <a href="#" class="sales_return">
+                <img
+                  src="../assets/images/return1.png"
+                  alt="sales_return"
+                  class="sales_return"
+                  onclick=""
+                />
+                <span class="link_name sales_return">Sales Return/Cr.Note</span>
+              </a>
+              <ul class="sub-menu blank">
+                <li>
+                  <a class="link_name sales_return" href="#">Sales Return/Cr.Note</a>
+                </li>
+              </ul>
+            </li>
+        </ul>
+      </div>
+
+      <section class="home-section" id="home-section"></section>
+    </div>
+  </body>
+
+  <script>
+    // function loadApp() {
+    //   $(".home-section").load("../app.html");
+    // }
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+      arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+      });
+    }
+    function getWidth() {
+      return window.screen.availWidth;
+    }
+    function getHeight() {
+      return window.screen.availHeight;
+    }
+    function openGi() {
+      window.open(
+        "./gst_invoice.html",
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          window.screen.availWidth +
+          ",height=" +
+          window.screen.availHeight
+      );
+    }
+    function quotation() {
+      window.open(
+        "./quotation.html",
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          window.screen.availWidth +
+          ",height=" +
+          window.screen.availHeight
+      );
+    }
+    function opensalesReturn() {
+      window.open(
+        "./sales_return.html",
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          window.screen.availWidth +
+          ",height=" +
+          window.screen.availHeight
+      );
+    }
+
+    function deliveryChallan() {
+      window.open(
+        "./delivery_challan.html",
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          window.screen.availWidth +
+          ",height=" +
+          window.screen.availHeight
+      );
+    }
+
+    function payInPopup() {
+      window.open(
+        "./payment_in_popup.html",
+        "-blank",
+        "resizable=0,frame=0,"
+          
+      );
+    }
+    function addClientWin() {
+      window.open("./add_client.html", "_blank", "resizable=0,frame=0");
+    }
+    function addItemWin() {
+      window.open(
+        "../Stock/stock_Additem.html",
+        "_blank",
+        "resizable=0,frame=0"
+      );
+    }
+    var current_page = null;
+    $(document).ready(function view() {
+      $(".stocks-class").click(menuOnClick);
+      $(".salesHome").click(menuOnClick);
+      $(".sHome").click(menuOnClick);
+      $(".invoiceHome").click(menuOnClick);
+      $(".quotHome").click(menuOnClick);
+      $(".payin").click(menuOnClick);
+      $(".challan").click(menuOnClick);
+      $(".sales_return").click(menuOnClick);
+      $(".home").click(menuOnClick);
+    });
+    function menuOnClick(e) {
+      {
+        console.log("side navw : clicked ->", e, e.target.className);
+        if (current_page != e.target.className) {
+          var path = null;
+          var i = 0;
+          do {
+            switch (e.target.classList[i]) {
+              case "salesHome":
+                path = "./sales_home.html";
+                break;
+              case "invoiceHome":
+                path = "./invoice_home.html";
+                break;
+              case "quotHome":
+                path = "./quotation_home.html";
+                break;
+              case "payin":
+                path = "./payment_in_home.html";
+                break;
+              case "challan":
+                path = "./delivery_challan_home.html";
+                break;
+              case "sales_return":
+                path = "./sales_return_home.html";
+                break;
+              case "home":
+                path="../app.html";
+                break;
+              case "sHome":
+              window.open(
+              "../sales/sales_main.html",
+              "_self",
+              "resizable=0,frame=0"
+              );
+              window.resizeTo(getWidth(), getHeight());
+              break;
+            }
+            i++;
+          } while (path == null && i < e.target.classList.length);
+          if (path != null) {
+            $(".home-section").load(path);
+            current_page = e.target.className;
+          }
+        }
+      }
+    }
+
+    //Set all css dimen here
+    console.log("start");
+
+    function setDime(w, h) {
+      if (w != undefined) {
+        $(".sidebar").css("width", (w * 3.5) / 100);
+        $(".home-section").css("width", (w * 96.5) / 100);
+        $(".home-section").css("left", (w * 3.5) / 100);
+      } else console.log("dime not defined");
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+  </script>
+</html>

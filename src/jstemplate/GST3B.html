@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GST1R Report Template</title>
+  </head>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  /* border: 1px solid black;
+  padding: 10px; */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  width: 99%;
+  margin-left: 7px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+th {
+  text-align: center;
+  font-weight: bold;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-size: 10px;
+}
+/* .bordered-section {
+  border: 0px solid black;
+  padding: 10px;
+} */
+.to{
+    margin-left: 10px;
+ margin-bottom: 20px;
+    
+}
+.from{
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+  </style>
+  <body>
+    <!-- <div class="bordered-section"> -->
+    <div class="header">
+        <h1>GST-3B </h1>
+      </div>
+      <div class="from">
+        From:&nbsp;{{date}}
+      </div>
+      <div class="to">
+        To:&nbsp{{to}}
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Nature of Supplies</th>
+            <th>Total Taxable Value</th>
+            <th>Integrated Tax</th>
+            <th>Central Tax</th>
+            <th>State/UT Tax</th>
+            <th>Cess</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>(a) Outward taxable supplies (other than zero rated, nil rated and exempted)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>(b) Outward taxable supplies (zero rated)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>(c) Other outward supplies (nil rated, exempted)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>(d) Inward supplies (liable to reverse charge)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>(e) Non-GT outward supplies</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="footer">
+        <p>This report was generated on {{date}}.</p>
+      </div>
+   
+      
+      </div>
+    <!-- </div class="bordered-section"> -->
+  </body>
+</html>

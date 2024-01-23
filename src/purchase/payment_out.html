@@ -1,0 +1,233 @@
+<link href="../assets/themes/payment_out.css" rel="stylesheet" />
+
+<div class="container">
+  <div class="container1" id="container1">
+    <div id="tabwrap"></div>
+
+    <div id="header"></div>
+  </div>
+  <div class="container" id="qwe">
+    <!-- <button id="new" class="button-new button1" href="#" onclick="loadchildwin()">
+    Add Payment Out
+  </button> -->
+    <div class="container-body">
+      <div id="container-grid" class="ag-theme-alpine"></div>
+    </div>
+    <script>
+      $("#this_month").prop("selectedIndex", -1);
+    </script>
+  </div>
+
+  <script>
+    function setDime(w, h) {
+      if (w != undefined) {
+        $("#wrapper2").css("width", (w * 96) / 100);
+        $("#wrapper2").css("height", (h * 86) / 100);
+        //   $(".container2").css("height", (h * 85) / 100);
+        //   $("#site-grid-side").css("height", (h * 85) / 100);
+        //   $("#wrapper3").css("width", (w * 96.5) / 100);
+        //   $("#wrapper3").css("height", (h * 86) / 100);
+        // } else console.log("dime not defined");
+      }
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+
+    Paymentoutactionbar = new Actionbar();
+
+    Paymentoutactionbar.addIcon(
+      "add_payment",
+      "../assets/images/add-expense.png",
+      "Add Payment"
+    );
+
+    function handler(event) {
+      switch (event.target.id) {
+        case "add_payment":
+          loadchildwin();
+          break;
+
+        // case "print_icon":
+        //                  ;
+        //   break;
+      }
+    }
+    Paymentoutactionbar.render(document.getElementById("header"));
+    Paymentoutactionbar.setToolbarOnClick(handler);
+
+    var Paymentouttabbar;
+    if (Paymentouttabbar == undefined) {
+      Paymentouttabbar = new Tabbar();
+      Paymentouttabbar.addTab("purchse_head", "payment out");
+    }
+    Paymentouttabbar.render(document.getElementById("tabwrap"));
+
+    function setDime(w, h) {
+      if (w != undefined) {
+        $("#container-grid").css("width", (w * 96) / 100);
+        $("#container-grid").css("height", (h * 86) / 100);
+      } else console.log("dime not defined");
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+
+    // DATA GENERATION
+    var _randNum1 = (size) => Math.random() * size;
+    var _zeroPad1 = (num) => (num < 10 ? "0" + num : num);
+
+    var _generateDate = () => {
+      var day = Math.round(_randNum(27)) + 1;
+      var month = Math.round(_randNum(11)) + 1;
+      var year = Math.round(_randNum(70)) + 1950;
+      return `${_zeroPad(day)}/${_zeroPad(month)}/${year}`;
+    };
+
+    function createRowData(maxRows) {
+      let rowData = [];
+      for (var i = 0; i < maxRows; i++) {
+        var row = {
+          date: _generateDate(),
+        };
+        rowData.push(row);
+      }
+      return rowData;
+    }
+
+    // DATE COMPARATOR FOR SORTING
+    // function dateComparator(date1, date2) {
+    //   var date1Number = _monthToNum(date1);
+    //   var date2Number = _monthToNum(date2);
+
+    //   if (date1Number === null && date2Number === null) {
+    //     return 0;
+    //   }
+    //   if (date1Number === null) {
+    //     return -1;
+    //   }
+    //   if (date2Number === null) {
+    //     return 1;
+    //   }
+
+    //   return date1Number - date2Number;
+    // }
+
+    // HELPER FOR DATE COMPARISON
+    // function _monthToNum(date) {
+    //   if (date === undefined || date === null || date.length !== 10) {
+    //     return null;
+    //   }
+
+    //   var yearNumber = date.substring(6, 10);
+    //   var monthNumber = date.substring(3, 5);
+    //   var dayNumber = date.substring(0, 2);
+
+    //   var result = yearNumber * 10000 + monthNumber * 100 + dayNumber;
+    //   // 29/08/2004 => 20040829
+    //   return result;
+    // }
+
+    // DATA FORMATTING
+    // function dateFormatter(params) {
+    //   var dateAsString = params.data.date;
+    //   var dateParts = dateAsString.split("/");
+    //   return `${dateParts[0]} - ${dateParts[1]} - ${dateParts[2]}`;
+    // }
+
+    var gridOptions5 = {
+      // define 3 columns
+      columnDefs: [
+        { headerName: "SL NO", valueGetter: "node.rowIndex + 1" },
+        { headerName: "REF NO", field: "0" },
+        { headerName: "Party Name ", field: "1" },
+
+        { headerName: "Received/Paid", field: "2" },
+        {
+          headerName: "Date Formatted",
+          field: "3",
+          // valueFormatter: dateFormatter,
+          comparator: dateComparator,
+          filter: "agDateColumnFilter",
+          floatingFilter: true,
+          floatingFilterComponentParams: {
+            suppressFilterButton: true,
+          },
+          filterParams: {
+            debounceMs: 500,
+            suppressAndOrCondition: true,
+            comparator: function (filterLocalDateAtMidnight, cellValue) {
+              if (cellValue == null) {
+                return 0;
+              }
+              var dateParts = cellValue.split("-");
+              var year = Number(dateParts[2]);
+              var month = Number(dateParts[1]) - 1;
+              var day = Number(dateParts[0]);
+              var cellDate = new Date(year, month, day);
+
+              if (cellDate < filterLocalDateAtMidnight) {
+                return -1;
+              } else if (cellDate > filterLocalDateAtMidnight) {
+                return 1;
+              } else {
+                return 0;
+              }
+            },
+          },
+        },
+      ],
+      // getSelectedRows: 'getSelectedRows',
+      // cellClicked:'onCellClicked',
+      // onSelectionChanged: 'onSelectionChanged',
+      onFirstDataRendered: onFirstDataRendered,
+      defaultColDef: {
+        sortable: true,
+        flex: 1,
+        // floatingFilter: true,
+      },
+      pagination: true,
+      paginationPageSize: 10,
+      rowSelection: "single", // allow rows to be selected
+      animateRows: true,
+
+      // other grid options ...
+    };
+    // function onFirstDataRendered(params) {
+    //   params.api.sizeColumnsToFit();
+    // }
+
+    var GridDiv5 = document.getElementById("container-grid");
+    new agGrid.Grid(GridDiv5, gridOptions5);
+
+    window.MainDatastream.streamGetData(
+      "SELECT po.prty_id,vendor.vendor_name,po.amount,to_char(po.pay_dte,'DD-MM-YYYY') as pay_dte from payment_out as po LEFT JOIN vendor ON po.vendor_f_key = vendor.personid ;",
+      (status, data) => {
+        gridOptions5.api.setRowData(JSON.parse(data).data);
+      }
+    );
+    window.electronAPI.setTitle("PAYMENT OUT");
+
+    function onFilterTextBoxChanged() {
+      gridOptions5.api.setQuickFilter(
+        document.getElementById("filter-text-box").value
+      );
+    }
+
+    var inp = document.createElement("input");
+    var root = document.getElementsByClassName("ag-header-row-column-filter");
+    inp.id = "filter-text-box";
+    inp.type = "text";
+    inp.placeholder = "Type a keyword..";
+    inp.oninput = function () {
+      onFilterTextBoxChanged();
+    };
+    root[0].appendChild(inp);
+  </script>
+</div>

@@ -1,0 +1,691 @@
+<link rel="stylesheet" href=".././assets/themes/project.css" />
+<script src="../../widgets/snackbox.js"></script>
+<body>
+  <div class="container1" id="container1">
+    <div id="tabwrap"></div>
+
+    <div id="header"></div>
+  </div>
+  <div class="labourcontent tabcontent" id="labour">
+    <div id="t5" class="container2">
+      <div class="list_view" id="list_view" href="#">
+        <div id="site-grid-side">
+          <input
+            id="filter-text-box2"
+            class="search"
+            placeholder="Search"
+            style="position: fixed"
+          />
+
+          <ul class="list" style="margin-top: 2rem"></ul>
+        </div>
+        <script>
+          var options = {
+            valueNames: ["0"],
+            // Since there are no elements in the list, this will be used as template.
+            item: '<li  ><div class="0 card" onmouseover="hover(this)" onmouseout="hoverOff(this)"></div></li>',
+          };
+
+          function itemClick(item) {
+            if (item.target.childNodes[0].data == "All") {
+              console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+              onFilterTextClickChanged();
+            } else {
+              console.log(
+                "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+                item.target.childNodes[0].data
+              );
+              onFilterTextClickChanged(item.target.childNodes[0].data);
+            }
+          }
+          var values = [
+            {
+              0: "All",
+            },
+          ];
+
+          var userList = new List("site-grid-side", options, values);
+
+          window.MainDatastream.streamlaboursitelist((status, data) => {
+            console.log(
+              "streamLabourPending...................." + JSON.parse(data).data
+            );
+            var sidelist = JSON.parse(data).data;
+
+            console.log(
+              "test222222222222222222222222222222222222222222222222",
+              sidelist
+            );
+            userList.add(sidelist);
+            $(".card").click(itemClick);
+          });
+
+          function hover(element) {
+            element.style.backgroundColor = "rgba(33,150,243,0.1)";
+          }
+          function hoverOff(element) {
+            element.style.backgroundColor = "";
+          }
+        </script>
+
+        <script>
+          $(document).ready(function () {
+            $(".list_name").click(function (ev) {
+              $(".site ul li").removeClass("selected");
+              $(ev.currentTarget).parent("li").addClass("selected");
+            });
+          });
+        </script>
+      </div>
+    </div>
+
+    <div id="wrapper2" class="ag-theme-alpine">
+      <div id="snackbard" class="snackbar">Deleted</div>
+    </div>
+  </div>
+  <div class="Pending_Expense tabcontent" id="Pending_Expense">
+    <div id="wrapper3" class="ag-theme-alpine">
+      <div id="snackbaro" class="snackbar">Deleted</div>
+      <div id="snackbar" class="snackbar">Approved</div>
+    </div>
+  </div>
+</body>
+
+<script>
+  SnackboxAlertStyle();
+  var projectActionbar;
+  // if (projectActionbar == undefined) {
+  projectActionbar = new Actionbar();
+
+  projectActionbar.addIcon(
+    "add_expense",
+    ".././assets/images/add-expense.png",
+    "Add Expense"
+  );
+  projectActionbar.addIcon(
+    "add_site",
+    ".././assets/images/add-site.png",
+    "Add Site"
+  );
+  projectActionbar.addIcon(
+    "print_button",
+    ".././assets/images/toolbar-print.png",
+    "Print"
+  );
+  projectActionbar.addIcon(
+    "export_button",
+    ".././assets/images/export_excel-img.png",
+    "Export"
+  );
+  projectActionbar.addIcon(
+    "import_button",
+    ".././assets/images/import.png",
+    "Import"
+  );
+  projectActionbar.addIcon(
+    "edit_button",
+    ".././assets/images/editing.png",
+    "Edit"
+  );
+  projectActionbar.addIcon(
+    "convert_button",
+    ".././assets/images/tick.png",
+    "Approve"
+  );
+  projectActionbar.addIcon(
+    "delete_button",
+    ".././assets/images/delete.png",
+    "Delete"
+  );
+
+  function handler(event) {
+    switch (event.target.id) {
+      case "add_expense":
+        openaddexpensechild();
+        break;
+      case "add_site":
+        opensitechild();
+        break;
+      case "export_button":
+        download();
+        break;
+      case "import_button":
+        break;
+      case "edit_button":
+        btnClickedHandleEdit();
+        break;
+      case "convert_button":
+        BtnclickApprove();
+        break;
+      case "delete_button":
+        BtnclickReject();
+        break;
+    }
+  }
+  projectActionbar.render(document.getElementById("header"));
+  projectActionbar.setToolbarOnClick(handler);
+  document.getElementById("export_button").style.display = "none";
+  document.getElementById("import_button").style.display = "none";
+  document.getElementById("print_button").style.display = "none";
+  document.getElementById("edit_button").style.display = "none";
+  document.getElementById("delete_button").style.display = "none";
+  document.getElementById("convert_button").style.display = "none";
+
+  function btnClickedHandleEdit() {
+    const selectedRows = pendingProjectExpenseGrid.api.getSelectedRows();
+    console.log("edit button clicked", selectedRows);
+    if (selectedRows.length == 1) {
+      window.open(
+        "./project/addexpense.html?data=" +
+          encodeURIComponent(JSON.stringify([selectedRows[0][8], "edit"])),
+        "_blank",
+        "resizable=no,frame=0"
+      );
+    }
+  }
+
+  function BtnclickApprove() {
+    const selectedRows = pendingProjectExpenseGrid.api.getSelectedRows();
+    if (selectedRows.length) {
+      for (var i = 0; i < selectedRows.length; i++) {
+        var sqlQuery =
+          "UPDATE site_expense SET user_perm='1' WHERE site_exp_id=" +
+          selectedRows[i][8] +
+          ";";
+        var value;
+        window.MainDatastream.streamProjectButtonClick(
+          sqlQuery,
+          value,
+          (status, data) => {}
+        );
+        pendingProjectExpenseGrid.api.applyTransaction({
+          remove: selectedRows,
+        });
+      }
+      SnackboxAlert("snackbar");
+    }
+  }
+  function BtnclickReject() {
+    var selectedRows;
+    console.log("selected tab=>", selectedTab);
+    if (selectedTab == "pending") {
+      selectedRows = pendingProjectExpenseGrid.api.getSelectedRows();
+      console.log("row selected on ag grid pending", selectedRows);
+      pendingProjectExpenseGrid.api.applyTransaction({ remove: selectedRows });
+      SnackboxAlert("snackbaro");
+    }
+    if (selectedTab == "expense") {
+      selectedRows = projectExpenseGrid.api.getSelectedRows();
+      console.log("row selected on ag grid expense", selectedRows);
+      projectExpenseGrid.api.applyTransaction({ remove: selectedRows });
+      SnackboxAlert("snackbard");
+    }
+
+    if (selectedRows) {
+      for (var i = 0; i < selectedRows.length; i++) {
+        var sqlQuery =
+          "UPDATE site_expense SET is_deleted='1' WHERE site_exp_id=" +
+          selectedRows[i][8];
+        var value;
+        window.MainDatastream.streamProjectButtonClick(
+          sqlQuery,
+          value,
+          (status, data) => {}
+        );
+      }
+    }
+  }
+  function openPending(event) {
+    console.log("double click function called", event.node.data[8]);
+    window.open(
+      "./project/addexpense.html?data=" +
+        encodeURIComponent(JSON.stringify([event.node.data[8], "pending"])),
+      "_blank",
+      "resizable=no,frame=0"
+    );
+  }
+
+  function onRowSelected() {
+    const selectedRows = pendingProjectExpenseGrid.api.getSelectedRows();
+    console.log("jjjjjjjjjjjjjkkkkkkkkkkkkkkkhhhhhhhhhhh");
+    if (selectedRows) {
+      console.log(" row selected");
+      document.getElementById("delete_button").style.display = "flex";
+      document.getElementById("export_button").style.display = "flex";
+      document.getElementById("import_button").style.display = "flex";
+      document.getElementById("print_button").style.display = "flex";
+      document.getElementById("edit_button").style.display = "flex";
+      document.getElementById("convert_button").style.display = "flex";
+      if (selectedRows.length > 1) {
+        console.log("more than one row selected function called");
+        document.getElementById("export_button").style.display = "none";
+        // document.getElementById("import_button").style.display = "none";
+        document.getElementById("print_button").style.display = "none";
+        document.getElementById("edit_button").style.display = "none";
+        // document.getElementById("convert_button").style.display = "none";
+      }
+    }
+  }
+  function onExpRowSelected() {
+    const selectedRows = projectExpenseGrid.api.getSelectedRows();
+    if (selectedRows) {
+      console.log(" row selected");
+      document.getElementById("export_button").style.display = "none";
+      // document.getElementById("import_button").style.display = "none";
+      document.getElementById("print_button").style.display = "none";
+      document.getElementById("edit_button").style.display = "none";
+
+      document.getElementById("convert_button").style.display = "none";
+      document.getElementById("delete_button").style.display = "flex";
+
+      if (selectedRows.length > 1) {
+        console.log("more than one row selected function called");
+      }
+    }
+  }
+  function setDime(w, h) {
+    if (w != undefined) {
+      $("#wrapper2").css("width", (w * 80.6) / 100);
+      $("#wrapper2").css("height", (h * 87.2) / 100);
+      $(".container2").css("height", (h * 86.6) / 100);
+      $(".container2").css("width", (w * 15.4) / 100);
+      $("#site-grid-side").css("height", (h * 85) / 100);
+      $("#wrapper3").css("width", (w * 96.3) / 100);
+      $("#wrapper3").css("height", (h * 88) / 100);
+    } else console.log("dime not defined");
+  }
+
+  try {
+    setDime(window.screen.availWidth, window.screen.availHeight);
+  } catch (err) {
+    console.log("-dime not defined");
+  }
+
+  function onFilterTextBoxChanged() {
+    projectExpenseGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+    console.log(
+      "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      typeof document.getElementById("filter-text-box").value
+    );
+  }
+  function onFilterTextBoxPending() {
+    pendingProjectExpenseGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box1").value,
+      console.log(
+        "qwe000000000000000000000000000000000000000000",
+        document.getElementById("filter-text-box1").value
+      )
+    );
+  }
+  function onFilterTextClickChanged(value) {
+    projectExpenseGrid.api.setQuickFilter(value);
+  }
+
+  var projectExpenseGrid = {
+    // define 3 columns
+    columnDefs: [
+      { headerName: "SLN", valueGetter: "node.rowIndex + 1", resizable: true },
+      { headerName: "Site Name", field: "0", resizable: true },
+      { headerName: "Site ID", field: "1", resizable: true },
+      { headerName: "Name", field: "2", resizable: true },
+      { headerName: "Designation", field: "3", resizable: true, hide: true },
+      { headerName: "Expense Amount", field: "4", resizable: true },
+      {
+        headerName: "Previous Advance",
+        field: "5",
+        resizable: true,
+        hide: true,
+      },
+      {
+        headerName: "Adavnce Required",
+        field: "6",
+        resizable: true,
+        hide: true,
+      },
+      {
+        headerName: "Amount",
+        valueGetter: `Number(data[4])+Number(data[5])+Number(data[6])`,
+        resizable: true,
+      },
+      {
+        headerName: "Date Formatted",
+        field: "7",
+        resizable: true,
+        //valueFormatter: dateFormatter,
+        comparator: dateComparator,
+        filter: "agDateColumnFilter",
+        floatingFilter: true,
+        floatingFilterComponentParams: {
+          suppressFilterButton: true,
+        },
+        filterParams: {
+          debounceMs: 500,
+          suppressAndOrCondition: true,
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            if (cellValue == null) {
+              return 0;
+            }
+            var dateParts = cellValue.split("-");
+            console.log(
+              "datepartssssssssssssssssssssssssssssssssssssssss",
+              dateParts
+            );
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(day, month, year);
+            console.log(
+              "dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+              cellDate
+            );
+
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+        },
+      },
+      { headerName: "site_exp_id", field: "8", hide: true },
+    ],
+    // getSelectedRows: 'getSelectedRows',
+    // cellClicked:'onCellClicked',
+    // onSelectionChanged: 'onSelectionChanged',
+
+    onRowSelected: onExpRowSelected,
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "single", // allow rows to be selected
+    animateRows: true,
+    // other grid options ...
+  };
+
+  var GridDiv1 = document.getElementById("wrapper2");
+  var m1 = new agGrid.Grid(GridDiv1, projectExpenseGrid);
+
+  window.MainDatastream.streamprojectview((status, data) => {
+    this.projectdata = JSON.parse(data).data;
+    projectExpenseGrid.api.setRowData(JSON.parse(data).data);
+  });
+
+  function loadchildwin() {
+    var child = "dhsafhl";
+    fetch("./labour/popup_og.html")
+      .then((response) => response.text())
+      .then((text) => {
+        window.open("", "modal").document.write(text);
+      });
+  }
+  // var clickdata_id;
+  // var customVar = class CustomElements {
+  //   init(params) {
+  //     this.params = params;
+  //     this.eGui = document.createElement("div");
+  //     this.eGui.classList.add("custom-element");
+  //     this.button1 = document.createElement("img");
+  //     this.button2 = document.createElement("img");
+  //     this.button1.id = "Approve_Button";
+  //     this.button2.id = "Reject_Button";
+  //     this.button1.src = ".././assets/images/approve-tick.png";
+  //     this.button2.src = ".././assets/images/trash-icon.png";
+  //     this.BtnclickApprove = this.BtnclickApprove.bind(this);
+  //     this.BtnclickReject = this.BtnclickReject.bind(this);
+  //     this.button1.addEventListener("click", this.BtnclickApprove);
+  //     this.button2.addEventListener("click", this.BtnclickReject);
+  //     this.eGui.appendChild(this.button1);
+  //     this.eGui.appendChild(this.button2);
+  //   }
+
+  //   getGui() {
+  //     return this.eGui;
+  //   }
+
+  //   refresh(params) {
+  //     return false;
+  //   }
+  //   BtnclickApprove(event) {
+  //     this.params.clicked(this.params.value);
+  //     clickdata_id = this.params.data[7];
+  //     var sqlQuery =
+  //       "UPDATE site_expense SET user_perm='1' WHERE site_exp_id=" +
+  //       clickdata_id +
+  //       ";";
+  //     var value;
+  //     window.MainDatastream.streamProjectButtonClick(
+  //       sqlQuery,
+  //       value,
+  //       (status, data) => {}
+  //     );
+  //     SnackboxAlert("snackbar");
+  //   }
+  //   BtnclickReject(event) {
+  //     var clickdata_id1;
+  //     this.params.clicked(this.params.value);
+  //     clickdata_id1 = this.params.data[7];
+  //     var sqlQuery =
+  //       "UPDATE site_expense SET is_deleted='1' WHERE site_exp_id=" +
+  //       clickdata_id1;
+  //     var value;
+  //     window.MainDatastream.streamProjectButtonClick(
+  //       sqlQuery,
+  //       value,
+  //       (status, data) => {}
+  //     );
+  //     SnackboxAlert("snackbaro");
+  //   }
+  // };
+
+  //create search bar
+
+  var pendingProjectExpenseGrid = {
+    // define 3 columns
+    columnDefs: [
+      {
+        headerName: "SLN",
+        valueGetter: "node.rowIndex + 1",
+        resizable: true,
+      },
+      { headerName: "Site Name", field: "0", resizable: true },
+      { headerName: "Site ID", field: "1", resizable: true },
+      { headerName: "Name", field: "2", resizable: true },
+      { headerName: "Designation", field: "3", resizable: true },
+      { headerName: "Expense Amount", field: "4", resizable: true },
+      { headerName: "Previous Advance", field: "5", resizable: true },
+      { headerName: "Advance Required", field: "6", resizable: true },
+      {
+        headerName: "Amount",
+        valueGetter: `Number(data[4])+Number(data[5])+Number(data[6])`,
+      },
+
+      {
+        headerName: "Date Formatted",
+        field: "7",
+        resizable: true,
+
+        //valueFormatter: dateFormatter,
+        comparator: dateComparator,
+        filter: "agDateColumnFilter",
+        floatingFilter: true,
+        floatingFilterComponentParams: {
+          suppressFilterButton: true,
+        },
+        filterParams: {
+          debounceMs: 500,
+          suppressAndOrCondition: true,
+          comparator: function (filterLocalDateAtMidnight, cellValue) {
+            if (cellValue == null) {
+              return 0;
+            }
+            var dateParts = cellValue.split("-");
+            var day = Number(dateParts[2]);
+            var month = Number(dateParts[1]) - 1;
+            var year = Number(dateParts[0]);
+            var cellDate = new Date(day, month, year);
+
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          },
+        },
+      },
+      { headerName: "site_exp_id", field: "8", hide: true },
+      // {
+      //   headerName: "Action",
+      //   resizable: true,
+      //   cellRenderer: customVar,
+      //   cellRendererParams: {
+      //     clicked: function (field) {},
+      //   },
+      // },
+    ],
+    // getSelectedRows: 'getSelectedRows',
+    // cellClicked:'onCellClicked',
+    // onSelectionChanged: 'onSelectionChanged',
+    onRowSelected: onRowSelected,
+    onRowDoubleClicked: openPending,
+    onFirstDataRendered: onFirstDataRendered,
+    defaultColDef: { sortable: true },
+    pagination: true,
+    paginationPageSize: 10,
+    rowSelection: "multiple", // allow rows to be selected
+    animateRows: true,
+
+    // other grid options ...
+  };
+  var GridDiv2 = document.getElementById("wrapper3");
+  var m = new agGrid.Grid(GridDiv2, pendingProjectExpenseGrid);
+  var pendingExpenseData = null;
+  var observer = new MutationObserver(function (mutations) {
+    if (document.contains(GridDiv2)) {
+      console.log("It's in the DOM!");
+      pendingProjectExpenseGrid.api.setRowData(this.pendingExpenseData);
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document, {
+    attributes: false,
+    childList: true,
+    characterData: false,
+    subtree: true,
+  });
+
+  window.MainDatastream.streamProjectPending((status, data) => {
+    this.pendingExpenseData = JSON.parse(data).data;
+    console.log(
+      "111111111111111111111111111111111111111111111111111111111111111111111111111111111111,",
+      this.pendingExpenseData,
+      "--------",
+      this.projectTab.getSelectedTab()
+    );
+
+    if (this.projectTab.getSelectedTab() == 0) {
+      console.log("going to print in grid");
+      pendingProjectExpenseGrid.api.setRowData(this.pendingExpenseData);
+    }
+  });
+
+  window.electronAPI.setTitle("PROJECT EXPENSE");
+  var selectedTab = "expense";
+  var projectTab;
+  if (projectTab == undefined) {
+    projectTab = new Tabbar();
+    projectTab.addTab("expense", "Expense");
+    projectTab.addTab("pending", "Pending");
+    projectTab.setTabbarOnClick((event) => {
+      $(".tabcontent").css("display", "none");
+      console.log("-------------" + event.target.id);
+      switch (event.target.id) {
+        case "expense":
+          $("#labour").css("display", "block");
+          window.electronAPI.setTitle("PROJECT EXPENSE");
+          selectedTab = "expense";
+          break;
+        case "pending":
+          $("#Pending_Expense").css("display", "block");
+          window.electronAPI.setTitle("PROJECT PENDING");
+          selectedTab = "pending";
+
+          setTimeout(function () {
+            //this.pendingProjectExpenseGrid.api.sizeColumnsToFit();
+            this.pendingProjectExpenseGrid.api.setRowData(
+              this.pendingExpenseData
+            );
+          }, 100);
+
+          break;
+      }
+    });
+  }
+
+  projectTab.render(document.getElementById("tabwrap"));
+  $("#labour").css("display", "block"); //default
+
+  var inp = document.createElement("input");
+  var root = document.getElementsByClassName("ag-header-row-column-filter");
+  inp.id = "filter-text-box";
+  inp.type = "text";
+  inp.placeholder = "Type a keyword..";
+  inp.oninput = function () {
+    onFilterTextBoxChanged();
+  };
+  root[0].appendChild(inp);
+  var inp1 = document.createElement("input");
+
+  inp1.id = "filter-text-box1";
+  inp1.type = "text";
+  inp1.placeholder = "Type a keyword..";
+  inp1.oninput = function () {
+    onFilterTextBoxPending();
+  };
+  console.log(root);
+
+  root[1].appendChild(inp1);
+
+  function download() {
+    for (let i = 0; i < this.projectdata.length; i++) {
+      amount =
+        Number(this.projectdata[i][4]) +
+        Number(this.projectdata[i][5]) +
+        Number(this.projectdata[i][6]);
+      this.projectdata[i].push(amount);
+    }
+    console.log("this.labourdata with amount", this.projectdata);
+
+    var header = [
+      [
+        "Site Name",
+        "Site ID",
+        "Name",
+        "Designation",
+        "Expense Amount",
+        "Previous Advance",
+        "Advance Required",
+        "date",
+        "Amount",
+      ],
+    ];
+    window.ExcelDatastream.Exceldata(
+      this.projectdata,
+      header,
+      (data, header) => {}
+    );
+  }
+
+  import_button = document.getElementById("import_button");
+  import_button.addEventListener("click", async () => {
+    const filepath = await window.ExcelDatastream.ExcelImportClick();
+    console.log("filepath", file + path);
+  });
+</script>

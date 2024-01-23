@@ -1,0 +1,811 @@
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="../assets/themes/addStock.css" />
+<script src="../accounts/stock.js"></script>
+<script src="../accounts/stockCollection.js"></script>
+<script src="../widgets/autoSearchText.js"></script>
+<link rel="stylesheet" href="../assets/themes/autoSearchText.css" />
+<title>CREATE NEW ITEM</title>
+<div class="main-container">
+  <div class="container">
+    <header>Create New Item</header>
+    <form action="#">
+      <div class="form first">
+        <div class="details personal">
+          <div class="fields">
+            <div class="radio-new">
+              <label for="contactChoice1">Item Type 
+                <br/><span class="spnradio" id="radiospan">
+                </span></label>
+              <div class="radio-single ">
+                <input
+                  type="radio"
+                  id="item-type1"
+                  name="itemtype"
+                  value="yes"
+                />
+                <label for="item-type1">Product</label>
+                &nbsp;&nbsp;
+                <input
+                  type="radio"
+                  id="item-type2"
+                  name="itemtype"
+                  value="no"
+                />
+                <label for="item-type2" id="testff">Service</label>
+              </div>
+            </div>
+            <div class="image-upload">
+              <label for="file-input">
+                <img
+              src="../assets/images/addImage.png"
+              alt="Avatar"
+              class="avatar"
+              id="preview"
+            />
+              </label>
+              <input id="file-input" type="file" />
+            </div>
+            <div class="input-field-large">
+              <input type="text" id="item-name-ip" placeholder="Item Name" onkeyup="this.value = this.value.toUpperCase();" onblur="checkitem()"/>
+              <span id="spnitm"></span> 
+            </div>
+            <div class="input-field-large">
+              <input type="text" id="category-ip" onkeyup="this.value = this.value.toUpperCase();" placeholder="category" onblur="checkcat()"/>
+              <span id="spncat"></span>
+            </div>
+            <div class="input-field-large" >
+              <select id="gstrate-ip"  onblur="gstck()" >
+                <option value="" selected disabled>GST Tax Rate (%)</option>
+                <option value="0">0</option>
+                <option value="5">5</option>
+                <option value="12">12</option>
+                <option value="18">18</option>
+                <option value="28">28</option>
+              </select>
+              <span id="spngst"></span>
+            </div>
+            <div class="input-field"></div>
+          </div>
+        </div>
+        <button class="nxt nextBtn" type="button" style="  margin-top: 16%;"  onkeydown="return stopTab(event);">
+          <span class="btnText" id="stopTabButton" >Next</span>
+        </button>
+      </div>
+      <div class="form second">
+          <div id="btndiv" class="btncls">
+            <button style="margin-left: 8%;" class="tablinks active" id="st"  onclick="subTab(event, 'stock')">
+              Stock Details
+            </button>
+            <button style="margin-left: 10%;" class="tablinks" id="pr" onclick="subTab(event, 'price')">
+              Pricing Details
+            </button>
+            <button style="margin-left: 10%;" class="tablinks" id="ge" onclick="subTab(event, 'general')">
+              General Details
+            </button>
+            </table>
+          </div>
+<!----------------------------------------------------------------------------------------------->
+          <div id="stock"  class="fieldo tabcontent active" >
+               <div class="fields">
+                <div class="input-field">
+                  <label>Current Stock</label>
+                  <input type="text" id="current_stock" />  
+                </div>
+                <div class="input-field">
+                  <label><br/></label>
+                  <label>Expiry Date</label>
+                  <input type="date" id="Expirydate" required oninput="checkDate()"/>
+                  <span id="date"></span>
+                </div>
+                <div class="input-field">
+                  <label>Opening Stock</label>
+                  <input type="text" id="openstock" />
+                </div>
+                <div class="input-field">
+                  <label>As of Date</label>
+                  <input type="date" id="asofdate" />
+                </div> 
+                <div class="input-field">
+                  <div>
+                    <label for="lowstock" id="enable-stock">Enable Lowstock</label>
+                    <label class="switch">
+                      <input type="checkbox" id="lowstock" onclick="lowStock()" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div> 
+                
+                <div class="input-field">
+
+                  <div id="lowstockvalue">
+                    <label for="stockvalue" id="stock-value">LowStock</label>
+                    <input type="number" id="low_stock" />
+                  </div>
+                </div>
+
+                <div class="input-field"> </div>
+
+                <div class="input-field">
+
+                  <div>
+                    <label for="lowstock" id="enable-stock">Enable highStock</label>
+                    <label class="switch">
+                      <input type="checkbox" id="highStock" onclick="highSt()" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="input-field">
+
+                  <div id="highstockvalue">
+                    <label for="stockvalue" id="stock-value">HightStock</label>
+                    <input type="number" id="high_stock" />
+                  </div>
+                </div>
+                
+    
+               
+    
+               
+              </div>
+            
+      </div> 
+<!----------------------------------------------------------------------------------------------->
+
+<div id="price"  class="fieldo tabcontent">
+  <div class="fields">
+    <div class="input-field">
+      <label >Purchase Price</label>
+              <input type="text" id="prchase_price" onblur="purch()"/>
+              <span id="spnpur" ></span>
+    </div>
+
+    <div class="input-field">
+      <label >Sales Price</label>
+      <input type="text" id="sales_price" onblur="sales()"/>
+      <span id="spnsal"></span>
+    </div>
+
+    <div class="input-field">
+      <label >Discount</label>
+              <input type="text" id="discountin" onblur="dis()"/>
+              <span id="spndis"></span>
+    </div>
+
+    <div class="radio-new">
+      
+      <div class="radio-single">
+        
+      </div>
+    </div>
+
+    <div class="input-field-large labels">
+      
+    </div>
+
+    <div class="input-field"></div>
+
+    <div class="input-field">
+     
+    </div>
+  </div>
+</div>
+<!----------------------------------------------------------------------------------------------->
+
+<div id="general"  class="fieldo tabcontent" >
+  <div class="fields">
+    <div class="input-field">
+      <label>Brand</label>
+      <input type="text" id="brand" />
+    </div>
+
+    <div class="input-field" >
+      <label><br/></label>
+      <label>Batch No</label>
+      <input type="text" id="batch_no" onblur="batch()" />
+      <span id="spnbatch"></span>
+    </div>
+
+    <div class="input-field">
+      <label>Item Code</label>
+      <input type="text" id="item_code" />
+    </div>
+
+    <div class="input-field">
+      <label>Manufacture</label>
+      <input type="text" id="manufacture" />
+    </div>
+
+    <div class="input-field">
+      <label>HSN Code</label>
+      <input type="text" id="HSN_code" />
+    </div>
+
+    <div class="input-field">
+      <label>Quanitiy</label>
+      <input type="text" id="quantity" />
+    </div>
+
+    <div class="input-field">
+      <label>Unit</label>
+      <select required="" id="unit" onchange="">
+        <option disabled="" selected="" value="">Select unit</option>
+        <option value="kilogram">Kilogram</option>
+        <option value="gram">Gram</option>
+        <option value="liter">Liter</option>
+        <option value="meter">Meter</option>
+        <option value="pcs">Pcs</option>
+      </select>
+    </div>
+    <div class="input-field-large labels">
+      <label style="font-size: 13.5px"
+        >Description</label
+      >
+      <input type="text" id="description"  />
+      
+    </div>
+  </div>
+</div>
+<!----------------------------------------------------------------------------------------------->
+
+<!-- ----------------------------------------------------------------------------------------- -->
+        <div class="buttons">
+          <button type="button" class="backBtn">
+            <span class="btnText">Back</span>
+          </button>
+          <div style="width: 10%;"></div>
+
+          <button type="button" class="submit" id="cancel-button" onclick="clearStock()">
+            <span class="btnText">Cancel</span>
+          </button>
+          <button type="button" id="add-button" class="submit" onclick="addMainStock()">
+            <span class="btnText">Add</span>
+          </button>
+
+          <button type="button" class="submit" id="save-button" onclick="addStock()">
+            <span class="btnText">Save</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // window.electronAPI.setTitle("CREATE NEW ITEM");
+//---------------------------------control tab press----------------------------
+
+function stopTab( e ) {
+    var evt = e || window.event
+    if ( evt.keyCode === 9 ) {
+        return false
+    }
+}
+
+function clearStock() {
+    var radio =  document.getElementById("item-type1");
+    radio.checked = false;
+    var radio1 =  document.getElementById("item-type2");
+    radio1.checked = false;
+    document.getElementById("preview").value = "";
+    document.getElementById("gstrate-ip").value = "";
+    document.getElementById("item-name-ip").value = "";
+    document.getElementById("category-ip").value = "";
+    document.getElementById("current_stock").value = "";
+    document.getElementById("Expirydate").value = "";
+    document.getElementById("openstock").value = "";
+    document.getElementById("asofdate").value = "";
+    document.getElementById("enable-stock").value = "";
+    document.getElementById("lowstock").value = "";
+    document.getElementById("low_stock").value = "";
+    document.getElementById("highStock").value = "";
+    document.getElementById("high_stock").value = "";
+    document.getElementById("prchase_price").value = "";
+    document.getElementById("sales_price").value = "";
+    document.getElementById("discountin").value = "";
+    document.getElementById("brand").value = "";
+    document.getElementById("batch_no").value = "";
+    document.getElementById("item_code").value = "";
+    document.getElementById("manufacture").value = "";
+    document.getElementById("HSN_code").value = "";
+    document.getElementById("quantity").value = "";
+    document.getElementById("unit").value = "";
+    document.getElementById("description").value = "";
+    //..............Span Id.....................
+    document.getElementById("radiospan").value = "";
+    document.getElementById("spngst").value = "";
+    document.getElementById("spnitm").value = "";
+    document.getElementById("spncat").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("spnbatch").value = "";
+
+    form.classList.remove("secActive");
+    
+  }
+
+//=================================Validation===================================
+
+
+function checkbox() {
+    var ct = 0;
+    var error2 = document.getElementById("radiospan");
+    var radiovalid = document.getElementsByName("itemtype");
+    for (i = 0; i < radiovalid.length; i++) {
+      if (radiovalid[i].checked) {
+        error2.innerHTML = "";
+        ct += 1;
+        return 1;
+      }
+    }
+    if (ct === 0) {
+      error2.innerHTML = "Required";
+      return 0;
+    }
+  }
+
+  function gstck() {
+    
+    
+    var input = document.getElementById("gstrate-ip").value;
+    var error = document.getElementById("spngst");
+
+    if (input.trim() == "") {
+      error.innerHTML = "required";
+    } else {
+      error.innerHTML = "";
+    }
+  }
+
+  function checkitem() {
+    var re = /^[a-zA-Z ]{2,50}$/;
+    var input = document.getElementById("item-name-ip");
+    var error = document.getElementById("spnitm");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Item";
+    }
+  }
+  function checkcat() {
+    var re = /^[a-zA-Z ]{2,50}$/;
+    var input = document.getElementById("category-ip");
+    var error = document.getElementById("spncat");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Catogary";
+    }
+  }
+
+  function batch()
+  {
+    const re = /^[0-9]+$/;
+    var input = document.getElementById("batch_no");
+    var error = document.getElementById("spnbatch");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Batch No.";
+    }
+  }
+
+  function purch()
+  {
+    const re = /^[0-9]+$/;
+    var input = document.getElementById("prchase_price");
+    var error = document.getElementById("spnpur");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Amount";
+    }
+  }
+
+  function sales()
+  {
+    const re = /^[0-9]+$/;
+    var input = document.getElementById("sales_price");
+    var error = document.getElementById("spnsal");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Amount";
+    }
+  }
+
+  function dis()
+  {
+    const re = /^[0-9]+$/;
+    var input = document.getElementById("discountin");
+    var error = document.getElementById("spndis");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Amount";
+    }
+  }
+//-----------------------------date-----------------------------------
+function checkDate() {
+    var input = document.getElementById("Expirydate").value;
+    var error = document.getElementById("date");
+    var pattern =
+      /(0[1-9]|[12][0-9]|3[01])[\/](0[1-9]|1[012])[\/]201[4-9]|20[2-9][0-9]/;
+    var i = 0;
+    var dt = new Array();
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    let mm = today.getMonth(); // Months start at 0!
+    var dd = today.getDate();
+    dt = input.split("-");
+
+
+
+    mm = mm + 1;
+
+    if (yyyy < dt[0]) {
+      error.innerHTML = "";
+    } else if (yyyy == dt[0]) {
+      if (mm < dt[1]) {
+        error.innerHTML = "";
+      } else if (mm == dt[1]) {
+        if (dd < dt[2]) {
+          error.innerHTML = "";
+        } else {
+          error.innerHTML = "Date should be future";
+        }
+      } else {
+        error.innerHTML = "Date should be future";
+      }
+    } else {
+      error.innerHTML = "Date should be future";
+    }
+  }
+//==============================================================================
+var header = document.getElementById("btndiv");
+var btns = header.getElementsByClassName("tablinks");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].className.replace(" active", "");
+  this.className += " active";
+  });
+}
+
+function subTab(evt, subTab) {
+    event.preventDefault();
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("fieldo");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", " ");
+    }
+    document.getElementById(subTab).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+function highSt() {
+  var checkBox = document.getElementById("highStock");
+    var checkValue = document.getElementById("highstockvalue");
+    if (checkBox.checked == true) {
+      checkValue.style.display = "block";
+    } else {
+      checkValue.style.display = "none";
+    }
+  }
+
+  function lowStock() {
+    var checkBox = document.getElementById("lowstock");
+    var checkValue = document.getElementById("lowstockvalue");
+    if (checkBox.checked == true) {
+      checkValue.style.display = "block";
+    } else {
+      checkValue.style.display = "none";
+    }
+  }
+//==============================================================================
+
+  const form = document.querySelector("form"),
+    nextBtn = form.querySelector(".nextBtn"),
+    backBtn = form.querySelector(".backBtn"),
+    allInput = form.querySelectorAll(".first input"),
+    submit = form.querySelector(".submit");
+
+
+  /////////////////////////////////////////
+
+
+
+  nextBtn.addEventListener("click", () => {
+
+    
+var box = checkbox();
+var gstrate = document.getElementById("gstrate-ip");
+var itemname = document.getElementById("item-name-ip");
+var category = document.getElementById("category-ip");
+var item;
+var tmp = 1;
+
+    var inputArray = [
+    
+    gstrate,
+    itemname,
+    category,
+    ];
+    inputArray.forEach((item) => {
+      event.preventDefault();
+      var error1 = document.getElementById(item.id).nextElementSibling;
+      if ((item.value != "") & (error1.innerHTML == "")) {
+      }
+      else {
+        error1.innerHTML = "required";
+        tmp = 0;
+      }
+
+    });
+
+    if ( box == 1)
+    {
+      
+    }
+    else
+    {
+      tmp = 0;
+    }
+
+    if (tmp == 1) 
+    {
+      form.classList.add("secActive");
+    } 
+    else {}
+
+  });
+
+  backBtn.addEventListener("click", () => form.classList.remove("secActive"));
+
+</script>
+<script>
+  //=======================FROM OLD STOCK ADD ITEM===========================
+  var newStockCollection = new stockCollection();
+  var fileTag = document.getElementById("file-input");
+  var preview = document.getElementById("preview");
+
+  fileTag.addEventListener("change", function () {
+    changeImage(this);
+  });
+
+  function changeImage(input) {
+    var reader;
+
+    if (input.files && input.files[0]) {
+      reader = new FileReader();
+
+      reader.onload = function (e) {
+        preview.setAttribute("src", e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function subTab(evt, subTab) {
+    event.preventDefault();
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", " ");
+    }
+    document.getElementById(subTab).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+  function addMainStock() {
+    var brand = document.getElementById("brand").value;
+    var batch_no = document.getElementById("batch_no").value;
+    var expiry_date = document.getElementById("Expirydate").value;
+    var HSN_code = document.getElementById("HSN_code").value;
+    var manufacture = document.getElementById("manufacture").value;
+    // var barcode = document.getElementById("barcode").value;
+    var as_of_date = document.getElementById("asofdate").value;
+    var discount = document.getElementById("discountin").value;
+    var unit = document.getElementById("unit").value;
+    var prchase_price = document.getElementById("prchase_price").value;
+    var sales_price = document.getElementById("sales_price").value;
+    var quantity = document.getElementById("quantity").value;
+    var low_stock = document.getElementById("low_stock").value;
+    var high_stock = document.getElementById("high_stock").value;
+    var opening_stock = document.getElementById("openstock").value;
+    var item_code = document.getElementById("item_code").value;
+    var current_stock = document.getElementById("current_stock").value;
+    var description = document.getElementById("description").value;
+    // var stock_keeping_unit =
+    //   document.getElementById("stock_keeping_unit").value;
+
+    newstock = new stock(
+      brand,
+      batch_no,
+      expiry_date,
+      HSN_code,
+      manufacture,
+      // barcode,
+      as_of_date,
+      discount,
+      unit,
+      prchase_price,
+      sales_price,
+      quantity,
+      low_stock,
+      high_stock,
+      opening_stock,
+      item_code,
+      current_stock,
+      description
+      // stock_keeping_unit
+    );
+
+    newStockCollection.setStockArray(newstock);
+
+    clearMainStock();
+  }
+
+  function addStock() {
+    var producttypevalue;
+
+    var producttype = document.getElementsByName("itemtype");
+    for (var i = 0; i <= 1; i++) {
+      if (producttype[i].checked) {
+        producttypevalue = producttype[i].value;
+      }
+    }
+    var productName = document.getElementById("item-name-ip").value;
+    var productgroup = document.getElementById("category-ip").value;
+    var producttax = document.getElementById("gstrate-ip").value;
+
+    newStockCollection.setProductName(productName);
+    newStockCollection.setProductGroup(productgroup);
+    newStockCollection.setProductTax(producttax);
+    newStockCollection.setProductType(producttypevalue);
+
+    var sqlQuery =
+      "INSERT INTO stock_collection (product,tax_per,category,stock_typ)";
+    var data_value1 =
+      "('" +
+      productName +
+      "','" +
+      producttax +
+      "','" +
+      productgroup +
+      "','" +
+      producttypevalue +
+      "')";
+    console.log(data_value1);
+    window.MainDatastream.streamAddStock(
+      sqlQuery,
+      data_value1,
+      (status, data) => {
+
+       
+        console.log(
+          "22222222222222222222222222222222222222222222222222222222222222222222",
+
+          JSON.parse(data)[0][4]
+        );
+
+        stockdetail(JSON.parse(data)[0][4]);
+      }
+    );
+  }
+  function stockdetail(product_id) {
+   console.log("function called")
+    var data_value = newStockCollection.returnStockArray();
+    console.log("This is from stock delatials",data_value);
+    var stockDetails = "";
+    for (var i = 0; i < data_value.length; i++) {
+      stockDetails +=
+        "('" +
+        product_id +
+        "','" +
+        data_value[i].getBrand() +
+        "','" +
+        data_value[i].getBatchNo() +
+        "','" +
+        data_value[i].getExpiryDate() +
+        "','" +
+        data_value[i].getHSNCode() +
+        "','" +
+        data_value[i].getManufacture() +
+        "','" +
+        data_value[i].getAsOFDate() +
+        "','" +
+        data_value[i].getDiscount() +
+        "','" +
+        data_value[i].getUnit() +
+        "','" +
+        data_value[i].getPurchasePrice() +
+        "','" +
+        data_value[i].getSalesPrice() +
+        "','" +
+        // stock_keeping_unit +
+        // "','" +
+        data_value[i].getQuantity() +
+        "','" +
+        data_value[i].getLowStock() +
+        "','" +
+        data_value[i].getOpeningStock() +
+        "','" +
+        data_value[i].getItemCode() +
+        "','" +
+        data_value[i].getCurrentStock() +
+        "','" +
+        data_value[i].getDescription() +
+        "','" +
+        data_value[i].getHighStock() +
+        "')";
+      if (i < data_value.length - 1) {
+        stockDetails += ",";
+      }
+    }
+    var stockSqlQuery =
+      "INSERT INTO stock (stock_f_id,brand,bach_no,expiry,hsn_code,manufacturer,as_of_date,discount,unit,purchase_price,sales_price,quantity,low_stock,opening_stock,item_code,current_stock,item_description,high_stock)";
+   
+      console.log("stockvalue=>", stockDetails,stockSqlQuery);
+
+    window.MainDatastream.streamAddStock(
+      stockSqlQuery,
+      stockDetails,
+      (status, data) => {
+        console.log("addstock", status, data);
+      }
+    );
+
+    // location.reload("true");
+  }
+ 
+  function clearMainStock() {
+    document.getElementById("brand").value = "";
+    document.getElementById("batch_no").value = "";
+    document.getElementById("Expirydate").value = "";
+    document.getElementById("HSN_code").value = "";
+    document.getElementById("manufacture").value = "";
+    // document.getElementById("barcode").value = "";
+    document.getElementById("asofdate").value = "";
+    document.getElementById("discountin").value = "";
+    document.getElementById("unit").value = "";
+    document.getElementById("prchase_price").value = "";
+    document.getElementById("sales_price").value = "";
+    document.getElementById("quantity").value = "";
+    document.getElementById("low_stock").value = "";
+    document.getElementById("high_stock").value = "";
+    document.getElementById("openstock").value = "";
+    document.getElementById("item_code").value = "";
+    document.getElementById("current_stock").value = "";
+    document.getElementById("description").value = "";
+    // document.getElementById("stock_keeping_unit").value = "";
+  }
+  function convertImage() {
+    const fs = require("fs");
+    var product_image = document.getElementById("file-input");
+    fs.readFile(product_image, (err, data) => {
+      if (err) throw err;
+
+      const imageBuffer = Buffer.from(data);
+ //     console.log(imageBuffer);
+    });
+  }
+
+  window.MainDatastream.streamAddBill(
+    "SELECT product_id,category FROM stock_collection",
+    (status, data) => {
+ //     console.log("values=>", JSON.parse(data).data);
+      this.inflateAutoCompleateView(
+        document.getElementById("category-ip"),
+        JSON.parse(data).data
+      );
+    }
+  );
+</script>

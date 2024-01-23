@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<!--------------------------------------------------------------------->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<!--------------------------------------------------------------------->
+
+<link rel="stylesheet" href="../assets/themes/main.css" />
+<script src=""></script>
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../node_modules/gridjs/dist/gridjs.umd.js"></script>
+<script src="../../node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+<!-- Include the core CSS, this is needed by the grid -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-grid.css"
+/>
+<!-- Include the theme CSS, only need to import the theme you are going to use -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-theme-alpine.css"
+/>
+<link
+  rel="stylesheet"
+  href="../../node_modules/gridjs/dist/theme/mermaid.min.css"
+/>
+
+<html lang="en" dir="ltr">
+  <script src="../widgets/autoSearchText.js"></script>
+  <script src="../widgets/actionbar.js"></script>
+  <script src="../widgets/tab.js"></script>
+  <script src="../widgets/gridHelper.js"></script>
+  <script src="../../node_modules/list.js/dist/list.min.js"></script>
+  <script src="../widgets/snackbox.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STOCK</title>
+  </head>
+  <body>
+    <div class="MainParent">
+      <div class="sidebar close" id="sidebar">
+        <ul class="nav-links">
+          <li class="main-menu">
+            <a href="#" class="home">
+              <img
+                src="../assets/images/home.png"
+                alt="home"
+                class="home"
+                onclick=""
+              />
+              <span class="link_name home">Apps</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name home" href="#">Apps</a></li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <a href="#" class="stockHome">
+              <img
+                src="../assets/images/home1.png"
+                alt="stockHome"
+                class="stockHome"
+                onclick=""
+              />
+              <span class="link_name stockHome">Home</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name stockHome" href="#">Home</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <a href="#" class="stocks">
+              <img
+                src="../assets/images/project-icon-2.png"
+                alt="Employee"
+                class="Stocks"
+                onclick=""
+              />
+              <span class="link_name Stocks">Stocks</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name Stocks" href="#">Stocks</a></li>
+            </ul>
+          </li>
+
+         
+        </ul>
+      </div>
+
+      <section class="home-section" id="home-section">
+        <div id="sub">
+          <div id="sub1" style="height: 5%">
+            <p class="pl-1 pt-1 fc-w">Inventory Items Overview</p>
+          </div>
+          <div id="sub2">
+            <div class="float-container w100">
+              <div class="float-child">
+                <p class="sbt">Total Items</p>
+                <div class="ssb">
+                  <div style="text-align: center">
+                    <span class="spn" id="total"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="float-child">
+                <p class="sbt">Stock on Hand</p>
+                <div class="ssb" style="text-align: center">
+                  <span class="spn" id="stockh"></span>
+                </div>
+              </div>
+
+              <div class="float-child">
+                <p class="sbt">Items Avalible for Sale</p>
+                <div class="ssb" style="text-align: center">
+                  <span class="spn" id="avl"></span>
+                </div>
+              </div>
+
+              <div class="float-child">
+                <p class="sbt">Items Committed for Sales</p>
+                <div class="ssb" style="text-align: center">
+                  <span class="spn" id="sale"></span>
+                </div>
+              </div>
+
+              <div class="float-child">
+                <p class="sbt">Items Quantity In</p>
+                <div class="ssb" style="text-align: center">
+                  <span class="spn" id="qnty"></span>
+                </div>
+              </div>
+
+              <div class="float-child">
+                <p class="sbt">Items Quantity Out</p>
+                <div class="ssb" style="text-align: center">
+                  <span class="spn" id="qntyout"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="sub3">
+            <div><p class="pl-2">Top 23 Fast Selling Items</p></div>
+
+            <div class="h65 w100">
+              <div style="width: 70%">
+                <canvas id="mycanvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+<!-- -------------------------------------------------------------------------------------- -->
+
+<script>
+  // function loadApp() {
+  //     $(".home-section").load("../app.html");
+  //   }
+  actionbar = new Actionbar();
+
+actionbar.addIcon("add_stock", "../assets/images/add-expense.png");
+actionbar.addIcon("export_button", ".././assets/images/export_excel-img.png");
+actionbar.addIcon("import_button", ".././assets/images/import.png");
+
+
+actionbar.addIcon("print_button", "../assets/images/toolbar-print.png");
+
+function handler(event) {
+  switch (event.target.id) {
+    case "add_stock":
+      openAddItem();
+      break;
+      case "export_button":
+      download();
+      break;
+    case"import_button":
+      break;
+    // case "print_icon":
+    //                  ;
+    //   break;
+  }
+}
+actionbar.render(document.getElementById("header"));
+actionbar.setToolbarOnClick(handler);
+  </script>
+  <script>
+    var tabbar;
+    if (tabbar == undefined){
+  tabbar = new Tabbar();
+  tabbar.addTab("stocktab", "Stock");}
+tabbar.render(document.getElementById("tabwrap"));
+  function onFilterTextBoxChanged() {
+    stockGrid.api.setQuickFilter(
+      document.getElementById("filter-text-box").value
+    );
+    console.log(
+      "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      typeof document.getElementById("filter-text-box").value
+    );
+  }
+  </script>
+
+<!-- ------------------------------------------------------------------------------------------------ -->
+
+  <script>
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+      arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+      });
+    }
+  </script>
+
+  <script>
+    function openAddItem() {
+      window.open("./stock_Additem.html", "-blank", "resizable=0,frame=0");
+    }
+  </script>
+  <script>
+    var current_page = null;
+    $(document).ready(function view() {
+      $(".Stocks").click(menuOnClick);
+      $(".home").click(menuOnClick);
+      $(".stockHome").click(menuOnClick);
+    });
+    function menuOnClick(e) {
+      {
+        console.log("side navw : clicked ->", e, e.target.className);
+        if (current_page != e.target.className) {
+          var path = null;
+          var i = 0;
+          do {
+            switch (e.target.classList[i]) {
+            case "Stocks":
+              path = "./stock.html";
+              break;
+            case "stockHome":
+              window.open(
+              "../Stock/stock_main.html",
+              "_self",
+              "resizable=0,frame=0"
+              );
+              window.resizeTo(getWidth(), getHeight());
+              break;
+            case "home":
+              path="../app.html";
+              break;
+            }
+            i++;
+          } while (path == null && i < e.target.classList.length);
+          if (path != null) {
+            $(".home-section").load(path);
+            current_page = e.target.className;
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    //Set all css dimen here
+    console.log("start");
+    function getWidth() {
+      return window.screen.availWidth;
+    }
+    function getHeight() {
+      return window.screen.availHeight;
+    }
+
+    function setDime(w, h) {
+      if (w != undefined) {
+        $(".sidebar").css("width", (w * 3.5) / 100);
+        $(".home-section").css("width", (w * 96.5) / 100);
+        $(".home-section").css("left", (w * 3.5) / 100);
+      } else console.log("dime not defined");
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+
+    window.addEventListener("load", function (event) {
+      var elements = document.getElementsByClassName("cet-window-icon");
+      elements[0].addEventListener("click", function imageClick() {
+        console.log("image clicked");
+      });
+    });
+  </script>
+  <script>
+    var value = document.getElementById("total");
+    var value1 = document.getElementById("stockh");
+    var value2 = document.getElementById("avl");
+    var value3 = document.getElementById("sale");
+    var value4 = document.getElementById("qnty");
+    var value5 = document.getElementById("qntyout");
+
+    window.MainDatastream.streamAddBill(
+      "SELECT product FROM stock_collection",
+      (status, data) => {
+        var sidelist = JSON.parse(data).data;
+
+        var data1 = sidelist.length;
+
+        if (data1 > 1000) {
+          data1 = data1 / 1000;
+          value.innerHTML = data1.toFixed(2)  + "K";
+        } else {
+          value.innerHTML = data1;
+        }
+
+        // userList.add(sidelist);
+        // $(".card").click(itemClick);
+      }
+    );
+
+    var dat = 0;
+    var val = 0;
+    window.MainDatastream.streamAddBill(
+      "SELECT quantity FROM stock",
+      (status, data) => {
+        var sidelist = JSON.parse(data).data;
+
+        for (let i = 0; i < sidelist.length; i++) {
+          if (sidelist[i] != null && sidelist[i] != "") {
+            let dat = Number.parseInt(sidelist[i]);
+            val = val + dat;
+          }
+        }
+        if (val > 1000) {
+          let val = val / 1000;
+          value1.innerHTML = val.toFixed(2)  + "K";
+        } else {
+          value1.innerHTML = val;
+        }
+      }
+    );
+
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    let mm = today.getMonth();
+    mm = mm + 1;
+    var dd = today.getDate();
+    today = yyyy + "-" + mm + "-" + dd;
+    var t = 0;
+    window.MainDatastream.streamAddBill(
+      "SELECT quantity,expiry FROM stock ",
+      (status, data) => {
+        var sidelist = JSON.parse(data).data;
+
+        for (let i = 0; i < sidelist.length; i++) {
+          if (sidelist[i][1] != "" && sidelist[i][0] != "") {
+            if (sidelist[i][1] > today && sidelist[i][0] != null) {
+              let dat = Number.parseInt(sidelist[i][0]);
+              t = t + dat;
+            }
+          }
+        }
+
+        if (t > 1000) {
+          t = t / 1000;
+          value1.innerHTML = t.toFixed(2)  + "K";
+        } else {
+          value2.innerHTML = t;
+        }
+      }
+    );
+
+    var t1 = 0;
+    var dat = 0;
+    window.MainDatastream.streamAddBill(
+      "SELECT quantity FROM purchase_order_list ",
+      (status, data) => {
+        var sidelist = JSON.parse(data).data;
+
+        for (let i = 0; i < sidelist.length; i++) {
+          if (sidelist[i] != "" && sidelist[i] != null) {
+            dat = Number.parseInt(sidelist[i]);
+            t1 = t1 + dat;
+          }
+          //  console.log("try...............", val);
+        }
+
+        if (t1 > 1000) {
+          t1 = t1 / 1000;
+          value3.innerHTML = t1.toFixed(2)  + "K";
+        } else {
+          value3.innerHTML = t1;
+        }
+      }
+    );
+
+    var val2 = 0;
+    window.MainDatastream.streamAddBill(
+      "SELECT current_stock FROM stock",
+      (status, data) => {
+        var sidelis = JSON.parse(data).data;
+
+        //    console.log("this...............................",sidelis);
+
+        for (let i = 0; i < sidelis.length; i++) {
+          if (sidelis[i] != null && sidelis[i] != "") {
+            let dat2 = Number.parseInt(sidelis[i]);
+            val2 = val2 + Number(dat2);
+          }
+        }
+        if (val2 > 1000) {
+          val2 = val2 / 1000;
+          value4.innerHTML = val2.toFixed(2) + "K";
+        } else {
+          value4.innerHTML = val2;
+        }
+      }
+    );
+
+    //................................
+
+
+    //................................
+
+    var aa = 0;
+    window.MainDatastream.streamAddBill(
+      "SELECT list_quantity FROM purchase_bill_list",
+      (status, data) => {
+        var sidelist = JSON.parse(data).data;
+
+        for (let i = 0; i < sidelist.length; i++) {
+          if (sidelist[i] != null && sidelist[i] != "") {
+            let dat0 = Number.parseInt(sidelist[i]);
+            aa = aa + dat0;
+          }
+        }
+
+        if (aa > 1000) {
+          aa = aa / 1000;
+          value5.innerHTML = aa.toFixed(2)  + "K";
+        } else {
+          value5.innerHTML = aa;
+        }
+      }
+    );
+    //..........................................................................
+    window.MainDatastream.streamAddBill(
+      "SELECT product_in,SUM(quantity_in ^^ int) AS total FROM invoice_list GROUP BY product_in ORDER BY total DESC",
+      (status, data) => {
+        var sidelist = JSON.parse(data).data;
+        console.log("ffffffffffffffffffffffffffffffffffff", JSON.parse(data).data);
+      }
+    );
+
+//..................................Chart Floating.....................................
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min); 
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    var ctx_live = document.getElementById("mycanvas");
+    var myChart = new Chart(ctx_live, {
+      type: "bar",
+      data: {
+        labels: [],
+        datasets: [
+          {
+            data: [],
+            borderWidth: 1,
+            borderColor: "#00c0ef",
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+       
+        legend: {
+          display: false,
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
+    });
+    var postId = 1;
+    // logic to get new data
+    var getData = function () {
+      $.ajax({
+        url:
+          "https://jsonplaceholder.typicode.com/posts/" + postId + "/comments",
+        success: function (data) {
+          if (postId < 26) {
+            myChart.data.labels.push("Post " + postId++);
+          }
+
+          myChart.data.datasets[0].data.push(getRandomIntInclusive(1, 25));
+          myChart.update();
+        },
+      });
+    };
+    setInterval(getData, 50);
+
+    //.....................................................................................
+
+    //.........................................................................
+  </script>
+</html>

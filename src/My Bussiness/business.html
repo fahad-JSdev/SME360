@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/themes/business.css" />
+</head>
+<body>
+<form class="buss">
+  <div id="searchBox">
+    <input id="search-ip" type="text" placeholder="Search.." name="search">
+    <button id="search-btn" type="button" onclick="searchGraph()">Search</button>
+  </div>
+  <div id="graph-section"></div>
+</form>
+</body>
+<script>
+function searchGraph(){
+    let searchQuery = document.getElementById("search-ip").value;
+    var plottypay;
+    window.MainDatastream.streamGetData(searchQuery, (status, data) => {
+        // this.graphData = JSON.parse(data).data;
+        plottypay = JSON.parse(data).data;
+    if((typeof(plottypay)!="string")){
+      var ln=plottypay.length;
+      console.log("Graphdata ",plottypay,"typeof(plottypay) ",typeof(plottypay));
+      var k=[];
+      for (var kg = 0; kg < ln; kg++) {
+        var pl=plottypay[kg];
+        k.push(pl[0]);
+        }
+        Plotly.newPlot("graph-section", /* JSON object */ {
+              "data": [{ "y": k}],
+              "layout": { "width": 800, "height": 500}
+          })
+    }
+    });
+  }
+</script>
+</html> 

@@ -1,0 +1,60 @@
+@import"../colors/colors.css";
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+form.buss input[type=text] {
+  padding: 10px;
+  font-size: 12px;
+  border: 1px solid grey;
+  float: left;
+  width: 18%;
+  background: #f1f1f1;
+}
+#search-ip{
+  border-radius: 5px;
+}
+
+form.buss button {
+  float: left;
+  width: 7%;
+  padding: 11px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  border: none;
+  outline: none;
+  color: var(--button-text-color);
+  border-radius: 5px;
+  background-color: var(--button-color);
+  transition: 0.2s ease;
+}
+
+form.buss button:hover {
+  background-color: var(--button-hover);
+  transform: scale(1.04);
+}
+
+form.buss::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.buss{
+  position: relative;
+}
+#searchBox{
+  margin: 1rem;
+}
+#graph-section{
+  position: absolute;
+  top: 4rem;
+  margin: 1rem;
+}
+#search-ip:focus{
+  outline: none;
+}

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="../src/assets/themes/app.css" />
+    <title>Apps</title>
+  </head>
+  <body>
+    <div class="cards-list">
+      <div id="card" class="expense-card">
+        <div class="expense-card card_image">
+          <img
+            class="expense-card expenseimg"
+            src="./assets/images/expence-og.png"
+          />
+        </div>
+        <div class="expense-card card_title title-white">
+          <p class="expense-card">Expense</p>
+        </div>
+      </div>
+
+      <div id="card" class="employee-card">
+        <div class="employee-card card_image">
+          <img class="employee-card" src="./assets/images/employee-og.png" />
+        </div>
+        <div class="employee-card card_title title-white">
+          <p class="employee-card">Employee</p>
+        </div>
+      </div>
+
+      <div id="card" class="stock-card">
+        <div class="stock-card card_image">
+          <img
+            class="stock-card stockimg"
+            src="./assets/images/stock-og.png"
+          />
+        </div>
+        <div class="stock-card card_title">
+          <p class="stock-card">Stock</p>
+        </div>
+      </div>
+      <div id="card" class="purchase-card">
+        <div class="purchase-card card_image">
+          <img
+            class="purchase-card purchaseimg"
+            src="./assets/images/purchase-og.png"
+          />
+        </div>
+        <div class="purchase-card card_title title-black">
+          <p class="purchase-card">Purchase</p>
+        </div>
+      </div>
+
+      <div id="card" class="sales-card">
+        <div class="sales-card card_image">
+          <img class="sales-card" src="./assets/images/sales-new.png" />
+        </div>
+        <div class="sales-card card_title title-black">
+          <p class="sales-card">Sales</p>
+        </div>
+      </div>
+
+      <div id="card" class="account-card">
+        <div class="account-card card_image">
+          <img
+            class="account-card accountimg"
+            src="./assets/images/account-og.png"
+          />
+        </div>
+        <div class="account-card card_title title-black">
+          <p class="account-card">Account</p>
+        </div>
+      </div>
+
+      <div id="card" class="business-card">
+        <div class="business-card card_image">
+          <img class="business-card" src="./assets/images/business-og.png" />
+        </div>
+        <div class="business-card card_title title-black">
+          <p class="business-card">My Business</p>
+        </div>
+      </div>
+
+      <div id="card" class="settings-card">
+        <div class="settings-card card_image">
+          <img
+            class="settings-card settingsimg"
+            src="./assets/images/settings-og.png"
+          />
+        </div>
+        <div class="settings-card card_title title-black">
+          <p class="settings-card">Settings</p>
+        </div>
+      </div>
+
+      <div id="card" class="cloud-card">
+        <div class="cloud-card card_image">
+          <img class="cloud-card" src="./assets/images/cloud-og.png" />
+        </div>
+        <div class="cloud-card card_title title-black">
+          <p class="cloud-card">Cloud</p>
+        </div>
+      </div>
+
+      <div id="card" class="devices-card">
+        <div class="devices-card card_image">
+          <img class="devices-card" src="./assets/images/devices.png" />
+        </div>
+        <div class="devices-card card_title title-black">
+          <p class="devices-card">Devices</p>
+        </div>
+      </div>
+     
+
+      <div id="card" class="form-card">
+        <div class="form-card card_image">
+          <img class="form-card" src="./assets/images/devices.png" />
+        </div>
+        <div class="form-card card_title title-black">
+          <p class="form-card">Form</p>
+        </div>
+      </div>
+
+      <div id="card" class="report-card">
+        <div class="report-card card_image">
+          <img class="report-card" src="./assets/images/Report-og.png" />
+        </div>
+        <div class="report-card card_title title-black">
+          <p class="report-card">Report</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    function getWidth() {
+      return window.screen.availWidth;
+    }
+    function getHeight() {
+      return window.screen.availHeight;
+    }
+    var current_page = null;
+    $(document).ready(function view() {
+      $(".employee-card").click(redirct);
+      $(".stock-card").click(redirct);
+      $(".expense-card").click(redirct);
+      $(".purchase-card").click(redirct);
+      $(".sales-card").click(redirct);
+      $(".account-card").click(redirct);
+      $(".business-card").click(redirct);
+      $(".settings-card").click(redirct);
+      $(".report-card").click(redirct);
+      $(".form-card").click(redirct);
+    });
+    function redirct(e) {
+      console.log("side navw : clicked ->", e.target.className);
+      if (current_page != e.target.className) {
+        var path = null;
+        var i = 0;
+        do {
+          console.log("e.target....", e.target.classList);
+          switch (e.target.classList[i]) {
+            case "employee-card":
+              console.log("3 times check");
+              window.electronAPI.openmainwindow(
+                "src/Employee/employee_main.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              // window.open(
+              // "./employee_main.html",
+              // "_blank",
+              // "resizable=0,frame=0"
+              // );
+              // window.resizeTo(getWidth(), getHeight());
+              break;
+            case "stock-card":
+              
+              window.electronAPI.openmainwindow("src/Stock/stock_main.html");
+              window.resizeTo(getWidth(),getHeight());
+              break;
+            case "expense-card":
+           
+              window.electronAPI.openmainwindow(
+                "src/expense/expense_main.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+            case "purchase-card":
+              
+              window.electronAPI.openmainwindow(
+                "src/purchase/purchase_main.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+            case "sales-card":
+              
+              window.electronAPI.openmainwindow("src/sales/sales_main.html");
+              window.resizeTo(getWidth(),getHeight());
+              break;
+            case "account-card":
+              
+              window.electronAPI.openmainwindow("src/Bank/account-main.html");
+              window.resizeTo(getWidth(),getHeight());
+              break;
+            case "business-card":
+              
+              window.electronAPI.openmainwindow(
+                "src/My Bussiness/reports_main.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+            case "settings-card":
+             
+              window.electronAPI.openmainwindow(
+                "src/settings/settings_main.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+
+            case "devices-card":
+             
+              window.electronAPI.openmainwindow(
+                "src/Devices/devices_main.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+
+            case "report-card":
+              window.electronAPI.openmainwindow(
+                "src/Report/report_window.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+
+              case "form-card":
+              window.electronAPI.openmainwindow(
+                "src/Form/business_form.html"
+              );
+              window.resizeTo(getWidth(),getHeight());
+              break;
+
+              
+          }
+          i++;
+        } while (path == null && i < e.target.classList.length);
+        if (path != null) {
+          current_page = e.target.className;
+        }
+      }
+    }
+  </script>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /*--nav bar aj--*/
+.sidenav {
+  height: 100%;
+  width: 220px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #d8dbdef4;
+  overflow-x:hidden;
+  padding-top: 30px;
+  margin: 0;
+}
+h5{
+  padding: 6px 8px 6px 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+  color: #000000;
+  margin-top: 0px;
+  display: block;
+
+
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+  color: #000000;
+  display: block;
+
+}
+
+.sidenav a:hover {
+  color: #595555;
+}
+.tr_rpt{
+    padding: 6px 8px 6px 16px;
+  /* text-decoration: none; */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 18px;
+  color: #000000;
+  display: block;
+}
+.sidenav span {
+  padding: 6px 8px 6px 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-decoration: none;
+  font-size: 14px;
+  color: #000000;
+  display: block;
+}
+
+.sidenav span:hover {
+  color: #595555;
+}
+
+/*end of nav*/
+
+/*---This month css*/
+
+.this_month{
+    margin-left: 230px;
+    margin-top: 10px;
+    margin-right: 80px;
+}
+.date{
+  margin-right: 80px;
+
+}
+.party{
+  margin-right: 80px;
+
+}
+
+/*--end of this month--*/
+select{
+    width: 150px;
+    height: 40px;
+}
+.img{
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+}
+.span_report{
+    display: inline-grid;
+}
+div.content{
+    width:89%;
+    color: #000000;
+    /* margin-left: 200px; */
+
+  padding: 1px 16px;
+  
+    
+}
+.head{
+    font-size: medium;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    margin-left: 300px;
+}
+.img_exp{
+    width: 30px;
+    color: #000000;
+    float: right;
+    margin-inline: -67px;
+}
+.img_report{
+float: right;
+
+}
+.img_cus{
+float: right;
+margin-inline: 35px;
+}
+.tab{
+  padding-top: 45px;
+  align-items: center;
+}
+select{
+  height: 30px;
+  width: 102px;
+  border-radius: 3px;
+  
+}
+input{
+  height: 28px;
+  width: 102px;
+  border-radius: 3px;
+  border-width: 1px;
+}
+.custom{
+  float:left;
+  
+}
+.grid1{
+display: grid;
+grid: auto / auto auto auto auto;
+grid-gap: 70px;
+gap: 1;
+padding: 20px; 
+margin: 5px;
+width: 81%;
+margin-left: 231px;
+align-items: normal;
+z-index:-1;
+
+/* position: static; */
+
+
+}
+.img-sub{
+  display: block;
+  font-size: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-inline: -5px;
+}
+
+        </style>
+    </head>
+    
+    <body>
+        <!-- Side navigation -->
+<div class="sidenav">
+    <h5>Transaction Report</h5><br>
+    
+    <a href="#">Expense</a>
+            <span>Project</span>
+            <span>Labour</span><br>
+            <a href="#">Employee</a><br>
+            <a href="#">Stock</a><br>
+            <a href="#">Purchase</a>
+            <span>Purchase Bill</span>
+            <span>Purchase Out</span>
+            <span>Purchase Order</span>
+            <span>Payment Return/Db.Note</span><br>
+            <a href="#">Sales</a>
+            <span>Sales Invoice</span>
+            <span>Estimate Quotation</span>
+            <span>Payment In</span>
+            <span>Delivery Challan</span>
+            <span>Sales Return/Cr.Note</span>
+
+
+    
+        </div>
+  
+  <!-- Page content -->
+  <div class="content">
+    <div class="head"><center>TRANSACTION REPORT</center></div>
+      
+       <div class="img_exp">
+
+
+       <a class="img-re"> <img
+          class="img"
+          src="../assets/images/excel_import_report.png" /></a></div>
+<div class="img_report">
+          <img
+          class="img"
+          src="../assets/images/print_report.png" />
+          </div>
+
+          <div class="img_cus">
+            <img
+            class="img"
+            src="../assets/images/custom_report.png" /></div>
+          </div>
+    </div>
+    <div class="tab">
+        <select class="this_month" required="">
+            <option disabled="" selected="" value="">This Month</option>
+            <option value="xxxxx">xxxxxxx</option>
+            <option value="yyyyy">yyyyyyyy</option>
+            <option value="zzzzz">zzzzzzzz</option>
+          </select>
+          
+          
+          <input class="date" type="date">
+          
+
+          <select class="party" required="">
+            <option disabled="" selected="" value="">Party</option>
+            <option value="xxxxx">xxxxxxx</option>
+            <option value="yyyyy">yyyyyyyy</option>
+            <option value="zzzzz">zzzzzzzz</option>
+          </select>
+          
+          
+    </div>
+    </body>
+</html>

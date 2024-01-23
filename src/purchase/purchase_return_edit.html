@@ -1,0 +1,728 @@
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+
+<script src="../widgets/autoSearchText.js"></script>
+<link rel="stylesheet" href="../assets/themes/autoSearchText.css" />
+<link rel="stylesheet" href="../assets/themes/purchase_order.css" />
+<script src="../accounts/Product.js"></script>
+<script src="../accounts/Receipt.js"></script>
+<title>PURCHASE RETURN</title>
+<body>
+  <form id="main-form">
+    <div class="client">
+      <table class="top-table">
+        <div class="container1">
+          <div class="material-textfield">
+            <input type="text" id="partydt" placeholder="Party" />
+          </div>
+        </div>
+
+        <tr>
+          <td>
+            <label for="issue-dt"> Return Date &emsp;</label>
+            <input type="date" id="issue-dt" name="issue-dt" />
+          </td>
+
+          <td>
+            <label for="bill_dat">Bill Date &emsp;</label>
+            <input type="date" id="bill_dat" name="bill_dat" contenteditable />
+          </td>
+          <td>
+            <label for="rNumber">Return Number</label>
+            <input
+              type="text"
+              id="rNumber"
+              name="pon"
+              disabled
+              contenteditable
+            />
+          </td>
+          <td>
+            <label for="pBnumber">P.B. Number</label>
+            <input
+              type="text"
+              id="pBnumber"
+              name="pon"
+              disabled
+              contenteditable
+            />
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="button-div">
+      <img
+        src="../assets/images/trash.png"
+        alt="delete button"
+        id="delete_button"
+        class="edit_button"
+        title="delete"
+        onclick="deleteFunction()"
+      />
+
+      <img
+        src="../assets/images/color_edit.png"
+        alt="edit button"
+        id="edit_button"
+        class="edit_button"
+        title="Edit"
+        onclick="editing()"
+      />
+    </div>
+    <div class="min_height">
+      <table class="inventory" id="myTable">
+        <thead>
+          <tr>
+            <th class="bold2" rowspan="2">
+              <span class="no" id="no">#</span>
+            </th>
+            <th class="bold" rowspan="2">
+              <span class="item" id="item">ITEM</span>
+            </th>
+            <th class="bold" rowspan="2">
+              <span class="batch-no" id="batch-no">BATCH NO.</span>
+            </th>
+            <th class="bold" rowspan="2">
+              <span class="exp-date" id="exp-date">EXPIRY DATE</span>
+            </th>
+            <th class="bold" rowspan="2">
+              <span class="quantity" id="quantity">QUANTITY</span>
+            </th>
+            <th class="bold" rowspan="2" id="return">
+              <span class="quantity" id="quantity">RETURN</span>
+            </th>
+            <th class="bold" rowspan="2">
+              <span class="unit" id="unit">UNIT</span>
+            </th>
+            <th class="bold" rowspan="2">
+              <span class="price/unit" id="price/unit">PRICE/UNIT</span>
+            </th>
+            <th class="bold" colspan="2">
+              <span class="discount" id="discount">DISCOUNT</span>
+            </th>
+            <th class="bold" colspan="2">
+              <span class="tax" id="tax">TAX</span>
+            </th>
+            <th class="bold" rowspan="2">
+              <span class="amount" id="amount">AMOUNT</span>
+            </th>
+          </tr>
+
+          <tr>
+            <th class="bold header">
+              <span class="percentage" id="percentage">%</span>
+            </th>
+            <th class="bold header">
+              <span class="disc-amount" id="disc-amount">AMOUNT</span>
+            </th>
+            <th class="bold header">
+              <span class="percentage2" id="percentage2">%</span>
+            </th>
+            <th class="bold header">
+              <span class="disc-amount2" id="disc-amount2">AMOUNT</span>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody id="tbdy"></tbody>
+      </table>
+    </div>
+    <!-- <div class="addrow">
+      <a
+        class="add noprint"
+        title="Add Item"
+        onclick="addRowIfnotLastcolumnnotempty('myTable')"
+        >Add row</a
+      >
+    </div> -->
+    <div class="right_tax">
+      <div class="payment-method">
+        <select name="cars" id="payment-select" placeholder=" " type="text">
+          <option selected disabled hidden>Payment Method</option>
+          <option value="upi">UPI</option>
+          <option value="cash">Cash</option>
+          <option value="bank">Bank</option>
+        </select>
+        <input id="file-input" type="file" />
+      </div>
+      <div class="description-down">
+        <textarea placeholder="Description" id="desp"></textarea>
+      </div>
+      <table class="balance" id="balance">
+        <tbody>
+          <tr>
+            <th class="bold1">
+              <span class="total" id="disc">Discount</span>
+            </th>
+            <td class="disc_td">
+              <input type="number" id="granddisc" oninput="getDiscount()" />
+            </td>
+            <th class="bold1">
+              <span class="total" id="total">Total</span>
+            </th>
+            <td><span>&#8377; </span><span id="grandtotal"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button
+      type="button"
+      id="save-submit-button"
+      onclick="purchaseOrderUpdate()"
+    >
+      SAVE
+    </button>
+  </form>
+</body>
+
+<script>
+  //event listerner for add_item button
+  // document.getElementById("Add_item_button").addEventListener("click", () => {
+  //   window.open("./purAddStock.html", "_blank", "resizable=0,frame=0");
+  //   console.log("event called");
+  // });
+
+  // window.MainDatastream.streamAddBill(
+  //   "SELECT return_id FROM purchase_return ORDER BY return_id DESC LIMIT 1 ;",
+  //   (status, data) => {
+  //     console.log("purchase_bill no", JSON.parse(data).data);
+  //     document.getElementById("rNumber").value =
+  //       parseInt(JSON.parse(data).data[0]) + 1;
+  //     // var account_id = JSON.parse(data).data;
+  //     // document.getElementById("pon").value =
+  //     //   account_id[account_id.length - 1][0] + 1;
+  //   }
+  // );
+  //   document.getElementById("return").style.display = "none";
+</script>
+<script>
+  var edit_button = document.getElementById("edit_button");
+  var delete_button = document.getElementById("delete_button");
+
+  edit_button.style.display = "none";
+  delete_button.style.display = "none";
+
+  var a = document.getElementById("myTable");
+  var mReceipt = new Receipt();
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataString = urlParams.get("data");
+  var clickdata_id = JSON.parse(decodeURIComponent(dataString));
+  console.log("data from purchase orderhome=>", clickdata_id, clickdata_id[0]);
+  document.getElementById("pBnumber").value = clickdata_id[0];
+  if (clickdata_id[3] == "editing") {
+    edit_button.style.display = "block";
+    delete_button.style.display = "block";
+
+    document.getElementById("save-submit-button").style.display = "none";
+  }
+  window.MainDatastream.streamGetDataOnce(
+    "SELECT purchase_bill.bill_id,purchase_bill.pb_dat,purchase_bill.due_dat,purchase_bill.total_amnt,purchase_bill.bill_discount,purchase_bill.bill_pay_method,purchase_bill.bill_description,pur_bill_list.list_stockname,pur_bill_list.list_batch,pur_bill_list.exp_dat,pur_bill_list.list_quantity,pur_bill_list.list_unit,pur_bill_list.list_price,pur_bill_list.list_tax,pur_bill_list.list_amount,vendor.vendor_name,pur_bill_list.list_discount,stock.item_description,stock.stock_id,pur_bill_list.list_id,pur_bill_list.ret_quantity FROM purchase_bill LEFT JOIN vendor ON purchase_bill.vendor_f_id = vendor.personid LEFT JOIN purchase_bill_list AS pur_bill_list ON purchase_bill.bill_id = pur_bill_list.pur_bill_f_key LEFT JOIN stock ON pur_bill_list.stock_f_key = stock.stock_id WHERE pur_bill_list.ret_quantity <> '0' AND purchase_bill.bill_id=" +
+      clickdata_id[0] +
+      ";",
+    (status, data) => {
+      this.rowLength = JSON.parse(data).data.length;
+
+      console.log("data for purchase bill table=>", JSON.parse(data).data);
+      var pon = document.getElementById("pBnumber");
+
+      var issue = document.getElementById("issue-dt");
+      var bill_dat = document.getElementById("bill_dat");
+      var payment = document.getElementById("payment-select");
+      var partydt = document.getElementById("partydt");
+      var desp = document.getElementById("desp");
+      var disc = document.getElementById("granddisc");
+      var gTotal = document.getElementById("grandtotal");
+      var rNumber = document.getElementById("rNumber");
+      issue.value = clickdata_id[2];
+      pon.value = JSON.parse(data).data[0][0];
+      rNumber.value = clickdata_id[1];
+      bill_dat.value = JSON.parse(data).data[0][1];
+      payment.value = JSON.parse(data).data[0][5];
+      partydt.value = JSON.parse(data).data[0][15];
+      console.log("payment value=>", JSON.parse(data).data[0][5]);
+      console.log("description value=>", JSON.parse(data).data[0][6]);
+      console.log("discount value=>", JSON.parse(data).data[0][4]);
+      desp.value = JSON.parse(data).data[0][6];
+      disc.value = JSON.parse(data).data[0][4];
+      gTotal.innerHTML = JSON.parse(data).data[0][3];
+      // partydt.selectedItemId = JSON.parse(data).data[0][21];
+      pon.disabled = true;
+      issue.disabled = true;
+      bill_dat.disabled = true;
+      payment.disabled = true;
+      desp.disabled = true;
+      disc.disabled = true;
+
+      partydt.disabled = true;
+
+      for (var i = 0; i < JSON.parse(data).data.length; i++) {
+        CreateRow("myTable");
+
+        console.log("data types=>", typeof JSON.parse(data).data[i][16]);
+
+        console.log("table data=>", JSON.parse(data).data[i]);
+        a.rows[i + 2].cells[1].firstChild.value = JSON.parse(data).data[i][7];
+        a.rows[i + 2].cells[1].firstChild.stockId =
+          JSON.parse(data).data[i][18];
+        a.rows[i + 2].cells[1].firstChild.listId = JSON.parse(data).data[i][19];
+        a.rows[i + 2].cells[2].firstChild.value = JSON.parse(data).data[i][8];
+        a.rows[i + 2].cells[3].firstChild.value = JSON.parse(data).data[i][9];
+        a.rows[i + 2].cells[4].firstChild.value = JSON.parse(data).data[i][10];
+        a.rows[i + 2].cells[4].firstChild.Val = JSON.parse(data).data[i][10];
+        a.rows[i + 2].cells[4].firstChild.retVal = JSON.parse(data).data[i][20];
+
+        a.rows[i + 2].cells[5].firstChild.value = JSON.parse(data).data[i][20];
+
+        a.rows[i + 2].cells[6].firstChild.value = JSON.parse(data).data[i][11];
+        a.rows[i + 2].cells[7].firstChild.value = JSON.parse(data).data[i][12];
+        a.rows[i + 2].cells[8].firstChild.value = JSON.parse(data).data[i][16];
+        a.rows[i + 2].cells[10].firstChild.value = JSON.parse(data).data[i][13];
+        a.rows[i + 2].cells[12].firstChild.value = JSON.parse(data).data[i][14];
+        console.log("total value=>", JSON.parse(data).data[i][14]);
+        console.log("return function", JSON.parse(data).data[i]);
+        if (clickdata_id[3] == "edit") {
+          a.rows[i + 2].cells[1].firstChild.disabled = true;
+          a.rows[i + 2].cells[2].firstChild.disabled = true;
+          a.rows[i + 2].cells[3].firstChild.disabled = true;
+          a.rows[i + 2].cells[4].firstChild.disabled = true;
+          a.rows[i + 2].cells[5].firstChild.disabled = false;
+          a.rows[i + 2].cells[6].firstChild.disabled = true;
+          a.rows[i + 2].cells[7].firstChild.disabled = true;
+          a.rows[i + 2].cells[8].firstChild.disabled = true;
+          a.rows[i + 2].cells[9].firstChild.disabled = true;
+        }
+        if (clickdata_id[3] == "editing") {
+          a.rows[i + 2].cells[1].firstChild.disabled = true;
+          a.rows[i + 2].cells[2].firstChild.disabled = true;
+          a.rows[i + 2].cells[3].firstChild.disabled = true;
+          a.rows[i + 2].cells[4].firstChild.disabled = true;
+          a.rows[i + 2].cells[5].firstChild.disabled = true;
+          a.rows[i + 2].cells[6].firstChild.disabled = true;
+          a.rows[i + 2].cells[7].firstChild.disabled = true;
+          a.rows[i + 2].cells[8].firstChild.disabled = true;
+          a.rows[i + 2].cells[9].firstChild.disabled = true;
+        }
+
+        // var p = new Product(
+        //   //stock_id //list_id
+        //   [JSON.parse(data).data[i][18], JSON.parse(data).data[i][19]], // id
+        //   JSON.parse(data).data[i][7], //name
+        //   JSON.parse(data).data[i][11], //unit
+        //   parseFloat(JSON.parse(data).data[i][12]), //price
+        //   parseFloat(JSON.parse(data).data[i][16]), //discount
+        //   parseFloat(JSON.parse(data).data[i][13]), //tax
+        //   JSON.parse(data).data[i][17], //details
+        //   JSON.parse(data).data[i][8], //batch_no
+        //   JSON.parse(data).data[i][9] //expiry_dat
+        // );
+        // mReceipt.addproduct(p);
+        // mReceipt
+        //   .getProducts()
+        //   [i].setQuantity(parseFloat(JSON.parse(data).data[i][12]));
+        // a.rows[i + 2].cells[9].firstChild.value = mReceipt
+        //   .getProducts()
+        //   [i].getDiscountamount();
+        // a.rows[i + 2].cells[11].firstChild.value = mReceipt
+        //   .getProducts()
+        //   [i].getTaxAmount();
+        // console.log("object5=>", mReceipt.getProducts()[i]);
+        //==========================================
+
+        // if (JSON.parse(data).data[i][20] == "1") {
+        //   console.log("return function called");
+        //   a.rows[i + 2].cells[0].firstChild.checked = true;
+        //   a.rows[i + 2].cells[0].firstChild.disabled = true;
+        //   a.rows[i + 2].cells[4].firstChild.disabled = true;
+
+        //   a.rows[i + 2].cells[1].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[2].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[3].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[4].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[5].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[6].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[7].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[9].firstChild.style.textDecoration =
+        //     "line-through";
+        //   a.rows[i + 2].cells[11].firstChild.style.textDecoration =
+        //     "line-through";
+        // }
+
+        var p = new Product(
+          //stock_id //list_id
+          [JSON.parse(data).data[i][18], JSON.parse(data).data[i][19]], // id
+          JSON.parse(data).data[i][7], //name
+          JSON.parse(data).data[i][11], //unit
+          parseFloat(JSON.parse(data).data[i][12]), //price
+          parseFloat(JSON.parse(data).data[i][16]), //discount
+          parseFloat(JSON.parse(data).data[i][13]), //tax
+          JSON.parse(data).data[i][17], //details
+          JSON.parse(data).data[i][8], //batch_no
+          JSON.parse(data).data[i][9] //expiry_dat
+        );
+        mReceipt.addproduct(p);
+        mReceipt
+          .getProducts()
+          [i].setQuantity(parseFloat(JSON.parse(data).data[i][10]));
+        a.rows[i + 2].cells[9].firstChild.value = mReceipt
+          .getProducts()
+          [i].getDiscountamount();
+        a.rows[i + 2].cells[11].firstChild.value = mReceipt
+          .getProducts()
+          [i].getTaxAmount();
+      }
+    }
+  );
+  function editing() {
+    for (var i = 0; i < a.rows.length - 2; i++) {
+      a.rows[i + 2].cells[5].firstChild.disabled = false;
+
+      document.getElementById("save-submit-button").innerText = "Edit";
+      document.getElementById("save-submit-button").style.display = "block";
+      edit_button.style.display = "none";
+      delete_button.style.display = "none";
+    }
+  }
+  function approveFunction() {
+    purchaseOrderUpdate();
+  }
+  function deleteFunction() {
+    var sqlQuery =
+      "UPDATE purchase_order SET is_deleted='1' WHERE purchase_order.order_id=" +
+      clickdata_id[0] +
+      ";";
+    var value;
+    console.log("deleted value queries=>", sqlQuery);
+    window.MainDatastream.streamAddData(sqlQuery, value, (status, data) => {});
+    window.close();
+  }
+
+  window.MainDatastream.streamAddBill(
+    "SELECT stock.stock_id,stock_collection.product,stock.sales_price,stock.discount,stock.bach_no,stock.expiry,stock.unit,stock.item_description,stock_collection.tax_per,stock.stock_f_id,stock.current_stock FROM stock_collection LEFT JOIN stock ON stock_collection.product_id = stock.stock_f_id ;",
+    (status, data) => {
+      this.searchVal = JSON.parse(data).data;
+      // addRowIfnotLastcolumnnotempty("myTable");
+      console.log("serachval=>", this.searchVal);
+    }
+  );
+
+  //creating receipt object
+
+  //when page is loaded one row is added
+  function addRowIfnotLastcolumnnotempty(table_id) {
+    var table = document.getElementById(table_id);
+    console.log(
+      "addRowIfnotLastcolumnnotempty ==> table row length vs reciept row length",
+      table.rows.length - 2,
+      mReceipt.getProducts().length
+    );
+    if (table.rows.length - 2 == mReceipt.getProducts().length) {
+      CreateRow(table_id);
+    }
+  }
+  //delete row function
+
+  var sale_tbody = document.getElementById("tbdy");
+  var numberofselectedrows = 0;
+  var deleteIndex = [];
+
+  var deletedRowId = [];
+  function deleteRow() {
+    numberofselectedrows = 0;
+    for (var i = 2; i < a.rows.length; i++) {
+      if (a.rows[i].cells[0].firstChild.checked) {
+        deleteIndex.push(i);
+        console.log("delete row index=>", i);
+        deletedRowId.push([
+          a.rows[i].cells[1].firstChild.stockId,
+          a.rows[i].cells[1].firstChild.listId,
+          a.rows[i].cells[5].firstChild.value,
+          a.rows[i].cells[12].firstChild.value,
+          a.rows[i].cells[4].firstChild.value -
+            a.rows[i].cells[5].firstChild.value,
+        ]);
+        console.log("returned stock=>", deletedRowId);
+      }
+    }
+    // for (var i = deleteIndex.length - 1; i > -1; i--) {
+    //   // a.rows[deleteIndex[i]].remove();
+    //   mReceipt.deleteProduct(deleteIndex[i] - 2);
+    // }
+    deleteIndex = [];
+    console.log("deleted values id=>", deletedRowId);
+  }
+  //function to create row
+  var cell6;
+  function CreateRow(table_id) {
+    var table = document.getElementById(table_id);
+    var t_body = document.getElementById("tbdy");
+    var row = t_body.insertRow(table.rows.length - 2);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    var cell7 = row.insertCell(6);
+    var cell8 = row.insertCell(7);
+    var cell9 = row.insertCell(8);
+    var cell10 = row.insertCell(9);
+    var cell11 = row.insertCell(10);
+    var cell12 = row.insertCell(11);
+    var cell13 = row.insertCell(12);
+    cell6.className = "rowsix";
+    // cell6.style.display = "none";
+    cell1.append(createInputCheckbox("cell1"));
+    cell2.append(createInputtext());
+    cell3.append(createInputNumber());
+    cell4.append(createInputtextDisabled());
+    cell5.append(createInputNumber());
+    cell6.append(createInputNumber());
+    cell7.append(createInputtextDisabled());
+    cell8.append(createInputNumber());
+    cell9.append(createInputNumber());
+    cell10.append(createInputNumber());
+    cell11.append(createInputSelect());
+    cell12.append(createInputNumber());
+    cell13.append(createInputNumber());
+    table.oninput = (event) => {
+      updateProduct(event);
+    };
+    console.log("searchval value inside createrow=>", this.searchVal);
+  }
+  var rowsix = document.getElementsByClassName("rowsix");
+  function createInputCheckbox(id) {
+    var checkType = document.createElement("input");
+    checkType.type = "checkbox";
+    checkType.id = id;
+    checkType.addEventListener("click", (event) => {
+      if (event.target.checked) {
+        numberofselectedrows++;
+      } else {
+        numberofselectedrows--;
+      }
+    });
+    return checkType;
+  }
+  function createInputtext() {
+    var textType = document.createElement("input");
+    textType.type = "text";
+    return textType;
+  }
+  function createInputtextDisabled() {
+    var textType = document.createElement("input");
+    textType.type = "text";
+    textType.disabled = true;
+    return textType;
+  }
+  function createInputNumber() {
+    var numType = document.createElement("input");
+    numType.type = "number";
+    numType.min = "0";
+    numType.disabled = true;
+    return numType;
+  }
+  // function createImg(table, imgsrc) {
+  //   var imgType = document.createElement("img");
+  //   imgType.src = imgsrc;
+  //   imgType.onclick = (event) => {
+  //     console.log(
+  //       "deleted the row ==> " + event.target.parentNode.parentNode.rowIndex
+  //     );
+  //     mReceipt.deleteProduct(event.target.parentNode.parentNode.rowIndex - 2);
+  //     table.rows[event.target.parentNode.parentNode.rowIndex].remove();
+
+  //     gTotal.innerHTML = mReceipt.getGrandTotal();
+  //   };
+
+  //   return imgType;
+  // }
+  function createInputSelect() {
+    var SelectType = document.createElement("select");
+    SelectType.disabled = true;
+    var selectarray = [0, 5, 12, 18, 28];
+    for (var i = 0; i < 5; i++) {
+      var optionApp = document.createElement("option");
+      optionApp.value = selectarray[i];
+      optionApp.innerHTML = selectarray[i];
+      SelectType.appendChild(optionApp);
+    }
+    return SelectType;
+  }
+
+  //============================================
+  function currentDate(datId) {
+    datId.valueAsDate = new Date();
+  }
+  currentDate(document.getElementById("issue-dt"));
+
+  document
+    .getElementById("save-submit-button")
+    .addEventListener("click", console.log("save event called"));
+  var gTotal = document.getElementById("grandtotal");
+
+  function updateProduct(event) {
+    let cell = event.target;
+    var rowIndex = cell.parentNode.parentNode.rowIndex;
+    var cellIndex = cell.parentNode.cellIndex;
+
+    switch (cellIndex) {
+      case 5:
+        mReceipt
+          .getProducts()
+          [rowIndex - 2].setQuantity(
+            parseInt(a.rows[rowIndex].cells[4].firstChild.Val) +
+              (parseInt(a.rows[rowIndex].cells[4].firstChild.retVal) -
+                parseInt(a.rows[rowIndex].cells[5].firstChild.value))
+          );
+
+        a.rows[rowIndex].cells[4].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getQuantity();
+
+        console.log(
+          "getQuantity",
+          mReceipt.getProducts()[rowIndex - 2].getQuantity()
+        );
+        console.log(
+          "getTotal",
+          mReceipt.getProducts()[rowIndex - 2].getTotal()
+        );
+        console.log("getGrandTotal", mReceipt.getGrandTotal());
+        console.log(
+          "getDiscountamount",
+          mReceipt.getProducts()[rowIndex - 2].getDiscountamount()
+        );
+
+        a.rows[rowIndex].cells[12].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getTotal();
+        gTotal.innerHTML = mReceipt.getGrandTotal();
+        a.rows[rowIndex].cells[11].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getTaxAmount();
+        a.rows[rowIndex].cells[9].firstChild.value = mReceipt
+          .getProducts()
+          [rowIndex - 2].getDiscountamount();
+        break;
+    }
+  }
+  function purchaseOrderUpdate() {
+    // deleteRow();
+    var data_value = mReceipt.getProducts();
+    var reciept_n = document.getElementById("pBnumber").value;
+    var table_data = document.getElementById("myTable");
+    var issue_date_po = document.getElementById("issue-dt").value;
+    var due_date_po = document.getElementById("bill_dat").value;
+    var pay_method_po = document.getElementById("payment-select").value;
+    var party_id = document.getElementById("partydt").selectedItemId;
+    console.log("selecteditemid=>", party_id);
+    var desp = document.getElementById("desp").value;
+    var disc = document.getElementById("granddisc").value;
+    var poNum = document.getElementById("pBnumber").value;
+    var value;
+    mReceipt.setReceipt(reciept_n);
+    mReceipt.setDate(issue_date_po);
+
+    for (var i = 0; i < data_value.length; i++) {
+      var update_querry =
+        "UPDATE purchase_bill_list SET ret_quantity =" +
+        "'" +
+        a.rows[i + 2].cells[5].firstChild.value +
+        "'" +
+        "," +
+        "list_amount =" +
+        "'" +
+        data_value[i].getTotal() +
+        "'" +
+        "," +
+        "list_quantity =" +
+        "'" +
+        data_value[i].getQuantity() +
+        "'" +
+        " " +
+        "WHERE list_id =" +
+        data_value[i].getId()[1] +
+        " " +
+        ";";
+      console.log("streampurchasebilllistquery=>", update_querry);
+      window.MainDatastream.streamAddData(
+        update_querry,
+        value,
+        (status, data) => {
+          console.log(
+            "streampurchaseorderlistdata=>",
+            status,
+            JSON.parse(data)
+          );
+        }
+      );
+    }
+    var stockDetails = "";
+    console.log("length", data_value.length);
+    for (var i = 0; i < data_value.length; i++) {
+      for (var j = 0; j < this.searchVal.length; j++) {
+        console.log("index data value matrix=>", i, j);
+        console.log(
+          "searchval in stock update=>",
+          this.searchVal[j][0],
+          data_value[i].getId()[0] + "    " + i
+        );
+        if (this.searchVal[j][0] == data_value[i].getId()[0]) {
+          console.log(
+            "id matched",
+            parseInt(this.searchVal[j][10]),
+            data_value[i].getQuantity(),
+            typeof data_value[i].getQuantity(),
+            a.rows[i + 2].cells[4].firstChild.Val,
+            parseInt(this.searchVal[j][10]) +
+              (data_value[i].getQuantity() -
+                a.rows[i + 2].cells[4].firstChild.Val)
+          );
+
+          var stock_querry =
+            "UPDATE stock SET current_stock=" +
+            "'" +
+            (parseInt(this.searchVal[j][10]) +
+              (data_value[i].getQuantity() -
+                a.rows[i + 2].cells[4].firstChild.Val)) +
+            "'" +
+            "WHERE stock.stock_id=" +
+            data_value[i].getId()[0] +
+            ";";
+          console.log("streamstocklistquery=>", stock_querry);
+          window.MainDatastream.streamAddData(
+            stock_querry,
+            value,
+            (status, data) => {
+              console.log(
+                "streampurchaseorderlistdata=>",
+                status,
+                JSON.parse(data)
+              );
+            }
+          );
+        }
+      }
+    }
+    var bill_querry =
+      "UPDATE purchase_bill SET total_amnt=" +
+      "'" +
+      mReceipt.getGrandTotal() +
+      "'" +
+      "WHERE bill_id=" +
+      clickdata_id[0] +
+      ";";
+    console.log("streambill_querry=>", bill_querry);
+    window.MainDatastream.streamAddData(bill_querry, value, (status, data) => {
+      console.log("streampurchaseorderlistdata=>", status, JSON.parse(data));
+    });
+
+    window.close();
+  }
+</script>

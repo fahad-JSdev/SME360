@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="../assets/themes/main.css" />
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../node_modules/gridjs/dist/gridjs.umd.js"></script>
+<script src="../../node_modules/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+<!-- Include the core CSS, this is needed by the grid -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-grid.css"
+/>
+<!-- Include the theme CSS, only need to import the theme you are going to use -->
+<link
+  rel="stylesheet"
+  href="../../node_modules/ag-grid-community/styles/ag-theme-alpine.css"
+/>
+<link
+  rel="stylesheet"
+  href="../../node_modules/gridjs/dist/theme/mermaid.min.css"
+/>
+
+<html lang="en" dir="ltr">
+  <script src="../widgets/autoSearchText.js"></script>
+  <script src="../widgets/actionbar.js"></script>
+  <script src="../widgets/tab.js"></script>
+  <script src="../widgets/gridHelper.js"></script>
+  <script src="../../node_modules/list.js/dist/list.min.js"></script>
+  <script src="../widgets/snackbox.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PURCHASE</title>
+  </head>
+  <body>
+    <div class="MainParent">
+      <div class="sidebar close" id="sidebar">
+        <ul class="nav-links">
+          <li class="main-menu">
+            <a href="#" class="home">
+              <img
+                src="../assets/images/home.png"
+                alt="home"
+                class="home"
+                onclick=""
+              />
+              <span class="link_name home">Apps</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name home" href="#">Apps</a></li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <a href="#" class="purchaseHome">
+              <img
+                src="../assets/images/home1.png"
+                alt="purchaseHome"
+                class="purchaseHome"
+                onclick=""
+              />
+              <span class="link_name purchaseHome">Home</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name purchaseHome" href="#">Home</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="main-menu">
+            <div class="iocn-link">
+              <a href="#" class="purchase">
+                <img
+                  src="../assets/images/purchase-icon-3.png"
+                  alt="purchase"
+                  class="purchase"
+                />
+                <span class="link_name purchase">Purchase</span>
+              </a>
+            </div>
+            <ul class="sub-menu">
+              <li><a class="link_name purchase" href="#">Purchase</a></li>
+              <!-- <li><a href="#" class="purchase-bill">Purchase Bill</a></li>
+              <li><a href="#" class="payment-out">Payment Out</a></li>
+              <li>
+                <a href="#" class="purchase-order">Purchase Order</a>
+              </li>
+              <li>
+                <a href="#" class="purchase-return">Payment Return/Db.Note</a>
+              </li> -->
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="purchase-bill">
+              <img
+                src="../assets/images/bill1.png"
+                alt="purchase-bill"
+                class="purchase-bill"
+                onclick=""
+              />
+              <span class="link_name purchase-bill">Purchase Bill</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name purchase-bill" href="#">Purchase Bill</a>
+              </li>
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="payment-out">
+              <img
+                src="../assets/images/payment1.png"
+                alt="payment-out"
+                class="payment-out"
+                onclick=""
+              />
+              <span class="link_name payment-out">Payment Out</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li><a class="link_name payment-out" href="#">Payment Out</a></li>
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="purchase-order">
+              <img
+                src="../assets/images/order1.png"
+                alt="purchase-order"
+                class="purchase-order"
+                onclick=""
+              />
+              <span class="link_name purchase-order">Purchase Order</span>
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name purchase-order" href="#">Purchase Order</a>
+              </li>
+            </ul>
+          </li>
+          <li class="main-menu">
+            <a href="#" class="purchase-return">
+              <img
+                src="../assets/images/return1.png"
+                alt="purchase-return"
+                class="purchase-return"
+                onclick=""
+              />
+              <span class="link_name purchase-return"
+                >Payment Return/Db.Note</span
+              >
+            </a>
+            <ul class="sub-menu blank">
+              <li>
+                <a class="link_name purchase-return" href="#"
+                  >Payment Return/Db.Note</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <section class="home-section" id="home-section"></section>
+    </div>
+  </body>
+  <script>
+    // function loadApp() {
+    //   $(".home-section").load("../app.html");
+    // }
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+      arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+      });
+    }
+  </script>
+
+  <script>
+    function addStock() {
+      window.open(
+        "../Stock/stock_Additem.html",
+        "_blank",
+        "resizable=0,frame=0"
+      );
+      console.log("test sucess");
+    }
+    function addVendor() {
+      window.open("./Add_party_final.html", "_blank", "resizable=0,frame=0");
+      console.log("test sucess");
+    }
+    function openPO() {
+      window.open(
+        "./purchase_order.html",
+        "_blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+      console.log(typeof ("width=" + getWidth(), "height=" + getHeight()));
+    }
+    function openPurchaseBill() {
+      window.open(
+        "./purchase_bill.html",
+        "_blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+    }
+    function openPbill() {
+      window.open(
+        "./purchase_bill.html",
+        "_blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+    }
+    function loadchildwin() {
+      window.open("./paymentout_popup.html", "-blank", "resizable=0,frame=0");
+    }
+    function openPR() {
+      window.open(
+        "./purchase_return.html",
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+    }
+    function nPurchase() {
+      window.open(
+        "./purchase_bill.html?data=" +
+          encodeURIComponent(JSON.stringify(["bill"])),
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+    }
+    function nReturn() {
+      window.open(
+        "./newreturn.html?data=" +
+          encodeURIComponent(JSON.stringify(["newreturn"])),
+        "-blank",
+        "resizable=0,frame=0," +
+          "width=" +
+          getWidth() +
+          ",height=" +
+          getHeight()
+      );
+    }
+  </script>
+  <script>
+    var current_page = null;
+    $(document).ready(function view() {
+      $(".purchase").click(menuOnClick);
+      $(".purchase-order").click(menuOnClick);
+      $(".purchase-bill").click(menuOnClick);
+      $(".purchase-return").click(menuOnClick);
+      $(".payment-out").click(menuOnClick);
+      $(".home").click(menuOnClick);
+      $(".purchaseHome").click(menuOnClick);
+    });
+    function menuOnClick(e) {
+      {
+        console.log("side navw : clicked ->", e, e.target.className);
+        if (current_page != e.target.className) {
+          var path = null;
+          var i = 0;
+          do {
+            switch (e.target.classList[i]) {
+              case "payment-out":
+                path = "./payment_out.html";
+                break;
+              case "purchase-return":
+                path = "./purchase_return_home.html";
+                break;
+              case "purchase-bill":
+                path = "./purchase_bill_home.html";
+                break;
+              case "purchase-order":
+                path = "./purchase_order_home.html";
+                break;
+              case "purchase":
+                path = "./purchase_home.html";
+                break;
+              case "purchaseHome":
+              window.open(
+              "../purchase/purchase_main.html",
+              "_self",
+              "resizable=0,frame=0"
+              );
+              window.resizeTo(getWidth(), getHeight());
+              break;
+              case "home":
+              path="../app.html";
+                break;
+            }
+            i++;
+          } while (path == null && i < e.target.classList.length);
+          if (path != null) {
+            $(".home-section").load(path);
+            current_page = e.target.className;
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    //Set all css dimen here
+    console.log("start");
+    function getWidth() {
+      return window.screen.availWidth;
+    }
+    function getHeight() {
+      return window.screen.availHeight;
+    }
+
+    function setDime(w, h) {
+      if (w != undefined) {
+        $(".sidebar").css("width", (w * 3.5) / 100);
+        $(".home-section").css("width", (w * 96.5) / 100);
+        $(".home-section").css("left", (w * 3.5) / 100);
+      } else console.log("dime not defined");
+    }
+
+    try {
+      setDime(window.screen.availWidth, window.screen.availHeight);
+    } catch (err) {
+      console.log("-dime not defined");
+    }
+
+    // const img_icn = document.getElementsByClassName("cet-window-icon");
+    // console.log("elements", img_icn, img_icn.length);
+
+    // img_icn[0].addEventListener("click", console.log("image click called"));
+
+    // function imgClick() {
+    //   console.log("image click called");
+    // }
+  </script>
+</html>

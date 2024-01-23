@@ -1,0 +1,98 @@
+body {
+  background-image: url("../images/launcher-bg.jpg");
+  transition: all 0.3s ease ;
+}
+
+.cards-list {
+  z-index: 0;
+  width: 70%;
+  /* height: 120%; */
+  display: flex;
+  justify-content: normal;
+  flex-wrap: wrap;
+  gap: 12px 34px;
+  margin: 0px auto 40px auto;
+}
+#card {
+  margin: 26px 8px;
+  width: 120px;
+  height: 120px;
+  border-radius: 15px;
+  box-shadow: 5px 5px 15px 4px rgb(0 0 0 / 6%),
+    -5px -5px 15px 0px rgb(0 0 0 / 6%);
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.1s ease;
+}
+#card .card_image {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#card .card_image img {
+  width: 90px;
+  height: 90px;
+  object-fit: scale-down;
+  object-position: center;
+  padding: 6px;
+}
+.accountimg {
+  height: 65px !important;
+  width: 65px !important;
+}
+.expenseimg {
+  height: 67px !important;
+  width: 67 !important;
+}
+.purchaseimg {
+  width: 70px !important;
+  height: 70px !important;
+}
+/* .stockimg img{
+height: 80px !important;
+  width: 80px !important;
+} */
+.settingsimg {
+  height: 80px !important;
+  width: 80px !important;
+}
+#card .card_title {
+  text-align: center;
+  border-radius: 0px 0px 40px 40px;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding-top: 1px;
+}
+#card:hover {
+  transform: scale(1.1, 1.1);
+  box-shadow: 5px 5px 8px 4px rgba(0, 0, 0, 0.156),
+    -5px -5px 8px 0px rgba(0, 0, 0, 0.156);
+}
+
+.title-white {
+  color: rgb(0, 0, 0);
+}
+
+.title-black {
+  color: black;
+}
+
+@media all and (max-width: 800px) {
+  .card-list {
+    /* On small screens, we are no longer using row direction but column */
+    flex-direction: column;
+  }
+}
+@media all and (min-width: 1000px) {
+  #card {
+    margin: 30px 46px;
+  }
+  .cards-list {
+    height: 50%;
+    margin: 60px auto;
+    justify-content: unset;
+    /* gap: 0px; */
+  }
+}

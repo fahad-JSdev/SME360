@@ -1,0 +1,105 @@
+@import "../colors/colors.css";
+.table1-div {
+  position: relative;
+  margin: 10px 10px 10px 0px;
+  width: 100%;
+  background-color: #f7fcfd;
+  padding-bottom: 15px;
+  box-shadow: 0 0 10px 0.5px rgb(185, 187, 188);
+}
+.table1-div span {
+  vertical-align: super;
+}
+#filter-text-box {
+  padding: 8px;
+  margin-bottom: 5px;
+  position: absolute;
+  margin-top: 7px;
+  margin-left: 10px;
+  border: none;
+}
+
+.container {
+  font-family: "Poppins", sans-serif;
+  height: 100%;
+  margin-left: -1px;
+  margin-right: 8px;
+}
+.container1 {
+  position: fixed;
+  background: var(--actionbar);
+  width: 96.5%;
+  height: 65px;
+
+  box-sizing: border-box;
+  z-index: 100;
+  display: block;
+
+  /* margin: 0 15px; */
+}
+#elements2 {
+  font-size: 19px;
+  font-weight: 300;
+  margin-left: 9px;
+}
+#add-purchase-order {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  float: right;
+  margin: -9.5px 9px 0 0;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px 0px rgb(185, 187, 188);
+}
+#add-purchase-order:hover {
+  cursor: pointer;
+  background-color: #f7fcfd;
+  color: rgb(104, 105, 105);
+}
+/* .gridjs-search{
+      padding: 5px;
+     
+    } */
+/* grid Action Button */
+#wrapper1 {
+  height: 100%;
+  width: 101;
+  padding: 74px 3px 0 10px;
+}
+#Reject_Button {
+  width: 26px;
+  height: 26px;
+  margin-left: 13px;
+}
+#edit_Button {
+  height: 23px;
+  width: 23px;
+  margin-left: 13px;
+}
+.ag-header {
+  background-color: var(--grid-header-color);
+  border: none !important;
+}
+.ag-header-row {
+  border: none !important;
+}
+.ag-header-cell-sortable:hover {
+  /* background-color: var(--grid-hover) !important; */
+  color: var(--grid-header-hover-text);
+}
+.ag-header-cell,
+.ag-header-group-cell {
+  padding-left: 0.7rem !important;
+  padding-right: 0.3rem !important;
+}
+.ag-paging-button {
+  padding: 3px;
+}
+.ag-paging-button:hover {
+  background-color: var(--grid-pagination-button-hover);
+  border-radius: 0.8rem;
+}
+.ag-disabled:hover {
+  background-color: inherit;
+}

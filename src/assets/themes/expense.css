@@ -1,0 +1,260 @@
+@import "../colors/colors.css";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  width: 100%;
+  border-radius: 6px;
+  padding-top: 17px;
+  background-color: #fff;
+  height: 97%;
+}
+.container header {
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.container header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 3px;
+  width: 27px;
+  border-radius: 8px;
+  background-color: #4070f4;
+}
+.container form {
+  position: relative;
+  margin-top: 13px;
+  margin-left: 15px;
+  width: 100%;
+  min-height: 100%;
+  background-color: #fff;
+  overflow: hidden;
+}
+.container form .form {
+  width: 100%;
+  position: absolute;
+  background-color: #fff;
+  transition: 0.3s ease;
+}
+.container form .title {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 6px 0;
+  color: #333;
+}
+.container form .fields {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+form .fields .input-field {
+  display: table;
+  width: 50%;
+  flex-direction: column;
+  margin: 9px 0;
+  padding: 5px;
+}
+
+.input-field label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #2e2e2e;
+}
+.input-field input,
+select {
+  outline: none;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  padding: 0 12px;
+  height: 30px;
+  margin: 8px 0;
+}
+.input-field input :focus,
+.input-field select:focus {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+}
+.input-field select,
+.input-field input[type="date"] {
+  color: #707070;
+}
+.input-field input[type="date"]:valid {
+  color: #333;
+}
+textarea:focus {
+  outline: none;
+}
+.container form button,
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  max-width: 100%;
+  width: 120px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background-color: var(--button-color);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.btnText {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--button-text-color) !important;
+}
+form button:hover {
+  background-color: var(--button-hover);
+  font-size: 14px;
+  transform: scale(1.04);
+}
+form button i,
+form .backBtn i {
+  margin: 0px;
+}
+form .backBtn i {
+  transform: rotate(180deg);
+}
+form .buttons {
+  display: flex;
+  align-items: center;
+}
+form .buttons button,
+.backBtn {
+  margin-right: 25px;
+}
+.sitename {
+  height: 1% !important;
+  margin-bottom: 1px !important;
+}
+.expcat {
+  height: 1% !important;
+  margin-top: 1.5rem !important;
+}
+.buttons-new {
+  display: flex;
+  position: absolute;
+  margin-right: 20px;
+  top: 26rem;
+  right: 9rem;
+}
+.cancel {
+  display: flex;
+  position: absolute;
+  margin-right: 20px;
+  top: 0px;
+  left: 8rem;
+  color: var(--button-text-color);
+  background-color: var(--button-hover);
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+/* .cancel:hover{
+  background-color: var(--button-hover);
+  transform: scale(1.04);
+} */
+.image-upload {
+  position: relative;
+  top: 0.2rem;
+}
+
+.image-upload > input {
+  display: none;
+}
+
+.image-upload img {
+  width: 49px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.description {
+  min-width: 230px;
+  min-height: 60px;
+  margin-top: 8px;
+  padding-left: 4px;
+}
+.main-container {
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+}
+@media (max-width: 750px) {
+  .container form {
+    overflow-y: scroll;
+  }
+  .container form::-webkit-scrollbar {
+    display: none;
+  }
+  form .fields .input-field {
+    width: calc(100% / 2 - 15px);
+  }
+}
+
+@media (max-width: 550px) {
+  form .fields .input-field {
+    width: 100%;
+  }
+}
+text {
+  vertical-align: top;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2e2e2e;
+}
+.details {
+  margin-top: 1rem;
+}
+
+.input-field span {
+  font-size: 12px;
+  color: red;
+  height: 14px;
+}
+.input-field-large span {
+  font-size: 12px;
+  color: red;
+  height: 14px;
+}
+.edit_button,
+.delete_button,
+.approve_button,
+.print_button {
+  width: 30px;
+  float: right;
+  margin-bottom: 5px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+#expense_category {
+  width: 9rem;
+}
+#payment_type {
+  width: 9rem;
+}
+#expense,
+#add_date,
+#amount {
+  width: 11rem;
+}

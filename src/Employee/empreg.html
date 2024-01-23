@@ -1,0 +1,648 @@
+<!-- <link rel="stylesheet" href="../../assets/themes/autoSearchText.css" /> -->
+<link rel="stylesheet" href="../assets/themes/addEmpolyee.css" />
+<!-- <script src=".././widgets/autoSearchText.js"></script> -->
+<script src=".././widgets/snackbox.js"></script>
+<title>EMPLOYEE REGISTRATION</title>
+<div class="main-container">
+  <div class="container">
+    <header>Employee Registration
+      <img src="../assets/images/trash.png" alt="delete button" id="delete_button" class="edit_button" title="delete"
+        onclick="deleteFunction()" />
+      <img src="../assets/images/color_edit.png" alt="edit button" id="edit_button" class="edit_button" title="Edit"
+        onclick="editFunction()" />
+      <img src="../assets/images/print3.png" alt="print button" id="print_button" class="print_button" title="print" />
+    </header>
+    <form action="#">
+      <div class="form first">
+        <div class="details personal">
+          <div class="fields">
+            <div class="input-field">
+              <label> Full Name</label>
+              <input type="text" placeholder="Enter your Full Name" id="full_name" onblur="checkFullName(fullname)" />
+              <span id="namespan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>Date Of Birth</label>
+              <input type="date" placeholder="Enter your Date of Birth" id="date_birth" onblur="checkdob(dobemp)" />
+              <span id="dobspan"></span>
+            </div>
+
+            <div class="image-upload">
+              <label for="file-input">
+                <img src="../assets/images/img_avatar.png" alt="Avatar" class="avatar" />
+              </label>
+              <input id="file-input" type="file" />
+            </div>
+
+            <div class="input-field-large">
+              <label>Address</label>
+              <input type="text" placeholder="Enter your Address" id="e_address" onblur="checkAddress(address)" />
+              <span id="adresspan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>City</label>
+              <input type="text" placeholder="Enter your City" required pattern="" id="e_city" />
+            </div>
+
+            <div class="input-field">
+              <label>State</label>
+              <select required id="e_state">
+                <option disabled selected>Select State</option>
+                <option>Kerala</option>
+                <option>Tamilnadu</option>
+                <option>Karnataka</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <label>District</label>
+              <input type="text" placeholder="Enter your District" required id="e_district" />
+            </div>
+
+            <div class="input-field">
+              <label>Pin</label>
+              <input type="text" placeholder="Enter your Pin Code" id="e_pin" onblur="checkPin(pinvalid)" />
+              <span id="pinspan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>Mobile Number</label>
+              <input type="tel" placeholder="Enter your Mobile number" maxlength="10" id="e_mobile"
+                onblur="checkMobile(mobile)" />
+              <span id="mobspan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>Email Id</label>
+              <input type="email" placeholder="Enter your Email Id" id="e_mail" onchange="checkEmail(email)" />
+              <span id="emailspan"></span>
+            </div>
+            <div class="input-field"></div>
+          </div>
+        </div>
+
+        <button class="nextBtn" type="button">
+          <span class="btnText">Next</span>
+          <i class="uil uil-navigator"></i>
+        </button>
+      </div>
+
+      <div class="form second">
+        <div class="details address">
+          <span class="title"><b>Education</b></span>
+
+          <div class="fields">
+            <div class="input-field">
+              <label>Highest Education</label>
+              <input type="text" placeholder="Enter your Highest Education" id="e_education"
+                onchange="checkEducation(heducation)" />
+              <span id="educationspan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>Date Acquired</label>
+              <input type="date" id="edu_date" oninput="checkDoa(doa)" />
+              <span id="doaspan"></span>
+            </div>
+
+            <div class="input-field">
+              <label>Institution Name</label>
+              <input type="text" placeholder="Enter your Institution Name" id="institution"
+                oninput="checkInstitution(institution)" />
+              <span id="institutionspan"></span>
+            </div>
+
+            <div class="radio-new">
+              <legend>Are you presently employed?</legend>
+              <div class="radio-single">
+                <input type="radio" id="contactChoice1" name="contact" value="yes" />
+
+                <label for="contactChoice1">Yes</label>
+
+                <input type="radio" id="contactChoice2" name="contact" value="no" />
+
+                <label for="contactChoice2" id="testff">No</label>
+                <span id="radiospan"></span>
+              </div>
+            </div>
+
+            <div class="input-field-large labels">
+              <label style="font-size: 13.5px">if yes where and position held, if no where last employed and
+                position held</label>
+              <input type="text" id="desp" oninput="checkplace(placeheld)" />
+              <span id="placespan"></span>
+            </div>
+
+            <div class="input-field"></div>
+
+            <div class="input-field">
+              <label>Resume Upload</label>
+              <input type="file" name="Curriculum vitae" accept=".doc,.docx,.pdf" />
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="backBtn">Back</button>
+          <button type="button" class="submit">
+            <span class="btnText">Submit</span>
+            <i class="uil uil-navigator"></i>
+          </button>
+        </div>
+        <div id="snackbar" class="snackbar">Submitted</div>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  SnackboxAlertStyle();
+  const fullname = document.getElementById("full_name");
+  const dobemp = document.getElementById("date_birth");
+  const mobile = document.getElementById("e_mobile");
+  const email = document.getElementById("e_mail");
+  const pinvalid = document.getElementById("e_pin");
+  const address = document.getElementById("e_address");
+  const education = document.getElementById("e_education");
+  const dateaccquired = document.getElementById("edu_date");
+  const institute = document.getElementById("institution");
+  var state_edit = document.getElementById("e_state");
+  var edit_district = document.getElementById("e_district");
+  var f_input = document.getElementById("file-input");
+  var c_name = document.getElementById("e_city");
+  var checkbox1 = document.getElementById("contactChoice1");
+  var checkbox2 = document.getElementById("contactChoice2");
+  var description = document.getElementById("desp")
+  var edit_bttn = document.getElementById("edit_button")
+  var delete_bttn = document.getElementById("delete_button")
+  var print_bttn = document.getElementById("print_button")
+  const form = document.querySelector("form"),
+    nextBtn = form.querySelector(".nextBtn"),
+    backBtn = form.querySelector(".backBtn"),
+    allInput = form.querySelectorAll(".first input"),
+    submit = form.querySelector(".submit");
+  print_bttn.style.display = "none";
+  edit_bttn.style.display = "none";
+  delete_bttn.style.display = "none";
+
+  function goToFirstWindow() {
+    //Code to close the window after doing other actions
+    window.close();
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataString = urlParams.get("data");
+  var clickdata_id = JSON.parse(decodeURIComponent(dataString));
+  console.log("data from employeeedit=>", clickdata_id);
+  if (clickdata_id) {
+    delete_bttn.style.display = "block";
+    edit_bttn.style.display = "block";
+    print_bttn.style.display = "block";
+    submit.style.display = "none";
+    fullname.disabled = true;
+    dobemp.disabled = true;
+    f_input.disabled = true;
+    address.disabled = true;
+    state_edit.disabled = true;
+    edit_district.disabled = true;
+    pinvalid.disabled = true;
+    mobile.disabled = true;
+    email.disabled = true;
+    c_name.disabled = true;
+    dateaccquired.disabled = true;
+    institute.disabled = true;
+    description.disabled = true;
+    education.disabled = true;
+    checkbox1.disabled = true;
+    checkbox2.disabled = true;
+    window.MainDatastream.streamGetData(
+      "SELECT emp_name,dob,address,city,employee_state,district,pin,phone_no,email_id,higher_edu_date,institute_edu,last_work,higher_edu,presently_employed from employee where empid = " +
+      clickdata_id[0] +
+      ";",
+      (status, data) => {
+        var empdata = JSON.parse(data).data;
+        console.log("data from employee", empdata);
+        fullname.value = empdata[0][0];
+        dobemp.value = empdata[0][1];
+        address.value = empdata[0][2];
+        c_name.value = empdata[0][3];
+        state_edit.value = empdata[0][4];
+        edit_district.value = empdata[0][5];
+        pinvalid.value = empdata[0][6];
+        mobile.value = empdata[0][7];
+        email.value = empdata[0][8];
+        dateaccquired.value = empdata[0][9];
+        institute.value = empdata[0][10];
+        description.value = empdata[0][11];
+        education.value = empdata[0][12];
+        if (empdata[0][13] == 'yes') {
+          checkbox1.checked = true;
+        }
+        else {
+          checkbox2.checked = true;
+        }
+
+
+      }
+    )
+  }
+  function editFunction() {
+    submit.style.display = "block";
+
+    edit_button.style.display = "none";
+    submit.innerText = "Edit";
+    fullname.disabled = false;
+    dobemp.disabled = false;
+    f_input.disabled = false;
+    address.disabled = false;
+    state_edit.disabled = false;
+    edit_district.disabled = false;
+    pinvalid.disabled = false;
+    mobile.disabled = false;
+    email.disabled = false;
+    c_name.disabled = false;
+    dateaccquired.disabled = false;
+    institute.disabled = false;
+    description.disabled = false;
+    education.disabled = false;
+    checkbox1.disabled = false;
+    checkbox2.disabled = false;
+  }
+  function deleteFunction() {
+    var sqlQuery =
+      "UPDATE employee SET is_deleted='1' WHERE empid=" +
+      clickdata_id[0] +
+      ";";
+    var value;
+    console.log("data deleted=>", sqlQuery);
+    window.MainDatastream.streamProjectButtonClick(
+      sqlQuery,
+      value,
+      (status, data) => { }
+    );
+    window.close();
+  }
+
+
+  //new change validation
+
+
+  //check name is valid
+  function checkFullName(input) {
+    var re = /^[a-zA-Z ]{2,50}$/;
+    var error = document.getElementById("namespan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Name";
+    }
+  }
+  //check phone number is valid
+  function checkMobile(input) {
+    var re = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6-9]\d{9}$/;
+    var error = document.getElementById("mobspan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Phone Number";
+    }
+  }
+  //check email is valid
+  function checkEmail(input) {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var error = document.getElementById("emailspan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Email";
+    }
+  }
+  //check pin is valid
+  function checkPin(input) {
+    const re = /^[1-9]{1}\d{2}\s?\d{3}$/;
+    var error = document.getElementById("pinspan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Pin";
+    }
+  }
+
+  function checkdob(input) {
+    const re = /^\d{4}([./-])\d{2}\1\d{2}$/;
+    var error1 = document.getElementById("dobspan");
+    console.log("ddddddddddddddddddddddddddddddddd", input.value.trim());
+    if (re.test(input.value.trim())) {
+      error1.innerHTML = "";
+    } else {
+      error1.innerHTML = "invalid Date";
+    }
+  }
+
+  function checkAddress(input) {
+    const re = /^[a-zA-Z0-9\s,'-]*$/;
+    var error1 = document.getElementById("adresspan");
+    if (re.test(input.value.trim())) {
+      error1.innerHTML = "";
+    } else {
+      error1.innerHTML = "invalid Address";
+    }
+  }
+  /////////////////////////////////////////
+  const heducation = document.getElementById("e_education");
+  const doa = document.getElementById("edu_date");
+  const institution = document.getElementById("institution");
+  const radiovaliderr = document.getElementById("testff");
+  const placeheld = document.getElementById("desp");
+
+  ///////// 2nd form functions////////////
+  function checkEducation(input) {
+    const re = /^[a-zA-Z0-9\s,'-]*$/;
+    var error2 = document.getElementById("educationspan");
+    if (re.test(input.value.trim())) {
+      error2.innerHTML = "";
+    } else {
+      error2.innerHTML = "invalid Entry";
+    }
+  }
+
+  function checkDoa(input) {
+    const re = /^\d{4}([./-])\d{2}\1\d{2}$/;
+    var error2 = document.getElementById("doaspan");
+    if (re.test(input.value.trim())) {
+      error2.innerHTML = "";
+    } else {
+      error2.innerHTML = "invalid Date";
+    }
+  }
+
+  function checkInstitution(input) {
+    const re = /^[a-zA-Z0-9\s,'-]*$/;
+    var error2 = document.getElementById("institutionspan");
+    if (re.test(input.value.trim())) {
+      error2.innerHTML = "";
+    } else {
+      error2.innerHTML = "invalid Entry";
+    }
+  }
+
+  function checkbox() {
+    var ct = 0;
+    var error2 = document.getElementById("radiospan");
+    var radiovalid = document.getElementsByName("contact");
+    for (i = 0; i < radiovalid.length; i++) {
+      if (radiovalid[i].checked) {
+        error2.innerHTML = "";
+        ct += 1;
+      }
+    }
+    if (ct === 0) {
+      error2.innerHTML = "Required";
+    }
+  }
+
+  function checkplace(input) {
+    const re = /^[a-zA-Z0-9\s,'-]*$/;
+    var error2 = document.getElementById("placespan");
+    if (re.test(input.value.trim())) {
+      error2.innerHTML = "";
+    } else {
+      error2.innerHTML = "invalid Entry";
+    }
+  }
+
+  ///////////////////////////////
+
+  nextBtn.addEventListener("click", () => {
+    var inputArray = [fullname, dobemp, address, pinvalid, mobile, email];
+    console.log("input array in employee", inputArray)
+    var tmp = 1;
+    var item;
+    inputArray.forEach((item) => {
+      event.preventDefault();
+
+
+
+
+
+      // event.preventDefault();
+      // var e1 = document.getElementById("namespan");
+      // var e2 = document.getElementById("dobspan");
+      // var e3 = document.getElementById("addresspan");
+      // var e4 = document.getElementById("pinspan");
+      // var e5 = document.getElementById("dobspan");
+      // var e6 = document.getElementById("dobspan");
+
+      var error1 = document.getElementById(item.id).nextElementSibling;
+
+      if ((item.value != "") & (error1.innerHTML == "")) {
+        // form.classList.add("secActive");
+        // error1.innerHTML = "required";
+        // } else if (item.value != "") {
+        //   error1.innerHTML = "";
+
+      } else {
+        error1.innerHTML = "required";
+        tmp = 0;
+      }
+    })
+    if (tmp == 1) {
+      form.classList.add("secActive");
+    }
+    else { }
+  });
+  backBtn.addEventListener("click", () => form.classList.remove("secActive"));
+
+  submit.addEventListener("click", () => {
+    checkbox();
+    var count = 0;
+    var inputArray2 = [heducation, doa, institution, radiovaliderr, placeheld];
+    inputArray2.forEach((item) => {
+      event.preventDefault();
+      var error3 = document.getElementById(item.id).nextElementSibling;
+
+      if ((item.value != "") & (error3.innerHTML == "")) {
+        // form.classList.add("secActive");
+        // error1.innerHTML = "";
+
+        count += 1;
+      } else {
+        error3.innerHTML = "required";
+        // form.classList.remove("secActive");
+      }
+      if (count === 5) EmpReg();
+    });
+  });
+</script>
+<script>
+  function EmpReg() {
+    var nme = document.getElementById("full_name").value;
+    var dte_brth = document.getElementById("date_birth").value;
+    var adrss = document.getElementById("e_address").value;
+    var cty = document.getElementById("e_city").value;
+    var state = document.getElementById("e_state").value;
+    var district = document.getElementById("e_district").value;
+    var pin = document.getElementById("e_pin").value;
+    var mble = document.getElementById("e_mobile").value;
+    var mail = document.getElementById("e_mail").value;
+    var edu_dte = document.getElementById("edu_date").value;
+    var insti = document.getElementById("institution").value;
+    var desp = document.getElementById("desp").value;
+    var hig_edu = document.getElementById("e_education").value;
+
+    var employed;
+    function displayRadioValue() {
+      var emp = document.getElementsByName("contact");
+
+      for (i = 0; i < emp.length; i++) {
+        if (emp[i].checked) employed = emp[i].value;
+      }
+    }
+    displayRadioValue();
+    SnackboxAlert("snackbar");
+    if (clickdata_id) {
+      var sql_query =
+        "UPDATE employee SET emp_name=" +
+        "'" +
+        nme +
+        "'" +
+        "," +
+        "dob=" +
+        "'" +
+        dte_brth +
+        "'" +
+        "," +
+        "address=" +
+        "'" +
+        adrss +
+        "'" +
+        "," +
+        "city=" +
+        "'" +
+        cty +
+        "'" +
+        "," +
+        "employee_state=" +
+        "'" +
+        state +
+        "'" +
+        "," +
+        "district=" +
+        "'" +
+        district +
+        "'" +
+        "," +
+        "pin=" +
+        "'" +
+        pin +
+        "'" +
+        "," +
+        "phone_no=" +
+        "'" +
+        mble +
+        "'" +
+        "," +
+        "edu_date=" +
+        "'" +
+        edu_dte +
+        "'" +
+        "," +
+        "institute_edu=" +
+        "'" +
+        insti +
+        "'" +
+        "," +
+        "last_work=" +
+        "'" +
+        desp +
+        "'" +
+        "," +
+        "higher_edu=" +
+        "'" +
+        hig_edu +
+        "'" +
+        "," +
+        "presently_employed=" +
+        "'" +
+        employed +
+        "'" +
+        "," +
+        "email_id=" +
+        "'" +
+        mail +
+        "'" +
+        " " +
+        "WHERE labour_account.labour_account_id=" +
+        clickdata_id[0] +
+        ";";
+      console.log("edit value queries=>", sql_query);
+      var value;
+      window.MainDatastream.streamAddData(
+        sql_query,
+        value,
+        (status, data) => { }
+      );
+      document.getElementById("snackbar").innerText = "Edited";
+    }
+    else {
+      SnackboxAlert("snackbar");
+      var sqlQuery =
+        "INSERT INTO employee (emp_name,dob,address,city,employee_state,district,pin,phone_no,email_id,higher_edu_date,institute_edu,last_work,higher_edu,presently_employed)";
+      var data_value =
+        "('" +
+        nme +
+        "','" +
+        dte_brth +
+        "','" +
+        adrss +
+        "','" +
+        cty +
+        "','" +
+        state +
+        "','" +
+        district +
+        "','" +
+        pin +
+        "','" +
+        mble +
+        "','" +
+        mail +
+        "','" +
+        edu_dte +
+        "','" +
+        insti +
+        "','" +
+        desp +
+        "','" +
+        hig_edu +
+        "','" +
+        employed +
+        "')";
+      console.log(data_value);
+      window.MainDatastream.streamAddEmloyee(
+        sqlQuery,
+        data_value,
+        (status, data) => {
+          console.log("streamAddEmloyee", status, data);
+        }
+      );
+      document.getElementById("full_name").value = "";
+      document.getElementById("date_birth").value = "";
+      document.getElementById("e_mobile").value = "";
+      document.getElementById("e_mail").value = "";
+      document.getElementById("e_pin").value = "";
+      document.getElementById("e_address").value = "";
+      document.getElementById("e_education").value = "";
+      document.getElementById("edu_date").value = "";
+      document.getElementById("institution").value = "";
+      document.getElementById("e_state").value = "";
+      document.getElementById("e_district").value = "";
+      document.getElementById("e_city").value = "";
+    }
+    SnackboxAlert("snackbar");
+  }
+
+  // console.log("result...................." + query);
+</script>

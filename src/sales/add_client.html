@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width , initial-scale=1">
+        <meta charset="UTF-8">
+        <script src="../widgets/snackbox.js"></script>
+        <title>ADD CLIENT</title>
+    </head>
+<style>
+      @import "../assets/colors/colors.css";
+
+.container {
+  height: 100%;
+}
+.cet-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+}
+div#vendor_name{
+  margin-left: 11px;
+}
+.input-field{
+    display: inline-grid;
+padding: 10px;
+font-size: 13px;
+    
+}
+input:focus{
+    outline:none;
+}
+.left{
+    display: inline-grid;
+    padding: 20px;
+    margin-top: -27px;
+}
+.fields-new{
+    display: inline-grid;
+    width: 600px;
+    padding-bottom: 10px;
+    font-size: 13px;
+}
+.fields-new1{
+    display: inline-grid;
+    width: 600px;
+    font-size: 13px;
+    padding-bottom: 10px;
+
+}
+.fields-new2{
+    display:inline-grid;
+    width: 600px;
+    font-size: 13px;
+    padding-bottom: 10px;
+
+}
+.fields-new3{
+    display: inline-grid;
+    width: 600px;
+    padding-bottom: 10px;
+    font-size: 13px;
+}
+.fields-new3 :focus{
+    outline:none;
+  
+}
+.fields-new1 :focus{
+    outline: none;
+}
+
+.heading{
+    padding: 20px;
+}
+.container{
+  position: relative;
+  /* max-width: 1000px; */
+  /* width: 100%; */
+  height:0;
+  border-radius: 6px;
+  padding: 15px;
+  background-color: #fff;
+}
+.container header{
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.container header::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 72px;
+  border-radius: 8px;
+  background-color: #4070f4;
+
+}
+.second-section{
+  position: relative;
+  /* max-width: 1000px; */
+  /* width: 100%; */
+  /* height: 100%; */
+  border-radius: 6px;
+  padding: 15px;
+  background-color: #fff;
+  /* margin-top: -15px; */
+}
+.second-section header{
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.second-section header::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 109px;
+  border-radius: 8px;
+  background-color: #4070f4;
+
+}
+.button:hover {
+  background-color: var(--button-hover);
+  transform: scale(1.04);
+}
+.button {
+  background-color: var(--button-color);
+  border: none;
+  color: var(--button-text-color);
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 540px 1px;
+  margin-top:13px;
+  width: 104px;
+  height: 30px;
+  border-radius: 3px;
+  transition: 0.2s ease;
+}
+
+.description{
+    resize: none;
+}
+label{
+    font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+}
+header{
+    font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+}
+span{
+  color: red;
+}
+</style>
+<body>
+    
+    <div class="container">
+        <header>Add Client
+          <label class="fa fa-search" style="text-decoration: none;  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;"></label>
+        </header>
+    </div> <br>
+   <div class="input-field" id="vendor_name">
+    <label>Client Name</label>
+    <input type="text" placeholder="Enter client Name" required=""
+     id="client_id" style="height: 30px;" 
+     oninput="client_name('client_id','client_span')"
+    />
+    <span id="client_span"></span>
+</div>
+
+<div class="input-field" id="gst_in_div" >
+    <label>GSTIN</label>
+    <input type="tel" placeholder="Enter GSTIN" 
+    style="height: 30px;" id="gst_in" 
+    maxlength="15"
+    oninput="gstin('gst_in','gst_span')"/>
+    <span id="gst_span"></span>
+</div>
+
+<div class="input-field" id="phone_no">
+    <label>Phone Number</label>
+    <input type="tel" placeholder="Enter Mobile Number"
+     maxlength="10"
+     style="height: 30px;" 
+     id="e_mobile" 
+     oninput="checkMobile(e_mobile)"/>
+    <span id="mobspan"></span>
+</div>
+
+<!-- //end of the div -->
+
+<div class="second-section">
+    <header>GST & Address
+      <label class="fa fa-search" style="font-size: 24px; float: right; font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;"></label>
+    </header>
+</div> 
+
+<div class="left">
+                        
+    <div class="fields-new">
+        <label>GST Type</label>
+        <select required="" id="gst_type"
+         style="height: 35px;"
+          onchange="gst_required('gst_type','typespan')">
+          <option></option>
+            <option>Registered-Regular GST</option>
+            <option>Registered-Comp.Scheme</option>
+            <option>Unregistered Business</option>
+            <option>Consumer (B2B)</option>
+            <option>Overseas (Outside India)</option>
+            <option>Special Economic Zone (SEZ)</option>
+        </select>
+        <span id="typespan"></span>
+    </div>
+
+    <div class="fields-new1">
+        <label>State</label>
+        <select required id="state" style="height: 35px;" 
+        onchange="state_required('state','statespan')">
+            <option></option>
+            <option>Kerala</option>
+            <option>Tamilnadu</option>
+            <option>Karnataka</option>
+        </select>
+        <span id="statespan"></span>
+    </div>
+
+    <div class="fields-new2" >
+        <label>Email Id</label>
+        <input type="email" placeholder="Enter your Email Id" 
+        required="" style="height: 30px;"  id="email_id" 
+        oninput="checkEmail('email_id','span_mail')"
+        />
+        <span id="span_mail"></span>
+    </div>
+
+
+    <div class="fields-new3" id="billing_address">
+        <label>Address</Address></label>
+        <textarea name="address" class="description" 
+        style="height: 60px;" id="e_address"
+        oninput="checkAddress('e_address','adresspan')"></textarea>
+        <span id="adresspan"></span>
+    </div>
+    <div class="buttons">
+        <div>
+        <input type="button" class="button" value="Save & New">
+     <input type="button" class="button" value="Save" onclick="vendorSubmit()">
+    </div>    
+    </div>
+</div>
+</body>
+<script>
+function vendorSubmit(){
+  var vendor_nme = document.getElementById("client_id").value;
+    var gstini = document.getElementById("gst_in").value;
+    var phone = document.getElementById("e_mobile").value;
+    var gst_type = document.getElementById("gst_type").value;
+    var state = document.getElementById("state").value;
+    var email = document.getElementById("email_id").value;
+    var address = document.getElementById("e_address").value;
+  checkRequired([
+      document.getElementById("client_id"),
+     document.getElementById("gst_in"),
+       document.getElementById("e_mobile"),
+      document.getElementById("gst_type"),
+      document.getElementById("state"),
+      document.getElementById("email_id"),
+      document.getElementById("e_address")
+    ]);
+    
+    // console.log(document.getElementById("client_span"));
+    // console.log(document.getElementById("gst_span"));
+    // console.log(document.getElementById("e_mobile"));
+    // console.log(document.getElementById("typespan"));
+    // console.log(document.getElementById("statespan"));
+    // console.log(document.getElementById("span_mail"));
+    // console.log(document.getElementById(" adresspan"));
+    if (
+      document.getElementById("client_span").innerHTML === "" &&
+      document.getElementById("gst_span").innerHTML === "" &&
+      document.getElementById("mobspan").innerHTML === "" &&
+      document.getElementById("typespan").innerHTML === "" &&
+      document.getElementById("statespan").innerHTML === "" &&
+      document.getElementById("span_mail").innerHTML === "" &&
+      document.getElementById("adresspan").innerHTML === ""
+    ) {
+  /*    var site_name = document.getElementById("sitename").value;
+      var site_location = document.getElementById("sitelocation").value;
+      var site_owner = document.getElementById("siteowner").value;
+      var site_number = document.getElementById("sitenumber").value;
+      var site_mail = document.getElementById("siteemail").value;
+      var site_address = document.getElementById("siteaddress").value;
+      var site_state = document.getElementById("sitestate").value;
+      var site_district = document.getElementById("sitedistrict").value;
+      var site_pin = document.getElementById("sitepin").value;
+*/
+
+
+var sqlQuery =
+"INSERT INTO customer (client_name,gst_no,phone_no,gst_type,state,email_id,client_address)";
+var data_value =
+"('"+
+vendor_nme +
+"','" +
+gstini +
+"','" +
+phone +
+"','" +
+gst_type +
+"','" +
+state +
+"','"+
+email +
+"','" +
+address +
+"')";
+console.log("data value",sqlQuery,data_value)
+window.MainDatastream.streamAddEmloyee(
+        sqlQuery,
+        data_value,
+        (status, data) => {
+          console.log("addsite", status, data);
+        });
+        document.getElementById("client_span").value = "";
+      document.getElementById("gst_span").value = "";
+      document.getElementById("mobspan").value = "";
+      document.getElementById("typespan").value = "";
+      document.getElementById("statespan").value = "";
+      document.getElementById("span_mail").value = "";
+      document.getElementById("adresspan").value = "";
+   
+}}
+//check email is valid
+function checkEmail(input,span) {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var input = document.getElementById(input);
+   var error = document.getElementById(span );
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Email";
+    }
+  }
+
+   //check name is valid
+   function client_name(InputId, SpanId) {
+      var pattern = /^[a-zA-Z ]{2,50}$/;
+      var input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      if (pattern.test(input.value.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "Invalid Name";
+      }
+    }
+     //check phone number is valid
+  function checkMobile(input) {
+    var re = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6-9]\d{9}$/;
+    var error = document.getElementById("mobspan");
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "Invalid Phone Number";
+    }
+  }
+  //check req
+  function checkRequired(inputArr) {
+    inputArr.forEach((input) => {
+      var error = document.getElementById(input.id).nextElementSibling;
+      if (input.value === "") {
+        
+        error.innerHTML = "required";
+      }
+    });
+  }
+  //check GST IN is valid
+  function gstin(InputId,SpanId) {
+      // var pattern = /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/;
+      var pattern = /^\+?[1-9][0-9]{7,14}$/;
+      var input = document.getElementById(InputId);
+      var error = document.getElementById(SpanId);
+      console.log("gstin/..............",input.value,"INputID..",InputId)
+      if (pattern.test(input.value.trim())) {
+        error.innerHTML = "";
+      } else {
+        error.innerHTML = "Invalid GST IN";
+      }
+    }
+  
+ 
+  function checkAddress(input,span) {
+    const re = /^[a-zA-Z0-9\s,'-]*$/;
+    var input = document.getElementById(input);
+    var error = document.getElementById(span);
+    if (re.test(input.value.trim())) {
+      error.innerHTML = "";
+    } else {
+      error.innerHTML = "invalid Address";
+    }
+  }
+  function gst_required(InputId, SpanId) {
+    var input = document.getElementById(InputId);
+    var error = document.getElementById(SpanId);
+    if (input.value.trim() == "") {
+      error.innerHTML = "required";
+    } else {
+      error.innerHTML = "";
+    }
+  }
+  function state_required(InputId, SpanId) {
+    var input = document.getElementById(InputId);
+    var error = document.getElementById(SpanId);
+    if (input.value.trim() == "") {
+      error.innerHTML = "required";
+    } else {
+      error.innerHTML = "";
+    }
+  }
+</script>
+</html>
