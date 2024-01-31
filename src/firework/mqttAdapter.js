@@ -4,7 +4,7 @@ const mqtt = require("mqtt");
 const { ipcMain } = require("electron");
 var async = require("async");
 const EventEmitter = require("events");
-
+var ip = "51.20.133.218";
 const key =
   "instance." +
   Math.floor(100000000 + Math.random() * 900000) +
@@ -18,8 +18,8 @@ const key =
 class MqttAdapter extends Adapter {
   constructor(f, d, h) {
     super();
-    this.f = f;
-    this.d = d;
+    this.f = 'PQ';
+    this.d ='QP';
     this.h = h;
   }
 
@@ -32,12 +32,7 @@ class MqttAdapter extends Adapter {
       this.h,
       "mqtt:/" + this.h + ":61616"
     );
-    this.Client = mqtt.connect("mqtt://" + this.h + ":61616", {
-      clientId: key.replace("/./gi", "") + process.pid,
-      username: "powerta",
-      password: "Powerta@123",
-    });
-
+    this.Client = mqtt.connect("mqtt://"+ip+":61616",{clientId:key.replace("/\./gi","")+process.pid,username: "artemis", password:"aalbot"});
     var client = this.Client;
     var listener = this.listener;
     var myn = this;
