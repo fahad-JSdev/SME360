@@ -1,6 +1,5 @@
 body {
   background-image: url("../images/launcher-bg.jpg");
-  transition: all 0.3s ease ;
 }
 
 .cards-list {
@@ -63,7 +62,7 @@ height: 80px !important;
   border-radius: 0px 0px 40px 40px;
   font-family: sans-serif;
   font-size: 14px;
-  padding-top: 1px;
+  padding-top: 3px;
 }
 #card:hover {
   transform: scale(1.1, 1.1);
@@ -92,7 +91,7 @@ height: 80px !important;
   .cards-list {
     height: 50%;
     margin: 60px auto;
-    justify-content: unset;
-    /* gap: 0px; */
+    /* justify-content: unset; */
+    gap: 0px;
   }
 }

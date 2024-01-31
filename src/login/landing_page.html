@@ -21,7 +21,7 @@
             Our tools make it simple to track how your Droplets are performing
             and help you to respond quickly if there is a problem
           </p>
-          <button class="signup" onclick="signinHide()">Sign In</button>
+          <button class="signup">Sign In</button>
         </div>
       </div>
     </section>
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<div id="AppCards">
+<div class="appcard" id="AppCards">
   <div class="cards-list">
     <div id="card" class="expense-card">
       <div class="expense-card card_image">
@@ -221,61 +221,61 @@ function setDime(w, h) {
 </script>
 
 <script>
-  Login = new login();
+  // Login = new login();
 
-  function signin() {
-    const email = document.getElementById("email").value;
-    const pass = document.getElementById("password").value;
-    final();
-    var count = 0;
-    console.log(email);
-    console.log("login value0", email, pass);
-    window.loginAPI.setLogin(email, pass, (data) => {
-      console.log("success value", data);
-      if (data.length == 0) {
-        var error = document.getElementById("span");
-        error.innerHTML = "Your email or password is wrong, may be both";
-      }
-      var data1 = [];
-      var mainData = [];
-      data1.push(email, pass);
-      mainData.push(data, data1);
-      count++;
-      if (count < 2) {
-        if (data.length == 0) {
-          Login.renderSpan(document.getElementById("spandata"));
-        } else {
-          document.getElementById("body1").style = "display:none";
-          document.getElementById("body2").style = "display:block";
+  // function signin() {
+  //   const email = document.getElementById("email").value;
+  //   const pass = document.getElementById("password").value;
+  //   final();
+  //   var count = 0;
+  //   console.log(email);
+  //   console.log("login value0", email, pass);
+  //   window.loginAPI.setLogin(email, pass, (data) => {
+  //     console.log("success value", data);
+  //     if (data.length == 0) {
+  //       var error = document.getElementById("span");
+  //       error.innerHTML = "Your email or password is wrong, may be both";
+  //     }
+  //     var data1 = [];
+  //     var mainData = [];
+  //     data1.push(email, pass);
+  //     mainData.push(data, data1);
+  //     count++;
+  //     if (count < 2) {
+  //       if (data.length == 0) {
+  //         Login.renderSpan(document.getElementById("spandata"));
+  //       } else {
+  //         document.getElementById("body1").style = "display:none";
+  //         document.getElementById("body2").style = "display:block";
 
-          Login.addData(data);
-          Login.render(document.getElementById("organisation"));
-          Login.setCardOnClick(handler);
-          function handler(event) {
-            console.log(
-              "value of clicked div",
-              event.target.id,
-              event.target.value
-            );
-            Login.getKey(event.target.value);
-          }
-          // window.open(
-          //   "./org.html?data=" +
-          //   encodeURIComponent(JSON.stringify(mainData)),
-          //   "_blank",
-          //   "resizable=no,frame=0"
-          // );
-          // Login.unrenderSpan(document.getElementById("spandata"));
-          // Login.addData(data);
-          // Login.render(document.getElementById("organisation"));
-        }
-      }
-    });
+  //         Login.addData(data);
+  //         Login.render(document.getElementById("organisation"));
+  //         Login.setCardOnClick(handler);
+  //         function handler(event) {
+  //           console.log(
+  //             "value of clicked div",
+  //             event.target.id,
+  //             event.target.value
+  //           );
+  //           Login.getKey(event.target.value);
+  //         }
+  //         // window.open(
+  //         //   "./org.html?data=" +
+  //         //   encodeURIComponent(JSON.stringify(mainData)),
+  //         //   "_blank",
+  //         //   "resizable=no,frame=0"
+  //         // );
+  //         // Login.unrenderSpan(document.getElementById("spandata"));
+  //         // Login.addData(data);
+  //         // Login.render(document.getElementById("organisation"));
+  //       }
+  //     }
+  //   });
 
-    // window.close();
-    //  window.electronAPI.openmainwindow("src/app.html");
-    // login(document.getElementById("email"),document.getElementById("password"),document.getElementById("key"));
-  }
+  //   // window.close();
+  //   //  window.electronAPI.openmainwindow("src/app.html");
+  //   // login(document.getElementById("email"),document.getElementById("password"),document.getElementById("key"));
+  // }
 
   // const checkboxes = form.querySelectorAll('input[type="checkbox"]');
   // const checkedCheckboxes = [];
@@ -314,16 +314,12 @@ function setDime(w, h) {
   });
 </script>
 <script>
-  // function signinHide() {
-  //   window.close();
-  //   window.electronAPI.openmainwindow("src/app.html");
-  //   window.open(
-  //             "src/app.html",
-  //             "_self",
-  //             "resizable=0,frame=0"
-  //           );
-  // }
-  
+  function signin() {
+    // window.close();
+    // window.electronAPI.openmainwindow("./src/app.html");
+    document.getElementById("body1").style = "display:none";
+    document.getElementById("AppCards").style = "display:flex";
+    }
 </script>
 <script>
   function getWidth() {
