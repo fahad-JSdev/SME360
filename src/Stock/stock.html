@@ -47,12 +47,12 @@
 
         function itemClick(item) {
           if (item.target.childNodes[0].data == "All") {
-            console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
+            console.log("jjjjjjjjjjjjjjj");
 
             onFilterTextClickChanged();
           } else {
             console.log(
-              "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+              "jjjjjjjjjjjjjjjjjjjj",
               item.target.childNodes[0].data
             );
             onFilterTextClickChanged(item.target.childNodes[0].data);
@@ -65,12 +65,11 @@
         ];
 
         var userList = new List("site-grid-side", options, values);
-
+          
         window.MainDatastream.streamAddBill(
-          "SELECT category FROM stock_collection",
+          "SELECT DISTINCT category FROM stock_collection",
           (status, data) => {
             var sidelist = JSON.parse(data).data;
-
             userList.add(sidelist);
             $(".card").click(itemClick);
           }
@@ -109,7 +108,7 @@
   actionbar.addIcon("import_button", ".././assets/images/import.png","Import");
   
 
-  actionbar.addIcon("print_button", "../assets/images/toolbar-print.png");
+  actionbar.addIcon("print_button", "../assets/images/toolbar-print.png","Print");
 
   function handler(event) {
     switch (event.target.id) {
@@ -151,11 +150,6 @@
   function onFilterTextBoxChanged() {
     stockGrid.api.setQuickFilter(
       document.getElementById("filter-text-box").value
-    );
-    
-    console.log(
-      "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
-      typeof document.getElementById("filter-text-box").value
     );
   }
 
