@@ -93,23 +93,23 @@
                <div class="fields">
                 <div class="input-field">
                   <label>Current Stock</label>
-                  <input type="text" id="current_stock" onblur="basicrequired('current_stock','currstkspan')"/>  
+                  <input class="value_showbox" type="text" id="current_stock" onblur="basicrequired('current_stock','currstkspan')"/>  
                   <span class="error_msg" id="currstkspan"></span>
                 </div>
                 <div class="input-field">
                   <label><br/></label>
                   <label>Expiry Date</label>
-                  <input type="date" id="Expirydate" required oninput="checkDate()" onblur="basicrequired('Expirydate','date')"/>
+                  <input class="value_showbox" type="date" id="Expirydate" required oninput="checkDate()" onblur="basicrequired('Expirydate','date')"/>
                   <span class="error_msg" id="date"></span>
                 </div>
                 <div class="input-field">
                   <label>Opening Stock</label>
-                  <input type="text" id="openstock" onblur="basicrequired('openstock','openstkspan')"/>
+                  <input class="value_showbox" type="text" id="openstock" onblur="basicrequired('openstock','openstkspan')"/>
                   <span class="error_msg" id="openstkspan"></span>
                 </div>
                 <div class="input-field">
                   <label>As of Date</label>
-                  <input type="date" id="asofdate" onblur="basicrequired('asofdate','datespan')"/>
+                  <input class="value_showbox" type="date" id="asofdate" onblur="basicrequired('asofdate','datespan')"/>
                   <span class="error_msg" id="datespan"></span>
                 </div> 
                 <div class="input-field">
@@ -145,7 +145,7 @@
                 <div class="input-field">
 
                   <div id="highstockvalue">
-                    <label for="stockvalue" id="stock-value">HightStock</label>
+                    <label for="stockvalue" id="stock-value">High Stock</label>
                     <input type="number" id="high_stock" />
                   </div>
                 </div>
@@ -163,19 +163,19 @@
   <div class="fields">
     <div class="input-field">
       <label >Purchase Price</label>
-              <input type="text" id="prchase_price" onblur="purch()"/>
+              <input class="value_showbox" type="text" id="prchase_price" onblur="purch()"/>
               <span class="error_msg" id="spnpur" ></span>
     </div>
 
     <div class="input-field">
       <label >Sales Price</label>
-      <input type="text" id="sales_price" onblur="sales()"/>
+      <input class="value_showbox" type="text" id="sales_price" onblur="sales()"/>
       <span class="error_msg" id="spnsal"></span>
     </div>
 
     <div class="input-field">
       <label >Discount</label>
-              <input type="text" id="discountin" onblur="dis()"/>
+              <input class="value_showbox" type="text" id="discountin" onblur="dis()"/>
               <span class="error_msg" id="spndis"></span>
     </div>
 
@@ -203,44 +203,44 @@
   <div class="fields">
     <div class="input-field">
       <label>Brand</label>
-      <input type="text" id="brand" onblur="basicrequired('brand','brandspan')"/>
+      <input class="value_showbox" type="text" id="brand" onblur="basicrequired('brand','brandspan')"/>
       <span class="error_msg" id="brandspan"></span>
     </div>
 
     <div class="input-field" >
       <label><br/></label>
       <label>Batch No</label>
-      <input type="text" id="batch_no" onblur="batch()" />
+      <input class="value_showbox" type="text" id="batch_no" onblur="batch()" />
       <span class="error_msg" id="spnbatch"></span>
     </div>
 
     <div class="input-field">
       <label>Item Code</label>
-      <input type="text" id="item_code" onblur="basicrequired('item_code','itemspan')"/>
+      <input class="value_showbox" type="text" id="item_code" onblur="basicrequired('item_code','itemspan')"/>
       <span class="error_msg" id="itemspan"></span>
     </div>
 
     <div class="input-field">
       <label>Manufacture</label>
-      <input type="text" id="manufacture" onblur="basicrequired('manufacture','manufactspan')"/>
+      <input class="value_showbox" type="text" id="manufacture" onblur="basicrequired('manufacture','manufactspan')"/>
       <span class="error_msg" id="manufactspan"></span>
     </div>
 
     <div class="input-field">
       <label>HSN Code</label>
-      <input type="text" id="HSN_code" onblur="basicrequired('HSN_code','hsnspan')"/>
+      <input class="value_showbox" type="text" id="HSN_code" onblur="basicrequired('HSN_code','hsnspan')"/>
       <span class="error_msg" id="hsnspan"></span>
     </div>
 
     <div class="input-field">
       <label>Quanitiy</label>
-      <input type="text" id="quantity" onblur="basicrequired('quantity','quantspan')"/>
+      <input class="value_showbox" type="text" id="quantity" onblur="basicrequired('quantity','quantspan')"/>
       <span class="error_msg" id="quantspan"></span>
     </div>
 
     <div class="input-field">
       <label>Unit</label>
-      <select required="" id="unit" onchange="" onblur="basicrequired('unit', 'unitspan')">
+      <select class="value_showbox" required="" id="unit" onchange="" onblur="basicrequired('unit', 'unitspan')">
         <option disabled="" selected="" value="">Select unit</option>
         <option value="kilogram">Kilogram</option>
         <option value="gram">Gram</option>
@@ -254,7 +254,7 @@
       <label style="font-size: 13.5px"
         >Description</label
       >
-      <input type="text" id="description" onblur="basicrequired('description','descrspan')"/>
+      <input class="value_showbox" type="text" id="description" onblur="basicrequired('description','descrspan')"/>
       <span class="error_msg" id="descrspan"></span>
     </div>
   </div>
@@ -531,8 +531,35 @@ function highSt() {
 
 
   /////////////////////////////////////////
-
-
+  
+  function requiredCheckBeforeSubmit(){
+    var errormsgspan = document.getElementsByClassName('error_msg');
+    var reqCount = 0;
+    var inputarray1 = document.getElementsByClassName("value_showbox");
+    var error_count =0;
+    for(let i=0;i< errormsgspan.length;i++){
+      if(errormsgspan[i].innerHTML != ""){
+        reqCount = 1;
+      }
+    }
+    for(let j=0;j< inputarray1.length;j++) {
+      event.preventDefault();
+      var error2 = inputarray1[j].nextElementSibling;
+      console.log("next element of item",inputarray1[j],"error...",error2);
+      if ((inputarray1[j].value != "")) {
+      }
+      else {
+        error2.innerHTML = "required";
+        error_count+=1;
+      }
+    }
+    if (reqCount == 0 && error_count==0) {
+      addStock();
+    }
+    else{
+       SnackboxAlert("snackstockerror");
+    }
+  }
 
   nextBtn.addEventListener("click", () => {
 
@@ -630,22 +657,7 @@ var tmp = 1;
       error.innerHTML = "";
     }
   }
-  function requiredCheckBeforeSubmit(){
-    var errormsgspan = document.getElementsByClassName('error_msg');
-    var reqCount = 0;
-    console.log("reqspanlength",errormsgspan.length);
-    for(let i in errormsgspan){
-      if(errormsgspan[i] != ""){
-        reqCount = 1;
-      }
-    }
-    if (reqCount == 0) {
-      addStock();
-    }
-    else{
-       SnackboxAlert("snackstockerror");
-    }
-  }
+
   function addStock() {
     var brand = document.getElementById("brand").value;
     var batch_no = document.getElementById("batch_no").value;
