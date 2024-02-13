@@ -106,19 +106,32 @@
   actionbar.addIcon("add_stock", "../assets/images/add-expense.png","Add Stock");
  actionbar.addIcon("export_button", ".././assets/images/export_excel-img.png","Export");
   actionbar.addIcon("import_button", ".././assets/images/import.png","Import");
-  
-
   actionbar.addIcon("print_button", "../assets/images/toolbar-print.png","Print");
-
+  actionbar.addIcon(
+    "edit_button",
+    ".././assets/images/editing.png",
+    "Edit"
+  );
+  actionbar.addIcon(
+    "delete_button",
+    ".././assets/images/delete.png",
+    "Delete"
+  );
   function handler(event) {
     switch (event.target.id) {
       case "add_stock":
         openAddItem();
         break;
-        case "export_button":
+      case "export_button":
         download();
         break;
       case"import_button":
+        break;
+      case "edit_button":
+        // btnClickedHandleEdit();
+        break;
+      case "delete_button":
+        // BtnclickReject();
         break;
       // case "print_icon":
       //                  ;
@@ -127,7 +140,8 @@
   }
   actionbar.render(document.getElementById("header"));
   actionbar.setToolbarOnClick(handler);
-
+  document.getElementById("delete_button").style.display = "none";
+  document.getElementById("edit_button").style.display = "none";
   var stockTab;
   if (stockTab == undefined) {
     stockTab = new Tabbar();
@@ -208,6 +222,7 @@
     // getSelectedRows: 'getSelectedRows',
     // cellClicked:'onCellClicked',
     // onSelectionChanged: 'onSelectionChanged',
+    onRowSelected: onExpRowSelected,
     onFirstDataRendered: onFirstDataRendered,
     defaultColDef: { sortable: true },
     pagination: true,
@@ -259,4 +274,34 @@ import_button.addEventListener('click',async () => {
 const filepath=await window.ExcelDatastream.ExcelImportClick();
 console.log("filepath",filepath)         
 });
+function onExpRowSelected() {
+    const selectedRows = stockGrid.api.getSelectedRows();
+    if (selectedRows) {
+      document.getElementById("edit_button").style.display = "flex";
+      document.getElementById("delete_button").style.display = "flex";
+    }
+  }
+
+// function BtnclickReject() {
+//     var selectedRows;
+//     selectedRows = stockGrid.api.getSelectedRows();
+//     stockGrid.api.applyTransaction({ remove: selectedRows });
+//     SnackboxAlert("snackbaro");
+    
+  
+
+//     if (selectedRows) {
+//       for (var i = 0; i < selectedRows.length; i++) {
+//         var sqlQuery =
+//           "UPDATE site_expense SET is_deleted='1' WHERE site_exp_id=" +
+//           selectedRows[i][8];
+//         var value;
+//         window.MainDatastream.streamProjectButtonClick(
+//           sqlQuery,
+//           value,
+//           (status, data) => {}
+//         );
+//       }
+//     }
+//   }
 </script>
