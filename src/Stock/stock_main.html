@@ -218,11 +218,11 @@ tabbar.render(document.getElementById("tabwrap"));
         arrowParent.classList.toggle("showMenu");
       });
     }
-  </script>
-
-  <script>
+ 
     function openAddItem() {
-      window.open("./stock_Additem.html", "-blank", "resizable=0,frame=0");
+      window.open("./stock_Additem.html", "-blank", "resizable=0,frame=0,width="+getWidth()+",height="+getHeight()+"");
+      
+      // window.resizeTo(getWidth(), getHeight());
     }
   </script>
   <script>
