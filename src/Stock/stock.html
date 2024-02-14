@@ -47,14 +47,8 @@
 
         function itemClick(item) {
           if (item.target.childNodes[0].data == "All") {
-            console.log("jjjjjjjjjjjjjjj");
-
             onFilterTextClickChanged();
           } else {
-            console.log(
-              "jjjjjjjjjjjjjjjjjjjj",
-              item.target.childNodes[0].data
-            );
             onFilterTextClickChanged(item.target.childNodes[0].data);
           }
         }
@@ -66,9 +60,7 @@
 
         var userList = new List("site-grid-side", options, values);
           
-        window.MainDatastream.streamAddBill(
-          "SELECT DISTINCT category FROM stock_collection",
-          (status, data) => {
+        window.MainDatastream.streamStocksitelist((status, data) => {
             var sidelist = JSON.parse(data).data;
             userList.add(sidelist);
             $(".card").click(itemClick);
