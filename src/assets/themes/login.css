@@ -107,7 +107,7 @@ input {
 .login_button {
   border-radius: 100px;
   border: none;
-  background: #719be6;
+  background: #2e79ffeb;
   width: 50%;
   padding: 10px;
   color: #ffffff;
@@ -154,16 +154,16 @@ a:hover {
   background-image: url("../images/launcher-bg.jpg");
 } */
 
-.cards-list {
+/* .cards-list {
   z-index: 0;
   width: 70%;
   /* height: 120%; */
-  display: flex;
+  /* display: flex;
   justify-content: normal;
   flex-wrap: wrap;
   gap: 12px 34px;
-  margin: 0px auto 40px auto;
-}
+  margin: 0px auto 40px auto; */
+/* } */ 
 #card {
   margin: 26px 8px;
   width: 120px;
@@ -230,10 +230,10 @@ height: 80px !important;
   color: black;
 }
 
-@media all and (max-width: 800px) {
+/* @media all and (max-width: 800px) {
   .card-list {
     /* On small screens, we are no longer using row direction but column */
-    flex-direction: column;
+    /* flex-direction: column;
   }
 }
 @media all and (min-width: 1000px) {
@@ -244,6 +244,6 @@ height: 80px !important;
     height: 50%;
     margin: 50px auto;
     justify-content: unset;
-    /* gap: 0px; */
+    /* gap: 0px; 
   }
-}
+}  */

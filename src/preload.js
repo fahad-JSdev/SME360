@@ -9,7 +9,7 @@ const fs = require("fs");
 const {
   LABOUR_EXPENSE,
   PROJECT_EXPENSE,
-
+  STOCK_LIST,
   LABOUR_PENDING,
   PROJECT_PENDING,
   PURCHASE_ORDER,
@@ -260,13 +260,10 @@ contextBridge.exposeInMainWorld("MainDatastream", {
     pq.getStream(STOCK_DATA, fn);
   },
 
-  streamstocksitelist: (fn) => {
+  streamStocksitelist: (fn) => {
     pq.getStreamOnce(STOCK_LIST, fn);
   },
 
-  // streamstocksitelist: (fn) => {
-  //   pq.getStreamOnce(STOCK_LIST, fn);
-  // },
   //employee datatransfer
   streamemployeeview: (querry, fn) => {
     pq.getStream(querry, fn);

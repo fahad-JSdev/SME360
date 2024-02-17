@@ -1,9 +1,13 @@
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../widgets/snackbox.js"></script>
 <link rel="stylesheet" href="../assets/themes/addStock.css" />
+
 <script src="../accounts/stock.js"></script>
 <script src="../accounts/stockCollection.js"></script>
+
 <script src="../widgets/autoSearchText.js"></script>
 <link rel="stylesheet" href="../assets/themes/autoSearchText.css" />
+
 <title>CREATE NEW ITEM</title>
 <div class="main-container">
   <div class="container">
@@ -14,7 +18,7 @@
           <div class="fields">
             <div class="radio-new">
               <label for="contactChoice1">Item Type 
-                <br/><span class="spnradio" id="radiospan">
+                <br/><span class="spnradio error_msg" id="radiospan">
                 </span></label>
               <div class="radio-single ">
                 <input
@@ -47,11 +51,11 @@
             </div>
             <div class="input-field-large">
               <input type="text" id="item-name-ip" placeholder="Item Name" onkeyup="this.value = this.value.toUpperCase();" onblur="checkitem()"/>
-              <span id="spnitm"></span> 
+              <span class="error_msg" id="spnitm"></span> 
             </div>
             <div class="input-field-large">
               <input type="text" id="category-ip" onkeyup="this.value = this.value.toUpperCase();" placeholder="category" onblur="checkcat()"/>
-              <span id="spncat"></span>
+              <span class="error_msg" id="spncat"></span>
             </div>
             <div class="input-field-large" >
               <select id="gstrate-ip"  onblur="gstck()" >
@@ -62,7 +66,7 @@
                 <option value="18">18</option>
                 <option value="28">28</option>
               </select>
-              <span id="spngst"></span>
+              <span class="error_msg" id="spngst"></span>
             </div>
             <div class="input-field"></div>
           </div>
@@ -89,21 +93,24 @@
                <div class="fields">
                 <div class="input-field">
                   <label>Current Stock</label>
-                  <input type="text" id="current_stock" />  
+                  <input class="value_showbox" type="text" id="current_stock" onblur="basicrequired('current_stock','currstkspan')"/>  
+                  <span class="error_msg" id="currstkspan"></span>
                 </div>
                 <div class="input-field">
                   <label><br/></label>
                   <label>Expiry Date</label>
-                  <input type="date" id="Expirydate" required oninput="checkDate()"/>
-                  <span id="date"></span>
+                  <input class="value_showbox" type="date" id="Expirydate" required oninput="checkDate()" onblur="basicrequired('Expirydate','date')"/>
+                  <span class="error_msg" id="date"></span>
                 </div>
                 <div class="input-field">
                   <label>Opening Stock</label>
-                  <input type="text" id="openstock" />
+                  <input class="value_showbox" type="text" id="openstock" onblur="basicrequired('openstock','openstkspan')"/>
+                  <span class="error_msg" id="openstkspan"></span>
                 </div>
                 <div class="input-field">
                   <label>As of Date</label>
-                  <input type="date" id="asofdate" />
+                  <input class="value_showbox" type="date" id="asofdate" onblur="basicrequired('asofdate','datespan')"/>
+                  <span class="error_msg" id="datespan"></span>
                 </div> 
                 <div class="input-field">
                   <div>
@@ -138,7 +145,7 @@
                 <div class="input-field">
 
                   <div id="highstockvalue">
-                    <label for="stockvalue" id="stock-value">HightStock</label>
+                    <label for="stockvalue" id="stock-value">High Stock</label>
                     <input type="number" id="high_stock" />
                   </div>
                 </div>
@@ -156,20 +163,20 @@
   <div class="fields">
     <div class="input-field">
       <label >Purchase Price</label>
-              <input type="text" id="prchase_price" onblur="purch()"/>
-              <span id="spnpur" ></span>
+              <input class="value_showbox" type="text" id="prchase_price" onblur="purch()"/>
+              <span class="error_msg" id="spnpur" ></span>
     </div>
 
     <div class="input-field">
       <label >Sales Price</label>
-      <input type="text" id="sales_price" onblur="sales()"/>
-      <span id="spnsal"></span>
+      <input class="value_showbox" type="text" id="sales_price" onblur="sales()"/>
+      <span class="error_msg" id="spnsal"></span>
     </div>
 
     <div class="input-field">
       <label >Discount</label>
-              <input type="text" id="discountin" onblur="dis()"/>
-              <span id="spndis"></span>
+              <input class="value_showbox" type="text" id="discountin" onblur="dis()"/>
+              <span class="error_msg" id="spndis"></span>
     </div>
 
     <div class="radio-new">
@@ -196,39 +203,44 @@
   <div class="fields">
     <div class="input-field">
       <label>Brand</label>
-      <input type="text" id="brand" />
+      <input class="value_showbox" type="text" id="brand" onblur="basicrequired('brand','brandspan')"/>
+      <span class="error_msg" id="brandspan"></span>
     </div>
 
     <div class="input-field" >
       <label><br/></label>
       <label>Batch No</label>
-      <input type="text" id="batch_no" onblur="batch()" />
-      <span id="spnbatch"></span>
+      <input class="value_showbox" type="text" id="batch_no" onblur="batch()" />
+      <span class="error_msg" id="spnbatch"></span>
     </div>
 
     <div class="input-field">
       <label>Item Code</label>
-      <input type="text" id="item_code" />
+      <input class="value_showbox" type="text" id="item_code" onblur="basicrequired('item_code','itemspan')"/>
+      <span class="error_msg" id="itemspan"></span>
     </div>
 
     <div class="input-field">
       <label>Manufacture</label>
-      <input type="text" id="manufacture" />
+      <input class="value_showbox" type="text" id="manufacture" onblur="basicrequired('manufacture','manufactspan')"/>
+      <span class="error_msg" id="manufactspan"></span>
     </div>
 
     <div class="input-field">
       <label>HSN Code</label>
-      <input type="text" id="HSN_code" />
+      <input class="value_showbox" type="text" id="HSN_code" onblur="basicrequired('HSN_code','hsnspan')"/>
+      <span class="error_msg" id="hsnspan"></span>
     </div>
 
     <div class="input-field">
       <label>Quanitiy</label>
-      <input type="text" id="quantity" />
+      <input class="value_showbox" type="text" id="quantity" onblur="basicrequired('quantity','quantspan')"/>
+      <span class="error_msg" id="quantspan"></span>
     </div>
 
     <div class="input-field">
       <label>Unit</label>
-      <select required="" id="unit" onchange="">
+      <select class="value_showbox" required="" id="unit" onchange="" onblur="basicrequired('unit', 'unitspan')">
         <option disabled="" selected="" value="">Select unit</option>
         <option value="kilogram">Kilogram</option>
         <option value="gram">Gram</option>
@@ -236,13 +248,14 @@
         <option value="meter">Meter</option>
         <option value="pcs">Pcs</option>
       </select>
+      <span class="error_msg" id="unitspan"></span>
     </div>
     <div class="input-field-large labels">
       <label style="font-size: 13.5px"
         >Description</label
       >
-      <input type="text" id="description"  />
-      
+      <input class="value_showbox" type="text" id="description" onblur="basicrequired('description','descrspan')"/>
+      <span class="error_msg" id="descrspan"></span>
     </div>
   </div>
 </div>
@@ -258,13 +271,16 @@
           <button type="button" class="submit" id="cancel-button" onclick="clearStock()">
             <span class="btnText">Cancel</span>
           </button>
-          <button type="button" id="add-button" class="submit" onclick="addMainStock()">
-            <span class="btnText">Add</span>
-          </button>
 
-          <button type="button" class="submit" id="save-button" onclick="addStock()">
+          <!-- <button type="button" id="add-button" class="submit" onclick="addMainStock()">
+            <span class="btnText">Add</span>
+          </button> -->
+
+          <button type="button" class="submit" id="save-button" onclick="requiredCheckBeforeSubmit()">
             <span class="btnText">Save</span>
           </button>
+          <div id="snackstockerror" class="snackbar">Empty Fields Present</div>
+          <div id="snackstock" class="snackbar">Save Successful</div>
         </div>
       </div>
     </form>
@@ -272,6 +288,7 @@
 </div>
 
 <script>
+   SnackboxAlertStyle();
   // window.electronAPI.setTitle("CREATE NEW ITEM");
 //---------------------------------control tab press----------------------------
 
@@ -373,7 +390,7 @@ function checkbox() {
     if (re.test(input.value.trim())) {
       error.innerHTML = "";
     } else {
-      error.innerHTML = "Invalid Catogary";
+      error.innerHTML = "Invalid Category";
     }
   }
 
@@ -514,8 +531,35 @@ function highSt() {
 
 
   /////////////////////////////////////////
-
-
+  
+  function requiredCheckBeforeSubmit(){
+    var errormsgspan = document.getElementsByClassName('error_msg');
+    var reqCount = 0;
+    var inputarray1 = document.getElementsByClassName("value_showbox");
+    var error_count =0;
+    for(let i=0;i< errormsgspan.length;i++){
+      if(errormsgspan[i].innerHTML != ""){
+        reqCount = 1;
+      }
+    }
+    for(let j=0;j< inputarray1.length;j++) {
+      event.preventDefault();
+      var error2 = inputarray1[j].nextElementSibling;
+      console.log("next element of item",inputarray1[j],"error...",error2);
+      if ((inputarray1[j].value != "")) {
+      }
+      else {
+        error2.innerHTML = "required";
+        error_count+=1;
+      }
+    }
+    if (reqCount == 0 && error_count==0) {
+      addStock();
+    }
+    else{
+       SnackboxAlert("snackstockerror");
+    }
+  }
 
   nextBtn.addEventListener("click", () => {
 
@@ -604,7 +648,17 @@ var tmp = 1;
     evt.currentTarget.className += " active";
   }
 
-  function addMainStock() {
+  function basicrequired(InputId, SpanId) {
+    var input = document.getElementById(InputId);
+    var error = document.getElementById(SpanId);
+    if (input.value.trim() == "") {
+      error.innerHTML = "required";
+    } else {
+      error.innerHTML = "";
+    }
+  }
+
+  function addStock() {
     var brand = document.getElementById("brand").value;
     var batch_no = document.getElementById("batch_no").value;
     var expiry_date = document.getElementById("Expirydate").value;
@@ -625,7 +679,6 @@ var tmp = 1;
     var description = document.getElementById("description").value;
     // var stock_keeping_unit =
     //   document.getElementById("stock_keeping_unit").value;
-
     newstock = new stock(
       brand,
       batch_no,
@@ -647,15 +700,9 @@ var tmp = 1;
       description
       // stock_keeping_unit
     );
-
     newStockCollection.setStockArray(newstock);
-
-    clearMainStock();
-  }
-
-  function addStock() {
+ ///////////////////merger code above from addMainstock function/////////////////
     var producttypevalue;
-
     var producttype = document.getElementsByName("itemtype");
     for (var i = 0; i <= 1; i++) {
       if (producttype[i].checked) {
@@ -689,21 +736,21 @@ var tmp = 1;
       data_value1,
       (status, data) => {
 
-       
         console.log(
-          "22222222222222222222222222222222222222222222222222222222222222222222",
-
+          "222222222222222222222",
           JSON.parse(data)[0][4]
         );
-
         stockdetail(JSON.parse(data)[0][4]);
       }
     );
+    clearMainStock();
+    SnackboxAlert("snackstock");
   }
+
   function stockdetail(product_id) {
    console.log("function called")
     var data_value = newStockCollection.returnStockArray();
-    console.log("This is from stock delatials",data_value);
+    console.log("This is from stock details",data_value);
     var stockDetails = "";
     for (var i = 0; i < data_value.length; i++) {
       stockDetails +=
@@ -801,7 +848,7 @@ var tmp = 1;
   window.MainDatastream.streamAddBill(
     "SELECT product_id,category FROM stock_collection",
     (status, data) => {
- //     console.log("values=>", JSON.parse(data).data);
+     console.log("values=>", JSON.parse(data).data);
       this.inflateAutoCompleateView(
         document.getElementById("category-ip"),
         JSON.parse(data).data

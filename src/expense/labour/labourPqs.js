@@ -13,6 +13,7 @@ const PROJECT_PENDING =
 
 const STOCK_DATA =
   "select stock_collection.product_id,stock_collection.product,stock_collection.category,stock.item_description,stock.purchase_price,stock.sales_price,stock.brand,stock.expiry FROM stock_collection left join stock on stock_collection.product_id=stock.stock_f_id order by stock_collection.product_id ;";
+const STOCK_LIST = "SELECT DISTINCT category FROM stock_collection ;";
 const LABOUR_SITE = "SELECT site.site_name FROM site ;";
 const LABOUR_INSERT = "SELECT labour_id,labour_name FROM labour ;";
 const LABOUR_FORM = "SELECT site_id,site_name FROM site ;";
@@ -22,7 +23,7 @@ module.exports = {
   PURCHASE_ORDER,
   PROJECT_EXPENSE,
   LABOUR_EXPENSE,
-
+  STOCK_LIST,
   LABOUR_PENDING,
   PROJECT_PENDING,
   STOCK_DATA,

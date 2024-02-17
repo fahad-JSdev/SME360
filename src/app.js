@@ -71,7 +71,8 @@ function createWindow() {
         preload: nodePath.join(__dirname, "preload.js"),
       },
     });
-    login.loadFile("src/app.html");
+    // login.loadFile("src/app.html");
+    login.loadFile("src/login/landing_page.html");
     login.center();
     login.show();
     index++;
