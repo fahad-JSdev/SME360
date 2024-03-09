@@ -75,34 +75,28 @@
           <span class="btnText" id="stopTabButton" >Next</span>
         </button>
       </div>
+      
+    
       <div class="form second">
-          <div id="btndiv" class="btncls">
-            <button style="margin-left: 8%;" class="tablinks active" id="st"  onclick="subTab(event, 'stock')">
-              Stock Details
-            </button>
-            <button style="margin-left: 10%;" class="tablinks" id="pr" onclick="subTab(event, 'price')">
-              Pricing Details
-            </button>
-            <button style="margin-left: 10%;" class="tablinks" id="ge" onclick="subTab(event, 'general')">
-              General Details
-            </button>
-            </table>
-          </div>
-<!----------------------------------------------------------------------------------------------->
-          <div id="stock"  class="fieldo tabcontent active" >
-               <div class="fields">
+        
+    
+          
+               <div class="fields" >
                 <div class="input-field">
+                  <header>Stock Details</header>
                   <label>Current Stock</label>
                   <input class="value_showbox" type="text" id="current_stock" onblur="basicrequired('current_stock','currstkspan')"/>  
                   <span class="error_msg" id="currstkspan"></span>
                 </div>
-                <div class="input-field">
-                  <label><br/></label>
+                
+                <div class="input-field field01" >
+                  <label></label>
                   <label>Expiry Date</label>
                   <input class="value_showbox" type="date" id="Expirydate" required oninput="checkDate()" onblur="basicrequired('Expirydate','date')"/>
                   <span class="error_msg" id="date"></span>
                 </div>
-                <div class="input-field">
+                
+                <div class="input-field field02">
                   <label>Opening Stock</label>
                   <input class="value_showbox" type="text" id="openstock" onblur="basicrequired('openstock','openstkspan')"/>
                   <span class="error_msg" id="openstkspan"></span>
@@ -156,24 +150,22 @@
                
               </div>
             
-      </div> 
-<!----------------------------------------------------------------------------------------------->
-
-<div id="price"  class="fieldo tabcontent">
+      
   <div class="fields">
     <div class="input-field">
+      <header>Pricng Details</header>
       <label >Purchase Price</label>
               <input class="value_showbox" type="text" id="prchase_price" onblur="purch()"/>
               <span class="error_msg" id="spnpur" ></span>
     </div>
 
-    <div class="input-field">
+    <div class="input-field field03">
       <label >Sales Price</label>
       <input class="value_showbox" type="text" id="sales_price" onblur="sales()"/>
       <span class="error_msg" id="spnsal"></span>
     </div>
 
-    <div class="input-field">
+    <div class="input-field field04">
       <label >Discount</label>
               <input class="value_showbox" type="text" id="discountin" onblur="dis()"/>
               <span class="error_msg" id="spndis"></span>
@@ -196,25 +188,25 @@
      
     </div>
   </div>
-</div>
+
 <!----------------------------------------------------------------------------------------------->
 
-<div id="general"  class="fieldo tabcontent" >
   <div class="fields">
     <div class="input-field">
+      <header>General Details</header>
       <label>Brand</label>
       <input class="value_showbox" type="text" id="brand" onblur="basicrequired('brand','brandspan')"/>
       <span class="error_msg" id="brandspan"></span>
     </div>
 
-    <div class="input-field" >
-      <label><br/></label>
+    <div class="input-field field05" >
+      <label></label>
       <label>Batch No</label>
       <input class="value_showbox" type="text" id="batch_no" onblur="batch()" />
       <span class="error_msg" id="spnbatch"></span>
     </div>
 
-    <div class="input-field">
+    <div class="input-field field06">
       <label>Item Code</label>
       <input class="value_showbox" type="text" id="item_code" onblur="basicrequired('item_code','itemspan')"/>
       <span class="error_msg" id="itemspan"></span>
@@ -226,7 +218,7 @@
       <span class="error_msg" id="manufactspan"></span>
     </div>
 
-    <div class="input-field">
+    <div class="input-field field07">
       <label>HSN Code</label>
       <input class="value_showbox" type="text" id="HSN_code" onblur="basicrequired('HSN_code','hsnspan')"/>
       <span class="error_msg" id="hsnspan"></span>
@@ -250,7 +242,7 @@
       </select>
       <span class="error_msg" id="unitspan"></span>
     </div>
-    <div class="input-field-large labels">
+    <div class="input-field-large labels field08">
       <label style="font-size: 13.5px"
         >Description</label
       >
@@ -258,7 +250,7 @@
       <span class="error_msg" id="descrspan"></span>
     </div>
   </div>
-</div>
+
 <!----------------------------------------------------------------------------------------------->
 
 <!-- ----------------------------------------------------------------------------------------- -->
@@ -268,7 +260,7 @@
           </button>
           <div style="width: 10%;"></div>
 
-          <button type="button" class="submit" id="cancel-button" onclick="clearStock()">
+          <button type="button" class="submit submit01" id="cancel-button" onclick="clearStock()">
             <span class="btnText">Cancel</span>
           </button>
 
@@ -286,6 +278,8 @@
     </form>
   </div>
 </div>
+</div>
+
 
 <script>
    SnackboxAlertStyle();
@@ -441,7 +435,7 @@ function checkbox() {
       error.innerHTML = "Invalid Amount";
     }
   }
-//-----------------------------date-----------------------------------
+
 function checkDate() {
     var input = document.getElementById("Expirydate").value;
     var error = document.getElementById("date");
@@ -478,30 +472,30 @@ function checkDate() {
     }
   }
 //==============================================================================
-var header = document.getElementById("btndiv");
-var btns = header.getElementsByClassName("tablinks");
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
-  var current = document.getElementsByClassName("active");
-  current[0].className = current[0].className.replace(" active", "");
-  this.className += " active";
-  });
-}
+// var header = document.getElementById("btndiv");
+// var btns = header.getElementsByClassName("tablinks");
+// for (var i = 0; i < btns.length; i++) {var 
+//   btns[i].addEventListener("click", function() {
+//   var current = document.getElementsByClassName("active");
+//   current[0].className = current[0].className.replace(" active", "");
+//   this.className += " active";
+//   });
+// }
 
-function subTab(evt, subTab) {
-    event.preventDefault();
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("fieldo");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", " ");
-    }
-    document.getElementById(subTab).style.display = "block";
-    evt.currentTarget.className += " active";
-  }
+// function subTab(evt, subTab) {
+//     event.preventDefault();
+//     var i, tabcontent, tablinks;
+//     tabcontent = document.getElementsByClassName("fieldo");
+//     for (i = 0; i < tabcontent.length; i++) {
+//       tabcontent[i].style.display = "none";
+//     }
+//     tablinks = document.getElementsByClassName("tablinks");
+//     for (i = 0; i < tablinks.length; i++) {
+//       tablinks[i].className = tablinks[i].className.replace(" active", " ");
+//     }
+//     document.getElementById(subTab).style.display = "block";
+//     evt.currentTarget.className += " active";
+//   }
 function highSt() {
   var checkBox = document.getElementById("highStock");
     var checkValue = document.getElementById("highstockvalue");

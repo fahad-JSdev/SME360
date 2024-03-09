@@ -247,9 +247,9 @@ button.active{
 }
 /* JASIL ADD PARTY CSS */
 .buttons {
-  position:static;
-  left: 31rem;
-  top: 2rem;
+  position:absolute;
+  left: 67rem;
+  bottom: 3rem;
 }
 #lowstockvalue {
   display: none;
@@ -289,7 +289,7 @@ button.active{
 }
 /*888888888888888888888888888888888888888888888888888888888888888888888888888888*/
 * {
-  margin: 0;
+  margin: 1px;
   padding: 0;
   overflow: hidden;
 }
@@ -299,7 +299,7 @@ button.active{
   border-radius: 6px;
   background-color: #fff;
   font-family: "Poppins", sans-serif;
-  height: auto;
+  height: 100%;
 }
 .container header {
   position: relative;
@@ -320,7 +320,7 @@ button.active{
 .container form {
   position: relative;
   margin-top: 16px;
-  min-height: 490px;
+  min-height: 100%;
   background-color: #fff;
   overflow: hidden;
 }
@@ -339,6 +339,7 @@ form.secActive .form.second {
   pointer-events: auto;
   transform: translateX(0);
   width: 100%;
+  height: 100%;
 }
 form.secActive .form.first {
   opacity: 0;
@@ -363,6 +364,7 @@ form .fields .input-field {
   display: flex;
   width: calc(100% / 4 - -45px);
   flex-direction: column;
+  flex-wrap: wrap;
   margin: 4px 0;
 }
 .input-field-large {
@@ -387,7 +389,9 @@ select {
   border: 1px solid #aaa;
   padding: 0 15px;
   height: 35px;
-  margin: 8px 0;
+  margin: 12px 0;
+  
+  
 }
 .input-field input :focus,
 .input-field select:focus {
@@ -430,16 +434,16 @@ select {
 }
 .container form button[type="button"] {
   display: flex;
-  align-items: center;
+    align-items: center;
   justify-content: center;
-  height: 45px;
+  height: 50px;
   max-width: 150px;
-  width: 100%;
+  width: 134px;
   border: none;
   outline: none;
   color: var(--button-text-color);
   border-radius: 5px;
-  margin: 25px 10px;
+  margin: 45px 10px;
   background-color: var(--button-color);
   transition: 0.2s ease;
   cursor: pointer;
@@ -516,4 +520,38 @@ form .buttons {
   font-size: 12px;
   color: red;
   height: 20px;
+}
+.field01{
+margin-top: 38px !important;
+margin-left: -94px !important;
+}
+ .field02{
+  margin-top: 35px !important;
+ }
+ .field03{
+  margin-top: 46px !important;
+  margin-left: -62px !important;
+ }
+.field04{
+  margin-top: 41px !important;
+  margin-right: -213px !important;
+}
+.field05{
+  margin-top: 37px !important;
+  margin-left: -66px !important;
+
+}
+.field06{
+margin-top: 41px !important;
+margin-right: 1px !important;
+
+}
+.field07{
+  margin-left: -72px !important;
+}
+.field08{
+  margin-left: 10px !important;
+}
+.submit01{
+  margin-right: 55px !important;
 }
