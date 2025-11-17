@@ -108,6 +108,22 @@ contextBridge.exposeInMainWorld("electronAPI", {
   setTitle: (title) => {
     titlebar.updateTitle(title);
   },
+  // --- NEW: Exposing another Titlebar function ---
+  // This demonstrates that the titlebar instance is accessible and its methods
+  // can be exposed (or "returned") to the renderer process safely.
+  updateTitlebarBackgroundColor: (hexColor) => {
+    // We must use Color.fromHex here because the renderer cannot access the Color class directly
+    if (titlebar) {
+      titlebar.updateBackground(Color.fromHex(hexColor));
+    }
+  },
+
+    // --- NEW: Expose absolute path to CSS file ---
+  getCssPath: () => {
+    // This calculates the absolute path from the location of preload.js to the CSS file
+    // Assumes preload.js is at the app's root and the CSS is in src/assets/themes/
+    return path.join(__dirname, 'src', 'assets', 'themes', 'generalSettings.css');
+  },
 
   openmainhtml: (title) => {
     console.log("title");
